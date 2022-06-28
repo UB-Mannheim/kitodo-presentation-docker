@@ -1,0 +1,26 @@
+version: '3.7'
+
+services:
+  db:
+    image: mariadb:10.8
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+      - MYSQL_DATABASE=typo3-presentation-v3
+      - MYSQL_USER=typo3
+      - MYSQL_PASSWORD=password
+    #volumes:
+    #  - ./database:/var/lib/mysql
+    restart: unless-stopped
+  main:
+    build: .
+    image: kitodo/presentation:3.3-compose
+    ports:
+      - "127.0.0.1:80:80"
+    environment:
+      - DB_ADDR=db
+      - DB_PORT=3306
+    #volumes:
+    #  - ./config:/usr/local/kitodo
+    depends_on:
+      - db
+    restart: unless-stopped
