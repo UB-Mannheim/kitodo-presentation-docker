@@ -12,16 +12,8 @@ todo
 For more information, visit the [Kitodo homepage](https://www.kitodo.org). You can also follow Kitodo News on [Twitter](https://twitter.com/kitodo_org).
 
 ## Docker instructions
-### Build image:
-'docker build -t kitodo/presentation:3.3 .'
-
-### Run image:
-'docker run -p 80:80 kitodo/presentation:3.3'
-
-### Tmp workaround: start mariadb: 
-(gets obsolete when docker-compose works)
-Get container hash:  'docker ps'
-start mariadb in container:  'docker exec <container hash> service mariadb start'
+### Run images:
+    docker compose up 
 
 ### Ready:
 http://localhost/typo3/
