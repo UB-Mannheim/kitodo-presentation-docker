@@ -5,7 +5,7 @@ services:
     image: mariadb:10.8
     environment:
       - MYSQL_ALLOW_EMPTY_PASSWORD=yes
-      - MYSQL_DATABASE=typo3-presentation-v3
+      - MYSQL_DATABASE=typo3-dfgviewer-v5
       - MYSQL_USER=typo3
       - MYSQL_PASSWORD=password
     #volumes:
@@ -13,7 +13,7 @@ services:
     restart: unless-stopped
   main:
     build: .
-    image: kitodo/presentation:3.3-compose
+    image: csidirop/dfgviewer:5.3-compose
     ports:
       - "127.0.0.1:80:80"
     environment:

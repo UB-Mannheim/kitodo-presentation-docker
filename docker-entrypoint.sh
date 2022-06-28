@@ -30,18 +30,19 @@ vendor/bin/typo3cms install:setup \
     --database-user-password='password' \
     --database-host-name='db' \
     --database-port=3306 \
-    --database-name='typo3-presentation-v3' \
+    --database-name='typo3-dfgviewer-v5' \
     --admin-user-name='test' \
     --admin-password='test1234' \
     --site-setup-type=no \
     --site-name presentation \
     --web-server-config=apache
 
-# Install Kitodo.Presentation v3.3:
-echo '[MAIN] Install presentation 3.3:'
-composer config platform.php 7.4 
-composer require kitodo/presentation:^3.3 
+# Install Kitodo.Presentation and DFG-Viewer:
+echo '[MAIN] Install Presentation and DFG-Viewer:'
+composer config platform.php 7.4
+composer require slub/dfgviewer
 vendor/bin/typo3 extensionmanager:extension:install dlf
+vendor/bin/typo3 extensionmanager:extension:install dfgviewer
 chown -R www-data:www-data .
 
 # Check status:
