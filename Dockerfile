@@ -9,8 +9,8 @@ ENV DB_PORT=3306
 
 EXPOSE 80
 
-# This Dockerfile aimes to install a working typo3 v9 instance with the kitodo/presentation and
-# DFG-Viewer extension based on this guide: https://github.com/UB-Mannheim/kitodo-presentation/wiki
+# This Dockerfile aimes to install a working typo3 v9 instance with the kitodo/presentation extension
+# based on this guide: https://github.com/UB-Mannheim/kitodo-presentation/wiki
 
 # Define datavolumes:
 #VOLUME /var/www/html/fileadmin
