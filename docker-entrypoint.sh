@@ -43,7 +43,7 @@ composer update
 vendor/bin/typo3 extensionmanager:extension:install dlf
 vendor/bin/typo3 extensionmanager:extension:install dfgviewer
 chown -R www-data:www-data .
-# Activate other usefull extensions: (only Typo3 v9)
+# Activate other useful extensions: (only Typo3 v9)
 vendor/bin/typo3 extensionmanager:extension:install fluid_styled_content
 vendor/bin/typo3 extensionmanager:extension:install adminpanel
 vendor/bin/typo3 extensionmanager:extension:install beuser
