@@ -62,6 +62,9 @@ mkdir public/fileadmin/fulltextFolder
 mkdir public/fileadmin/_temp_/fulltextTempFolder
 mkdir public/fileadmin/_temp_/imagesTempFolder
 chown -R www-data public/fileadmin/
+dfgviewer_uid=$(mysql -h db -D 'typo3-dfgviewer-v5-ocr' -e 'SELECT uid FROM pages WHERE title = "Viewer";' | sed '1d')
+mysql -h db -D 'typo3-dfgviewer-v5-ocr' -e "UPDATE pages SET TSconfig = 'TCEMAIN.permissions.groupid = $dfgviewer_uid' WHERE title = 'Viewer';"
+mysql -h db -D 'typo3-dfgviewer-v5-ocr' -e 'UPDATE pages SET tsconfig_includes = "EXT:dfgviewer/Configuration/TsConfig/Page.tsconfig" WHERE title = "Viewer";'
 
 # Install Tesseract v5:
 apt-get install -y tesseract
