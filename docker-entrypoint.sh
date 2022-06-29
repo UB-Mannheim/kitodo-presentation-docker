@@ -43,9 +43,37 @@ composer update
 vendor/bin/typo3 extensionmanager:extension:install dlf
 vendor/bin/typo3 extensionmanager:extension:install dfgviewer
 chown -R www-data:www-data .
+# Activate other useful extensions: (only Typo3 v9)
+vendor/bin/typo3 extensionmanager:extension:install fluid_styled_content
+vendor/bin/typo3 extensionmanager:extension:install adminpanel
+vendor/bin/typo3 extensionmanager:extension:install beuser
+vendor/bin/typo3 extensionmanager:extension:install form
+vendor/bin/typo3 extensionmanager:extension:install info
+vendor/bin/typo3 extensionmanager:extension:install redirects
+vendor/bin/typo3 extensionmanager:extension:install tstemplate
+vendor/bin/typo3 extensionmanager:extension:install viewpage
 
-# Setup DFG-Viewer:
-##TODO
+# Setup DFG-Viewer: (https://github.com/UB-Mannheim/kitodo-presentation/wiki/Installation-Kitodo.Presentation-mit-DFG-Viewer-und-OCR-On-Demand-Testcode-als-Beispielanwendung#dfg-viewer-config)
+cd /var/www/typo3/
+vendor/bin/typo3cms configuration:set FE/pageNotFoundOnCHashError 0
+vendor/bin/typo3cms configuration:set FE/cacheHash/requireCacheHashPresenceParameters '["tx_dlf[id]", "set[mets]"]' --json
+## OCR-On-Demand options:
+vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/'fulltextFolder' 'fileadmin/fulltextFolder'
+vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/fulltextTempFolder 'fileadmin/_temp_/fulltextTempFolder'
+vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/fulltextImagesFolder 'fileadmin/_temp_/imagesTempFolder'
+vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/ocrDebugBackend 0 # 0 = off, 1 = on
+vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/ocrDebugFrontend 0 # 0 = off, 1 = on
+vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/ocrDelay '10'
+vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/ocrDummy 1
+vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/ocrLanguages 'frak2021_1.069' #TODO
+vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/ocrLock 1
+mkdir public/fileadmin/fulltextFolder
+mkdir public/fileadmin/_temp_/fulltextTempFolder
+mkdir public/fileadmin/_temp_/imagesTempFolder
+chown -R www-data public/fileadmin/
+dfgviewer_uid=$(mysql -h db -D 'typo3-dfgviewer-v5-ocr' -e 'SELECT uid FROM pages WHERE title = "Viewer";' | sed '1d')
+mysql -h db -D 'typo3-dfgviewer-v5-ocr' -e "UPDATE pages SET TSconfig = 'TCEMAIN.permissions.groupid = $dfgviewer_uid' WHERE title = 'Viewer';"
+mysql -h db -D 'typo3-dfgviewer-v5-ocr' -e 'UPDATE pages SET tsconfig_includes = "EXT:dfgviewer/Configuration/TsConfig/Page.tsconfig" WHERE title = "Viewer";'
 
 # Install Tesseract v5:
 apt-get install -y tesseract
