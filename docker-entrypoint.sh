@@ -43,6 +43,15 @@ composer update
 vendor/bin/typo3 extensionmanager:extension:install dlf
 vendor/bin/typo3 extensionmanager:extension:install dfgviewer
 chown -R www-data:www-data .
+# Activate other usefull extensions: (only Typo3 v9)
+vendor/bin/typo3 extensionmanager:extension:install fluid_styled_content
+vendor/bin/typo3 extensionmanager:extension:install adminpanel
+vendor/bin/typo3 extensionmanager:extension:install beuser
+vendor/bin/typo3 extensionmanager:extension:install form
+vendor/bin/typo3 extensionmanager:extension:install info
+vendor/bin/typo3 extensionmanager:extension:install redirects
+vendor/bin/typo3 extensionmanager:extension:install tstemplate
+vendor/bin/typo3 extensionmanager:extension:install viewpage
 
 # Setup DFG-Viewer: (https://github.com/UB-Mannheim/kitodo-presentation/wiki/Installation-Kitodo.Presentation-mit-DFG-Viewer-und-OCR-On-Demand-Testcode-als-Beispielanwendung#dfg-viewer-config)
 cd /var/www/typo3/
@@ -52,11 +61,11 @@ vendor/bin/typo3cms configuration:set FE/cacheHash/requireCacheHashPresenceParam
 vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/'fulltextFolder' 'fileadmin/fulltextFolder'
 vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/fulltextTempFolder 'fileadmin/_temp_/fulltextTempFolder'
 vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/fulltextImagesFolder 'fileadmin/_temp_/imagesTempFolder'
-vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/ocrDebugBackend 1
-vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/ocrDebugFrontend 1
-vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/ocrDelay '9'
+vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/ocrDebugBackend 0 # 0 = off, 1 = on
+vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/ocrDebugFrontend 0 # 0 = off, 1 = on
+vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/ocrDelay '10'
 vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/ocrDummy 1
-vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/ocrLanguages 'frak2021_1.069'
+vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/ocrLanguages 'frak2021_1.069' #TODO
 vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/ocrLock 1
 mkdir public/fileadmin/fulltextFolder
 mkdir public/fileadmin/_temp_/fulltextTempFolder
