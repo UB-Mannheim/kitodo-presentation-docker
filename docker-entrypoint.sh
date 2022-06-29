@@ -44,8 +44,24 @@ vendor/bin/typo3 extensionmanager:extension:install dlf
 vendor/bin/typo3 extensionmanager:extension:install dfgviewer
 chown -R www-data:www-data .
 
-# Setup DFG-Viewer:
-##TODO
+# Setup DFG-Viewer: (https://github.com/UB-Mannheim/kitodo-presentation/wiki/Installation-Kitodo.Presentation-mit-DFG-Viewer-und-OCR-On-Demand-Testcode-als-Beispielanwendung#dfg-viewer-config)
+cd /var/www/typo3/
+vendor/bin/typo3cms configuration:set FE/pageNotFoundOnCHashError 0
+vendor/bin/typo3cms configuration:set FE/cacheHash/requireCacheHashPresenceParameters '["tx_dlf[id]", "set[mets]"]' --json
+## OCR-On-Demand options:
+vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/'fulltextFolder' 'fileadmin/fulltextFolder'
+vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/fulltextTempFolder 'fileadmin/_temp_/fulltextTempFolder'
+vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/fulltextImagesFolder 'fileadmin/_temp_/imagesTempFolder'
+vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/ocrDebugBackend 1
+vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/ocrDebugFrontend 1
+vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/ocrDelay '9'
+vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/ocrDummy 1
+vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/ocrLanguages 'frak2021_1.069'
+vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/ocrLock 1
+mkdir public/fileadmin/fulltextFolder
+mkdir public/fileadmin/_temp_/fulltextTempFolder
+mkdir public/fileadmin/_temp_/imagesTempFolder
+chown -R www-data public/fileadmin/
 
 # Install Tesseract v5:
 apt-get install -y tesseract
