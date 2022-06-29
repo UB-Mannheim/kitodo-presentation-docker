@@ -13,7 +13,7 @@ wget -q https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-
 echo '[MAIN] cleanup:'
 apt-get purge -y wget
 apt-get autoremove -y
-apt-get clean 
+apt-get clean
 rm -rf /var/lib/apt/lists/*
 # Wait for database container:
 chmod +x wait-for-it.sh
@@ -30,19 +30,20 @@ vendor/bin/typo3cms install:setup \
     --database-user-password='password' \
     --database-host-name='db' \
     --database-port=3306 \
-    --database-name='typo3-presentation-v3' \
+    --database-name='typo3-presentation-v4' \
     --admin-user-name='test' \
     --admin-password='test1234' \
     --site-setup-type=no \
     --site-name presentation \
     --web-server-config=apache
 
-# Install Kitodo.Presentation v3.3:
-echo '[MAIN] Install presentation 3.3:'
+# Install Kitodo.Presentation v4.x:
+echo '[MAIN] Install presentation 4.x'
 composer config platform.php 7.4 
-composer require kitodo/presentation:^3.3 
-vendor/bin/typo3 extensionmanager:extension:install dlf
-chown -R www-data:www-data .
+composer require kitodo/presentation:^4 
+vendor/bin/typo3 extensionmanager:extension:install dlf 
+echo '[MAIN] Set ownership:'
+chown -R www-data:www-data .    
 
 # Check status:
 echo '[MAIN] Check apache status:'
