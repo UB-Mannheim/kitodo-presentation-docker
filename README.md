@@ -15,7 +15,7 @@ For more information, visit the [Kitodo homepage](https://www.kitodo.org). You c
 The Docker images were built by [Mannheim University Library](https://en.wikipedia.org/wiki/Mannheim_University_Library).
 
 ### Select branch
-There are different [Branches](https://github.com/csidirop/kitodo-presentation-docker/branches) that serve to provide different installations. While the main-Branch offers always the newest presentation version, the others provide following versions:
+There are different [Branches](https://github.com/UB-Mannheim/kitodo-presentation-docker/branches) that serve to provide different installations. While the main-Branch offers always the newest presentation version, the others provide following versions:
 
 |     **Branch**     	| **dfg-viewer version** 	|                         **presentation version**                         	| **base image** 	|
 |:------------------:	|:----------------------:	|:------------------------------------------------------------------------:	|:--------------:	|
