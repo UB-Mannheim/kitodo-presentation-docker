@@ -73,10 +73,15 @@ mysql -h db -D ${DB_NAME} -e 'UPDATE pages SET tsconfig_includes = "EXT:dfgviewe
 mysql -h db -D ${DB_NAME} -e 'UPDATE pages SET tsconfig_includes = "EXT:dfgviewer/Configuration/TsConfig/Page.tsconfig" WHERE title = "Viewer";'
 mysql -h db -D ${DB_NAME} -e "INSERT INTO tt_content (pid, CType, header, bodytext) VALUES ('1', 'html', 'Eingabefeld', '<div class=\"abstract\"> <form method=\"get\" action=\"index.php\">   <div> <label for=\"mets\">Fuegen Sie hier den Link zu Ihrer <acronym title=\"(engl.) metadata encoding and transmission standard; (dt.) Metadatenkodierungs- und -übertragungsstandard\">METS</acronym>-Datei bzw. <acronym title=\"(engl.) open archives initiative; (dt.) Initiative für freien Datenaustausch\">OAI</acronym>-Schnittstelle ein:</label> <br/> <input type=\"hidden\" name = \"id\" value = \"2\"> <input type=\"text\" class=\"url\" name=\"tx_dlf[id]\" value=\"\" required=\"true\" pattern=\"[0-9a-zA-Z].*\" placeholder=\"https://digi.bib.uni-mannheim.de/fileadmin/digi/1652998276/1652998276.xml\"/> <br/> <input type=\"hidden\" name=\"no_cache\" value=\"1\" /> <input type=\"reset\"> <input type=\"submit\" class=\"submit\" value=\"Demonstrator aufrufen\" />   </div> </form> </div>')"
 
-# Install Tesseract v5:
+# Install Tesseract v5: (https://notesalexp.org/tesseract-ocr/#tesseract_5.x)
 echo '[MAIN] Install Tesseract v5:'
 apt-get update
-apt-get install -y wget tesseract
+apt-get install -y apt-transport-https lsb-release wget
+echo "deb https://notesalexp.org/tesseract-ocr5/$(lsb_release -cs)/ $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/notesalexp.list > /dev/null
+apt-get update -oAcquire::AllowInsecureRepositories=true
+apt-get install -y --allow-unauthenticated notesalexp-keyring -oAcquire::AllowInsecureRepositories=true
+apt-get update
+apt-get install -y tesseract-ocr
 cd /usr/share/tesseract-ocr/5/tessdata/
 wget https://ub-backup.bib.uni-mannheim.de/~stweil/tesstrain/frak2021/tessdata_fast/frak2021_1.069.traineddata
 cd /var/www/typo3/
@@ -86,7 +91,7 @@ tesseract --list-langs
 
 # Cleanup:
 echo '[MAIN] cleanup:'
-apt-get purge -y wget jq
+apt-get purge -y wget jq apt-transport-https lsb-release
 apt-get autoremove -y
 apt-get clean 
 rm -rf /var/lib/apt/lists/*
