@@ -19,6 +19,7 @@ services:
     environment:
       - DB_ADDR=db
       - DB_PORT=3306
+      - DB_NAME=typo3-dfgviewer-v5-ocr
     #volumes:
     #  - ./config:/usr/local/kitodo
     depends_on:

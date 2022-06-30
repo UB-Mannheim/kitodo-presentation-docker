@@ -17,8 +17,8 @@ vendor/bin/typo3cms install:setup \
     --database-user-name='typo3' \
     --database-user-password='password' \
     --database-host-name='db' \
-    --database-port=3306 \
-    --database-name='typo3-dfgviewer-v5-ocr' \
+    --database-port=${DB_PORT} \
+    --database-name=${DB_NAME} \
     --admin-user-name='test' \
     --admin-password='test1234' \
     --site-setup-type=no \
@@ -48,11 +48,12 @@ vendor/bin/typo3 extensionmanager:extension:install tstemplate
 vendor/bin/typo3 extensionmanager:extension:install viewpage
 
 # Setup DFG-Viewer: (https://github.com/UB-Mannheim/kitodo-presentation/wiki/Installation-Kitodo.Presentation-mit-DFG-Viewer-und-OCR-On-Demand-Testcode-als-Beispielanwendung#dfg-viewer-config)
+echo '[MAIN] Setup DFG-Viewer:'
 cd /var/www/typo3/
 vendor/bin/typo3cms configuration:set FE/pageNotFoundOnCHashError 0
 vendor/bin/typo3cms configuration:set FE/cacheHash/requireCacheHashPresenceParameters '["tx_dlf[id]", "set[mets]"]' --json
 ## OCR-On-Demand options:
-vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/'fulltextFolder' 'fileadmin/fulltextFolder'
+vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/fulltextFolder 'fileadmin/fulltextFolder'
 vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/fulltextTempFolder 'fileadmin/_temp_/fulltextTempFolder'
 vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/fulltextImagesFolder 'fileadmin/_temp_/imagesTempFolder'
 vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/ocrDebugBackend 0 # 0 = off, 1 = on
@@ -65,12 +66,17 @@ mkdir public/fileadmin/fulltextFolder
 mkdir public/fileadmin/_temp_/fulltextTempFolder
 mkdir public/fileadmin/_temp_/imagesTempFolder
 chown -R www-data public/fileadmin/
-dfgviewer_uid=$(mysql -h db -D 'typo3-dfgviewer-v5-ocr' -e 'SELECT uid FROM pages WHERE title = "Viewer";' | sed '1d')
-mysql -h db -D 'typo3-dfgviewer-v5-ocr' -e "UPDATE pages SET TSconfig = 'TCEMAIN.permissions.groupid = $dfgviewer_uid' WHERE title = 'Viewer';"
-mysql -h db -D 'typo3-dfgviewer-v5-ocr' -e 'UPDATE pages SET tsconfig_includes = "EXT:dfgviewer/Configuration/TsConfig/Page.tsconfig" WHERE title = "Viewer";'
+echo '[MAIN] Setup DFG-Viewer: Update DB'
+dfgviewer_uid=$(mysql -h db -D ${DB_NAME} -e 'SELECT uid FROM pages WHERE title = "Viewer";' | sed '1d')
+mysql -h db -D ${DB_NAME} -e "UPDATE pages SET TSconfig = 'TCEMAIN.permissions.groupid = $dfgviewer_uid' WHERE title = 'Viewer';"
+mysql -h db -D ${DB_NAME} -e 'UPDATE pages SET tsconfig_includes = "EXT:dfgviewer/Configuration/TsConfig/Page.ts" WHERE title = "DFG Viewer";'
+mysql -h db -D ${DB_NAME} -e 'UPDATE pages SET tsconfig_includes = "EXT:dfgviewer/Configuration/TsConfig/Page.tsconfig" WHERE title = "Viewer";'
+mysql -h db -D ${DB_NAME} -e "INSERT INTO tt_content (pid, CType, header, bodytext) VALUES ('1', 'html', 'Eingabefeld', '<div class=\"abstract\"> <form method=\"get\" action=\"index.php\">   <div> <label for=\"mets\">Fuegen Sie hier den Link zu Ihrer <acronym title=\"(engl.) metadata encoding and transmission standard; (dt.) Metadatenkodierungs- und -übertragungsstandard\">METS</acronym>-Datei bzw. <acronym title=\"(engl.) open archives initiative; (dt.) Initiative für freien Datenaustausch\">OAI</acronym>-Schnittstelle ein:</label> <br/> <input type=\"hidden\" name = \"id\" value = \"2\"> <input type=\"text\" class=\"url\" name=\"tx_dlf[id]\" value=\"\" required=\"true\" pattern=\"[0-9a-zA-Z].*\" placeholder=\"https://digi.bib.uni-mannheim.de/fileadmin/digi/1652998276/1652998276.xml\"/> <br/> <input type=\"hidden\" name=\"no_cache\" value=\"1\" /> <input type=\"reset\"> <input type=\"submit\" class=\"submit\" value=\"Demonstrator aufrufen\" />   </div> </form> </div>')"
 
 # Install Tesseract v5:
-apt-get install -y tesseract
+echo '[MAIN] Install Tesseract v5:'
+apt-get update
+apt-get install -y wget tesseract
 cd /usr/share/tesseract-ocr/5/tessdata/
 wget https://ub-backup.bib.uni-mannheim.de/~stweil/tesstrain/frak2021/tessdata_fast/frak2021_1.069.traineddata
 cd /var/www/typo3/
