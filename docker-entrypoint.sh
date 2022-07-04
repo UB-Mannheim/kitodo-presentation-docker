@@ -91,7 +91,7 @@ tesseract --list-langs
 
 # Cleanup:
 echo '[MAIN] cleanup:'
-apt-get purge -y wget jq apt-transport-https lsb-release
+apt-get purge -y jq apt-transport-https lsb-release
 apt-get autoremove -y
 apt-get clean 
 rm -rf /var/lib/apt/lists/*
