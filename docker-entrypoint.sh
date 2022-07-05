@@ -30,7 +30,7 @@ echo '[MAIN] Install Presentation and DFG-Viewer with OCR-On-Demand:'
 composer config platform.php 7.4
 apt-get update
 apt-get install -y jq
-jq '.repositories += [{"type": "git", "url": "https://github.com/csidirop/dfg-viewer.git" }, {"type": "git", "url": "https://github.com/csidirop/kitodo-presentation.git"}, {"type": "git", "url": "https://github.com/csidirop/slub_digitalcollections.git" }] | .require += {"csidirop/dfgviewer": "dev-5.3-ocr-test"} | . += {"minimum-stability": "dev"}' composer.json > composer-edit.json
+jq '.repositories += [{"type": "git", "url": "https://github.com/csidirop/dfg-viewer.git" }, {"type": "git", "url": "https://github.com/csidirop/kitodo-presentation.git"}, {"type": "git", "url": "https://github.com/csidirop/slub_digitalcollections.git" }] | .require += {"csidirop/dfgviewer": "dev-5.3-ocr"} | . += {"minimum-stability": "dev"}' composer.json > composer-edit.json
 mv composer.json composer.json.bak
 mv composer-edit.json composer.json
 composer update
