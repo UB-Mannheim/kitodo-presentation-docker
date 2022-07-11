@@ -11,9 +11,11 @@ services:
     #volumes:
     #  - ./database:/var/lib/mysql
     restart: unless-stopped
+    ports:
+      - "127.0.0.1:3307:3306"
   main:
     build: .
-    image: csidirop/dfgviewer:5.3-ocr-compose
+    image: csidirop/dfgviewer:5.3-ocr
     ports:
       - "127.0.0.1:80:80"
     environment:
