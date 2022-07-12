@@ -33,7 +33,9 @@ Usernames and passwords for the database and typo3 backend are stored inside .en
 
 ### Run images:
     docker compose up
+
 or  
+
     docker-compose up
 
 ### Ready:
