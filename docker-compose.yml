@@ -6,20 +6,24 @@ services:
     environment:
       - MYSQL_ALLOW_EMPTY_PASSWORD=yes
       - MYSQL_DATABASE=typo3-dfgviewer-v5-ocr
-      - MYSQL_USER=typo3
-      - MYSQL_PASSWORD=password
+      - MYSQL_USER=$MYSQL_USER
+      - MYSQL_PASSWORD=$MYSQL_PASSWORD
     #volumes:
     #  - ./database:/var/lib/mysql
     restart: unless-stopped
   main:
     build: .
-    image: csidirop/dfgviewer:5.3-ocr
+    image: kitodo/dfgviewer:5.3-ocr
     ports:
       - "127.0.0.1:80:80"
     environment:
       - DB_ADDR=db
       - DB_PORT=3306
       - DB_NAME=typo3-dfgviewer-v5-ocr
+      - DB_USER=$MYSQL_USER
+      - DB_PASSWORD=$MYSQL_PASSWORD
+      - TYPO3_ADMIN_USER=$TYPO3_ADMIN_USER
+      - TYPO3_ADMIN_PASSWORD=$TYPO3_ADMIN_PASSWORD
     #volumes:
     #  - ./config:/usr/local/kitodo
     depends_on:

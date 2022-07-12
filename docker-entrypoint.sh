@@ -14,13 +14,13 @@ echo '[MAIN] Auto setup typo3:'
 vendor/bin/typo3cms install:setup \
     --use-existing-database \
     --database-driver='mysqli' \
-    --database-user-name='typo3' \
-    --database-user-password='password' \
+    --database-user-name=${DB_USER} \
+    --database-user-password=${DB_PASSWORD} \
     --database-host-name='db' \
     --database-port=${DB_PORT} \
     --database-name=${DB_NAME} \
-    --admin-user-name='test' \
-    --admin-password='test1234' \
+    --admin-user-name=${TYPO3_ADMIN_USER} \
+    --admin-password=${TYPO3_ADMIN_PASSWORD} \
     --site-setup-type=no \
     --site-name presentation \
     --web-server-config=apache
