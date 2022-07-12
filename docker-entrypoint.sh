@@ -56,8 +56,7 @@ vendor/bin/typo3cms configuration:set FE/cacheHash/requireCacheHashPresenceParam
 vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/fulltextFolder 'fileadmin/fulltextFolder'
 vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/fulltextTempFolder 'fileadmin/_temp_/fulltextTempFolder'
 vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/fulltextImagesFolder 'fileadmin/_temp_/imagesTempFolder'
-vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/ocrDebugBackend 0 # 0 = off, 1 = on
-vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/ocrDebugFrontend 0 # 0 = off, 1 = on
+vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/ocrDebug 0 # 0 = off, 1 = on
 vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/ocrDelay '10'
 vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/ocrDummy 1
 vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/ocrLanguages 'frak2021_1.069' #TODO
