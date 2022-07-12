@@ -22,4 +22,4 @@ COPY docker-entrypoint.sh /
 # Fix wrong line endings in the startup script:
 RUN sed -i.bak 's/\r$//' /docker-entrypoint.sh
 # Run startup script & start apache2 (https://github.com/docker-library/php/blob/master/7.4/bullseye/apache/apache2-foreground)
-CMD /docker-entrypoint.sh & apache2-foreground 
+CMD /docker-entrypoint.sh & apache2-foreground

@@ -13,7 +13,7 @@ For more information, visit the [Kitodo homepage](https://www.kitodo.org). You c
 
 ## Docker instructions
 ### Run images:
-    docker compose up 
+    docker compose up
 
 ### Ready:
 http://localhost/typo3/
