@@ -78,6 +78,12 @@ if [ ! -f /initFinished ]; then
     mysql -h db -D ${DB_NAME} -e "INSERT INTO tt_content (pid, cruser_id, CType, header, bodytext) VALUES ('1', '1', 'text', 'DFG-Viewer Examplebody', '<p>Nachfolgend befinden sich zwei Beispieldokumente zum Testen der OCR-On-Demand Funktionalit&auml;t. Alternativ kann man die URL zu einer beliebigen METS-Datei in das Suchfeld einf&uuml;gen.</p> <ul><li><a href=\"/index.php?id=2&amp;tx_dlf[id]=https%3A%2F%2Fdigi.bib.uni-mannheim.de%2Ffileadmin%2Fvl%2Fubmaosi%2F59087%2F59087.xml\">&Uuml;ber die Gesetze des geordneten Denkverlaufs [1913]</a></li><li><a href=\"/index.php?id=2&amp;tx_dlf[id]=https%3A%2F%2Fdigi.bib.uni-mannheim.de%2Ffileadmin%2Fvl%2Fubmaosi%2F59088%2F59088.xml\">Zur Psychologie des produktiven Denkens und des Irrtums [1922]</a></li></ul>');"
     mysql -h db -D ${DB_NAME} -e "INSERT INTO tt_content (pid, cruser_id, CType, header, bodytext) VALUES ('1', '1', 'html', 'Eingabefeld', '<div class=\"abstract\"> <form method=\"get\" action=\"index.php\">   <div> <label for=\"mets\">Fuegen Sie hier den Link zu Ihrer <acronym title=\"(engl.) metadata encoding and transmission standard; (dt.) Metadatenkodierungs- und -übertragungsstandard\">METS</acronym>-Datei bzw. <acronym title=\"(engl.) open archives initiative; (dt.) Initiative für freien Datenaustausch\">OAI</acronym>-Schnittstelle ein:</label> <br/> <input type=\"hidden\" name = \"id\" value = \"2\"> <input type=\"text\" class=\"url\" name=\"tx_dlf[id]\" value=\"\" required=\"true\" pattern=\"[0-9a-zA-Z].*\" placeholder=\"https://digi.bib.uni-mannheim.de/fileadmin/digi/1652998276/1652998276.xml\"/> <br/> <input type=\"hidden\" name=\"no_cache\" value=\"1\" /> <input type=\"reset\"> <input type=\"submit\" class=\"submit\" value=\"Demonstrator aufrufen\" />   </div> </form> </div>')"
 
+    # DMZ (Fixes TYPO3-CORE-SA-2020-006: Same-Origin Request Forgery to Backend User Interface: https://typo3.org/security/advisory/typo3-core-sa-2020-006)
+    # (Only if DMZ is set in .env)
+    if [ ${DMZ} != 'false' ]; then
+        echo -e "<?php\n['TYPO3_CONF_VARS']['SYS']['reverseProxySSL'] = '*';\n['TYPO3_CONF_VARS']['SYS']['reverseProxyIP'] = '*';\n['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'] = '127.0.0.1';\n['TYPO3_CONF_VARS']['SYS']['reverseProxyHeaderMultiValue'] = 'first';" >> AdditionalConfiguration.php
+    fi
+
     # Install Tesseract v5: (https://notesalexp.org/tesseract-ocr/#tesseract_5.x)
     echo '[MAIN] Install Tesseract v5:'
     apt-get update
