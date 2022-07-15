@@ -83,7 +83,7 @@ if [ ! -f /initFinished ]; then
     # AdditionalConfiguration (Fixes TYPO3-CORE-SA-2020-006: Same-Origin Request Forgery to Backend User Interface: https://typo3.org/security/advisory/typo3-core-sa-2020-006)
     # (Only if DMZ is set in .env)
     if [ ${AdditionalConfiguration} != 'false' ]; then
-        echo -e "<?php\n['TYPO3_CONF_VARS']['SYS']['reverseProxySSL'] = '*';\n['TYPO3_CONF_VARS']['SYS']['reverseProxyIP'] = '*';\n['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'] = '${HOSTNAME}';\n['TYPO3_CONF_VARS']['SYS']['reverseProxyHeaderMultiValue'] = 'first';" >> AdditionalConfiguration.php
+        echo -e "<?php\n['TYPO3_CONF_VARS']['SYS']['reverseProxySSL'] = '*';\n['TYPO3_CONF_VARS']['SYS']['reverseProxyIP'] = '*';\n['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'] = '${HOST}';\n['TYPO3_CONF_VARS']['SYS']['reverseProxyHeaderMultiValue'] = 'first';" >> AdditionalConfiguration.php
     fi
 
     # Install Tesseract v5: (https://notesalexp.org/tesseract-ocr/#tesseract_5.x)
@@ -118,4 +118,4 @@ if [ ! -f /initFinished ]; then
     echo '[MAIN] Finished setup '
 fi
 
-echo '[MAIN] Ready: http://localhost/typo3/ '
+echo '[MAIN] Ready: http://'${HOST}'/typo3/ '
