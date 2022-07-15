@@ -47,6 +47,7 @@ if [ ! -f /initFinished ]; then
     vendor/bin/typo3 extensionmanager:extension:install form
     vendor/bin/typo3 extensionmanager:extension:install info
     vendor/bin/typo3 extensionmanager:extension:install redirects
+    vendor/bin/typo3 extensionmanager:extension:install rte_ckeditor
     vendor/bin/typo3 extensionmanager:extension:install tstemplate
     vendor/bin/typo3 extensionmanager:extension:install viewpage
 
