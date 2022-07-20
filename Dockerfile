@@ -17,8 +17,9 @@ EXPOSE 80
 #VOLUME /var/www/html/typo3conf
 #VOLUME /var/www/html/typo3temp
 
-# Copy startup script into the container:
+# Copy startup script and data folder into the container:
 COPY docker-entrypoint.sh /
+ADD data/ /data
 # Fix wrong line endings in the startup script:
 RUN sed -i.bak 's/\r$//' /docker-entrypoint.sh
 # Run startup script & start apache2 (https://github.com/docker-library/php/blob/master/7.4/bullseye/apache/apache2-foreground)
