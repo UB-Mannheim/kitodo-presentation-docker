@@ -82,7 +82,7 @@ if [ ! -f /initFinished ]; then
     mysql -h db -D ${DB_NAME} -e "INSERT INTO tt_content (pid, cruser_id, CType, header, bodytext) VALUES ('1', '1', 'html', 'Eingabefeld',             '$(jq -r '."DFG-Viewer-Main".german."Eingabefeld"'       /data/typo3ContentElementData.json)')"
     ## Create external links:
     mysql -h db -D ${DB_NAME} -e "INSERT INTO pages (pid, cruser_id, perms_userid, title, slug, doktype)      VALUES ('1', '1', '1', 'Links',               '/links', '254');"
-    mysql -h db -D ${DB_NAME} -e "INSERT INTO pages (pid, cruser_id, perms_userid, title, slug, doktype, url) VALUES ('4', '1', '1', 'Datenschuterkl&auml;rung', '/datenschutzerklaerung', 3, 'https://www.uni-mannheim.de/datenschutzerklaerung/');"
+    mysql -h db -D ${DB_NAME} -e "INSERT INTO pages (pid, cruser_id, perms_userid, title, slug, doktype, url) VALUES ('4', '1', '1', 'Datenschuterklaerung', '/datenschutzerklaerung', 3, 'https://www.uni-mannheim.de/datenschutzerklaerung/');"
     mysql -h db -D ${DB_NAME} -e "INSERT INTO pages (pid, cruser_id, perms_userid, title, slug, doktype, url) VALUES ('4', '1', '1', 'Impressum',           '/impressum', '3', 'https://www.uni-mannheim.de/impressum/');"
     ## Embed external links: 1 viewer dropdown menu
     # .... TODO ....
@@ -93,8 +93,12 @@ if [ ! -f /initFinished ]; then
     mkdir -p config/sites/dfgviewer/
     echo -e "base: '/'\nbaseVariants: {  }\nerrorHandling: {  }\nlanguages:\n  -\n    title: 'DFG-Viewer (german)'\n    enabled: true\n    base: '/'\n    typo3Language: de\n    locale: de_DE.UTF-8\n    iso-639-1: de\n    navigationTitle: DFG-Viewer\n    hreflang: de-DE\n    direction: ''\n    flag: de\n    languageId: '0'\n  -\n    title: 'DFG-Viewer (Englisch)'\n    enabled: true\n    base: /en/\n    typo3Language: default\n    locale: en_US.UTF-8\n    iso-639-1: en\n    navigationTitle: 'DFG-Viewer (English)'\n    hreflang: en-US\n    direction: ''\n    fallbackType: fallback\n    fallbacks: '0'\n    flag: gb\n    languageId: '1'\nrootPageId: 1\nroutes: {  }\n" >> config/sites/dfgviewer/config.yaml
     chown -R www-data:www-data config
-    ## Insert translationed pages and content elements:
-    mysql -h db -D ${DB_NAME} -e "INSERT INTO pages (pid, cruser_id, sys_language_uid, l10n_parent, l10n_source, perms_userid, title, slug, doktype, is_siteroot, tsconfig_includes, tx_impexp_origuid)      VALUES ('0', '1', '1', '1', '1', '2', 'DFG Viewer', '/', '1', '1', 'EXT:dfgviewer/Configuration/TsConfig/Page.ts', '0');"
+    ## Insert translated pages and content elements as translations:
+    mysql -h db -D ${DB_NAME} -e "INSERT INTO pages (pid, cruser_id, sys_language_uid, l10n_parent, l10n_source, perms_userid, title, slug, doktype, is_siteroot, tsconfig_includes, tx_impexp_origuid) VALUES ('0', '1', '1', '1', '1', '2', 'DFG Viewer', '/', '1', '1', 'EXT:dfgviewer/Configuration/TsConfig/Page.ts', '0');"
+    mysql -h db -D ${DB_NAME} -e "INSERT INTO tt_content (pid, cruser_id, sys_language_uid, l18n_parent, l10n_source, t3_origuid, CType, header, bodytext) VALUES ('1', '1', '1', '1', '1', '1', 'text', 'DFG-Viewer Header',       '$(jq -r '."DFG-Viewer-Main".english."DFG-Viewer-Header"' /data/typo3ContentElementData.json)');"
+    mysql -h db -D ${DB_NAME} -e "INSERT INTO tt_content (pid, cruser_id, sys_language_uid, l18n_parent, l10n_source, t3_origuid, CType, header, bodytext) VALUES ('1', '1', '1', '2', '2', '2', 'text', 'DFG-Viewer Body',         '$(jq -r '."DFG-Viewer-Main".english."DFG-Viewer-Body"'   /data/typo3ContentElementData.json)');"
+    mysql -h db -D ${DB_NAME} -e "INSERT INTO tt_content (pid, cruser_id, sys_language_uid, l18n_parent, l10n_source, t3_origuid, CType, header, bodytext) VALUES ('1', '1', '1', '3', '3', '3', 'text', 'DFG-Viewer Examplebody',  '$(jq -r '."DFG-Viewer-Main".english."DFG-Viewer-Examplebody"' /data/typo3ContentElementData.json)');"
+    mysql -h db -D ${DB_NAME} -e "INSERT INTO tt_content (pid, cruser_id, sys_language_uid, l18n_parent, l10n_source, t3_origuid, CType, header, bodytext) VALUES ('1', '1', '1', '4', '4', '4', 'html', 'Eingabefeld',             '$(jq -r '."DFG-Viewer-Main".english."Eingabefeld"'       /data/typo3ContentElementData.json)')"
 
 
     # AdditionalConfiguration (Fixes TYPO3-CORE-SA-2020-006: Same-Origin Request Forgery to Backend User Interface: https://typo3.org/security/advisory/typo3-core-sa-2020-006)
