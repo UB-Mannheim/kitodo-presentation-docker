@@ -2,9 +2,14 @@
 
 # Work in progress!
 
+# Some color variables:
+CLR_B='\033[1;34m' # Bold Blue
+CLR_G='\e[32m' # Green
+NC='\033[0m' # No Color
+
 # Run main part of this script only one time (if /initFinished does not exists!):
 if [ ! -f /initFinished ]; then
-    echo '[MAIN] Running startup script:'
+    echo -e "${CLR_B}[MAIN] Running startup script:${NC}"
 
     # Wait for db to be ready:
     wait-for-it -t 0 ${DB_ADDR}:${DB_PORT}
@@ -12,7 +17,7 @@ if [ ! -f /initFinished ]; then
     # Setup Typo3 with typo3console (https://docs.typo3.org/p/helhum/typo3-console/main/en-us/CommandReference/InstallSetup.html):
     cd /var/www/typo3/
     docker-php-ext-install -j$(nproc) mysqli
-    echo '[MAIN] Auto setup typo3:'
+    echo -e "${CLR_B}[MAIN] Auto setup typo3:${NC}"
     vendor/bin/typo3cms install:setup \
         --use-existing-database \
         --database-driver='mysqli' \
@@ -28,7 +33,7 @@ if [ ! -f /initFinished ]; then
         --web-server-config=apache
 
     # Install Kitodo.Presentation and DFG-Viewer with OCR-On-Demand:
-    echo '[MAIN] Install Presentation and DFG-Viewer with OCR-On-Demand:'
+    echo -e "${CLR_B}[MAIN] Install Presentation and DFG-Viewer with OCR-On-Demand:${NC}"
     composer config platform.php 7.4
     apt-get update
     apt-get install -y jq
@@ -52,7 +57,7 @@ if [ ! -f /initFinished ]; then
     vendor/bin/typo3 extensionmanager:extension:install viewpage
 
     # Setup DFG-Viewer: (https://github.com/UB-Mannheim/kitodo-presentation/wiki/Installation-Kitodo.Presentation-mit-DFG-Viewer-und-OCR-On-Demand-Testcode-als-Beispielanwendung#dfg-viewer-config)
-    echo '[MAIN] Setup DFG-Viewer:'
+    echo -e "${CLR_B}[MAIN] Setup DFG-Viewer:${NC}"
     cd /var/www/typo3/
     vendor/bin/typo3cms configuration:set FE/pageNotFoundOnCHashError 0
     vendor/bin/typo3cms configuration:set FE/cacheHash/requireCacheHashPresenceParameters '["tx_dlf[id]", "set[mets]"]' --json
@@ -71,7 +76,8 @@ if [ ! -f /initFinished ]; then
     chown -R www-data public/fileadmin/
     # Insert Typo3 site content:
     ## Main site content elements:
-    echo '[MAIN] Setup DFG-Viewer: Update DB'
+    echo -e "${CLR_B}[MAIN] Setup DFG-Viewer: Update DB${NC}"
+    echo -e "${CLR_B}[MAIN] Setup DFG-Viewer: Update DB: Insert sites and properties${NC}"
     dfgviewer_uid=$(mysql -h db -D ${DB_NAME} -e 'SELECT uid FROM pages WHERE title = "Viewer";' | sed '1d')
     mysql -h db -D ${DB_NAME} -e "UPDATE pages SET TSconfig = 'TCEMAIN.permissions.groupid = $dfgviewer_uid' WHERE title = 'Viewer';"
     mysql -h db -D ${DB_NAME} -e 'UPDATE pages SET tsconfig_includes = "EXT:dfgviewer/Configuration/TsConfig/Page.ts" WHERE title = "DFG Viewer";'
@@ -89,6 +95,7 @@ if [ ! -f /initFinished ]; then
     ## Embed external links: 2 main site header or footer
     # .... TODO ....
     # Translations:
+    echo -e "${CLR_B}[MAIN] Setup DFG-Viewer: Update DB: Translations${NC}"
     ## Create Site configuration with two languages (en & de):
     mkdir -p config/sites/dfgviewer/
     echo -e "base: '/'\nbaseVariants: {  }\nerrorHandling: {  }\nlanguages:\n  -\n    title: 'DFG-Viewer (german)'\n    enabled: true\n    base: '/'\n    typo3Language: de\n    locale: de_DE.UTF-8\n    iso-639-1: de\n    navigationTitle: DFG-Viewer\n    hreflang: de-DE\n    direction: ''\n    flag: de\n    languageId: '0'\n  -\n    title: 'DFG-Viewer (Englisch)'\n    enabled: true\n    base: /en/\n    typo3Language: default\n    locale: en_US.UTF-8\n    iso-639-1: en\n    navigationTitle: 'DFG-Viewer (English)'\n    hreflang: en-US\n    direction: ''\n    fallbackType: fallback\n    fallbacks: '0'\n    flag: gb\n    languageId: '1'\nrootPageId: 1\nroutes: {  }\n" >> config/sites/dfgviewer/config.yaml
@@ -100,15 +107,15 @@ if [ ! -f /initFinished ]; then
     mysql -h db -D ${DB_NAME} -e "INSERT INTO tt_content (pid, cruser_id, sys_language_uid, l18n_parent, l10n_source, t3_origuid, CType, header, bodytext) VALUES ('1', '1', '1', '3', '3', '3', 'text', 'DFG-Viewer Examplebody',  '$(jq -r '."DFG-Viewer-Main".english."DFG-Viewer-Examplebody"' /data/typo3ContentElementData.json)');"
     mysql -h db -D ${DB_NAME} -e "INSERT INTO tt_content (pid, cruser_id, sys_language_uid, l18n_parent, l10n_source, t3_origuid, CType, header, bodytext) VALUES ('1', '1', '1', '4', '4', '4', 'html', 'Eingabefeld',             '$(jq -r '."DFG-Viewer-Main".english."Eingabefeld"'       /data/typo3ContentElementData.json)')"
 
-
     # AdditionalConfiguration (Fixes TYPO3-CORE-SA-2020-006: Same-Origin Request Forgery to Backend User Interface: https://typo3.org/security/advisory/typo3-core-sa-2020-006)
     # (Only if DMZ is set in .env)
     if [ ${AdditionalConfiguration} != 'false' ]; then
+        echo -e "${CLR_B}[MAIN] Write AdditionalConfiguration.php:${NC}"
         echo -e "<?php\n['TYPO3_CONF_VARS']['SYS']['reverseProxySSL'] = '*';\n['TYPO3_CONF_VARS']['SYS']['reverseProxyIP'] = '*';\n['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'] = '${HOST}';\n['TYPO3_CONF_VARS']['SYS']['reverseProxyHeaderMultiValue'] = 'first';" >> AdditionalConfiguration.php
     fi
 
     # Install Tesseract v5: (https://notesalexp.org/tesseract-ocr/#tesseract_5.x)
-    echo '[MAIN] Install Tesseract v5:'
+    echo -e "${CLR_B}[MAIN] Install Tesseract v5:${NC}"
     apt-get update
     apt-get install -y apt-transport-https lsb-release wget
     echo "deb https://notesalexp.org/tesseract-ocr5/$(lsb_release -cs)/ $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/notesalexp.list > /dev/null
@@ -124,19 +131,20 @@ if [ ! -f /initFinished ]; then
     tesseract --list-langs
 
     # Cleanup:
-    echo '[MAIN] cleanup:'
+    echo -e "${CLR_B}[MAIN] cleanup:${NC}"
     apt-get purge -y jq apt-transport-https lsb-release
     apt-get autoremove -y
     apt-get clean
     rm -rf /var/lib/apt/lists/*
 
     # Check status:
-    echo '[MAIN] Check apache status:'
+    echo -e "${CLR_B}[MAIN] Check apache status:${NC}"
     service apache2 status
 
     # Mark as finished:
     touch /initFinished
-    echo '[MAIN] Finished setup '
+    echo -e "${CLR_B}[MAIN]${CLR_G} Finished setup!${NC}"
 fi
 
-echo '[MAIN] Ready: http://'${HOST}'/typo3/ '
+echo -e "${CLR_B}[MAIN]${CLR_G} Site http://${HOST} ${NC}"
+echo -e "${CLR_B}[MAIN]${CLR_G} Backend: http://${HOST}/typo3/ ${NC}"
