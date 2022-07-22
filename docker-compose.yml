@@ -24,6 +24,7 @@ services:
       - DB_PASSWORD=$MYSQL_PASSWORD
       - TYPO3_ADMIN_USER=$TYPO3_ADMIN_USER
       - TYPO3_ADMIN_PASSWORD=$TYPO3_ADMIN_PASSWORD
+      - TYPO3_ADDITIONAL_CONFIGURATION=$TYPO3_ADDITIONAL_CONFIGURATION
       - HOST=$FullyQualifiedDomainName
     #volumes:
     #  - ./config:/usr/local/kitodo
