@@ -1,10 +1,15 @@
-#!/bin/sh
+#!/bin/bash
 
 # Work in progress!
 
+# Some color variables:
+CLR_B='\033[1;34m' # Bold Blue
+CLR_G='\e[32m' # Green
+NC='\033[0m' # No Color
+
 # Run main part of this script only one time (if /initFinished does not exists!):
 if [ ! -f /initFinished ]; then
-    echo '[MAIN] Running startup script:'
+    echo -e "${CLR_B}[MAIN] Running startup script:${NC}"
 
     # Wait for db to be ready:
     wait-for-it -t 0 ${DB_ADDR}:${DB_PORT}
@@ -12,7 +17,7 @@ if [ ! -f /initFinished ]; then
     # Setup Typo3 with typo3console (https://docs.typo3.org/p/helhum/typo3-console/main/en-us/CommandReference/InstallSetup.html):
     cd /var/www/typo3/
     docker-php-ext-install -j$(nproc) mysqli
-    echo '[MAIN] Auto setup typo3:'
+    echo -e "${CLR_B}[MAIN] Auto setup typo3:${NC}"
     vendor/bin/typo3cms install:setup \
         --use-existing-database \
         --database-driver='mysqli' \
@@ -28,7 +33,7 @@ if [ ! -f /initFinished ]; then
         --web-server-config=apache
 
     # Install Kitodo.Presentation and DFG-Viewer with OCR-On-Demand:
-    echo '[MAIN] Install Presentation and DFG-Viewer with OCR-On-Demand:'
+    echo -e "${CLR_B}[MAIN] Install Presentation and DFG-Viewer with OCR-On-Demand:${NC}"
     composer config platform.php 7.4
     apt-get update
     apt-get install -y jq
@@ -42,15 +47,17 @@ if [ ! -f /initFinished ]; then
     # Activate other useful extensions: (only Typo3 v9)
     vendor/bin/typo3 extensionmanager:extension:install fluid_styled_content
     vendor/bin/typo3 extensionmanager:extension:install adminpanel
+    vendor/bin/typo3 extensionmanager:extension:install belog 
     vendor/bin/typo3 extensionmanager:extension:install beuser
     vendor/bin/typo3 extensionmanager:extension:install form
     vendor/bin/typo3 extensionmanager:extension:install info
     vendor/bin/typo3 extensionmanager:extension:install redirects
+    vendor/bin/typo3 extensionmanager:extension:install rte_ckeditor
     vendor/bin/typo3 extensionmanager:extension:install tstemplate
     vendor/bin/typo3 extensionmanager:extension:install viewpage
 
     # Setup DFG-Viewer: (https://github.com/UB-Mannheim/kitodo-presentation/wiki/Installation-Kitodo.Presentation-mit-DFG-Viewer-und-OCR-On-Demand-Testcode-als-Beispielanwendung#dfg-viewer-config)
-    echo '[MAIN] Setup DFG-Viewer:'
+    echo -e "${CLR_B}[MAIN] Setup DFG-Viewer:${NC}"
     cd /var/www/typo3/
     vendor/bin/typo3cms configuration:set FE/pageNotFoundOnCHashError 0
     vendor/bin/typo3cms configuration:set FE/cacheHash/requireCacheHashPresenceParameters '["tx_dlf[id]", "set[mets]"]' --json
@@ -67,25 +74,53 @@ if [ ! -f /initFinished ]; then
     mkdir public/fileadmin/_temp_/fulltextTempFolder
     mkdir public/fileadmin/_temp_/imagesTempFolder
     chown -R www-data public/fileadmin/
-    # Insert Typo3 content elements:
-    echo '[MAIN] Setup DFG-Viewer: Update DB'
+    # Insert Typo3 site content:
+    ## Main site content elements:
+    echo -e "${CLR_B}[MAIN] Setup DFG-Viewer: Update DB${NC}"
+    echo -e "${CLR_B}[MAIN] Setup DFG-Viewer: Update DB: Insert sites and properties${NC}"
     dfgviewer_uid=$(mysql -h db -D ${DB_NAME} -e 'SELECT uid FROM pages WHERE title = "Viewer";' | sed '1d')
     mysql -h db -D ${DB_NAME} -e "UPDATE pages SET TSconfig = 'TCEMAIN.permissions.groupid = $dfgviewer_uid' WHERE title = 'Viewer';"
     mysql -h db -D ${DB_NAME} -e 'UPDATE pages SET tsconfig_includes = "EXT:dfgviewer/Configuration/TsConfig/Page.ts" WHERE title = "DFG Viewer";'
     mysql -h db -D ${DB_NAME} -e 'UPDATE pages SET tsconfig_includes = "EXT:dfgviewer/Configuration/TsConfig/Page.tsconfig" WHERE title = "Viewer";'
-    mysql -h db -D ${DB_NAME} -e "INSERT INTO tt_content (pid, cruser_id, CType, header, bodytext) VALUES ('1', '1', 'text', 'DFG-Viewer Header', '<p><span style=\"color: #224466;\"><strong>DFG-Viewer OCR-On-Demand Testdocker</strong></span></p>');"
-    mysql -h db -D ${DB_NAME} -e "INSERT INTO tt_content (pid, cruser_id, CType, header, bodytext) VALUES ('1', '1', 'text', 'DFG-Viewer Body', '<p>Nachfolgend finden Sie den Demonstator f&uuml;r OCR-On-Demand auf Basis des <a href=\"https://dfg-viewer.de/\" target=\"_blank\" rel=\"noopener\">DFG-Viewers</a> und <a href=\"https://www.kitodo.org/software/kitodopresentation\" target=\"_blank\" rel=\"noopener\">Kitodo.Presentation</a>, der im Rahmen des Projektes &bdquo;<em>OCR-D: Integration von Kitodo und OCR-D zur produktiven Massendigitalisierung\"</em> in einer Kooperation der <a href=\"https://www.bib.uni-mannheim.de/\" target=\"_blank\" rel=\"noopener\">UB Mannheim</a>, der <a href=\"https://www.tu-braunschweig.de/ub/\" target=\"_blank\" rel=\"noopener\">UB Braunschweig</a> und der <a href=\"https://www.slub-dresden.de/\" target=\"_blank\" rel=\"noopener\">SLUB Dresden</a> entwickelt wurde. Hier werden Ihnen Volltexte f&uuml;r Ihre Digitalisate auf Abruf automatisiert bereitgestellt.</p><p>Das Projekt wird gef&ouml;rdert durch die <a href=\"https://www.dfg.de/\" target=\"_blank\" rel=\"noopener\">Deutsche Forschungsgemeinschaft (DFG)</a>. Sie finden weiterf&uuml;hrende Informationen zum Projekt bei der <a href=\"https://www.bib.uni-mannheim.de/ihre-ub/projekte-der-ub/ocr-d-kitodo/\" target=\"_blank\" rel=\"noopener\">UB Mannheim</a> und der <a href=\"https://gepris.dfg.de/gepris/projekt/460478737\" target=\"_blank\" rel=\"noopener\">Deutschen Forschungsgemeinschaft</a> .</p>');"
-    mysql -h db -D ${DB_NAME} -e "INSERT INTO tt_content (pid, cruser_id, CType, header, bodytext) VALUES ('1', '1', 'text', 'DFG-Viewer Examplebody', '<p>Nachfolgend befinden sich zwei Beispieldokumente zum Testen der OCR-On-Demand Funktionalit&auml;t. Alternativ kann man die URL zu einer beliebigen METS-Datei in das Suchfeld einf&uuml;gen.</p> <ul><li><a href=\"/index.php?id=2&amp;tx_dlf[id]=https%3A%2F%2Fdigi.bib.uni-mannheim.de%2Ffileadmin%2Fvl%2Fubmaosi%2F59087%2F59087.xml\">&Uuml;ber die Gesetze des geordneten Denkverlaufs [1913]</a></li><li><a href=\"/index.php?id=2&amp;tx_dlf[id]=https%3A%2F%2Fdigi.bib.uni-mannheim.de%2Ffileadmin%2Fvl%2Fubmaosi%2F59088%2F59088.xml\">Zur Psychologie des produktiven Denkens und des Irrtums [1922]</a></li></ul>');"
-    mysql -h db -D ${DB_NAME} -e "INSERT INTO tt_content (pid, cruser_id, CType, header, bodytext) VALUES ('1', '1', 'html', 'Eingabefeld', '<div class=\"abstract\"> <form method=\"get\" action=\"index.php\">   <div> <label for=\"mets\">Fuegen Sie hier den Link zu Ihrer <acronym title=\"(engl.) metadata encoding and transmission standard; (dt.) Metadatenkodierungs- und -übertragungsstandard\">METS</acronym>-Datei bzw. <acronym title=\"(engl.) open archives initiative; (dt.) Initiative für freien Datenaustausch\">OAI</acronym>-Schnittstelle ein:</label> <br/> <input type=\"hidden\" name = \"id\" value = \"2\"> <input type=\"text\" class=\"url\" name=\"tx_dlf[id]\" value=\"\" required=\"true\" pattern=\"[0-9a-zA-Z].*\" placeholder=\"https://digi.bib.uni-mannheim.de/fileadmin/digi/1652998276/1652998276.xml\"/> <br/> <input type=\"hidden\" name=\"no_cache\" value=\"1\" /> <input type=\"reset\"> <input type=\"submit\" class=\"submit\" value=\"Demonstrator aufrufen\" />   </div> </form> </div>')"
+    mysql -h db -D ${DB_NAME} -e "INSERT INTO tt_content (pid, cruser_id, CType, header, bodytext) VALUES ('1', '1', 'text', 'DFG-Viewer Header',       '$(jq -r '."DFG-Viewer-Main".german."DFG-Viewer-Header"' /data/typo3ContentElementData.json)');"
+    mysql -h db -D ${DB_NAME} -e "INSERT INTO tt_content (pid, cruser_id, CType, header, bodytext) VALUES ('1', '1', 'text', 'DFG-Viewer Body',         '$(jq -r '."DFG-Viewer-Main".german."DFG-Viewer-Body"'   /data/typo3ContentElementData.json)');"
+    mysql -h db -D ${DB_NAME} -e "INSERT INTO tt_content (pid, cruser_id, CType, header, bodytext) VALUES ('1', '1', 'text', 'DFG-Viewer Examplebody',  '$(jq -r '."DFG-Viewer-Main".german."DFG-Viewer-Examplebody"' /data/typo3ContentElementData.json)');"
+    mysql -h db -D ${DB_NAME} -e "INSERT INTO tt_content (pid, cruser_id, CType, header, bodytext) VALUES ('1', '1', 'html', 'Eingabefeld',             '$(jq -r '."DFG-Viewer-Main".german."Eingabefeld"'       /data/typo3ContentElementData.json)')"
+    ## Create external links:
+    mysql -h db -D ${DB_NAME} -e "INSERT INTO pages (pid, cruser_id, perms_userid, title, slug, doktype)      VALUES ('1', '1', '1', 'Links',               '/links', '254');"
+    mysql -h db -D ${DB_NAME} -e "INSERT INTO pages (pid, cruser_id, perms_userid, title, slug, doktype, url) VALUES ('4', '1', '1', 'Datenschuterklaerung', '/datenschutzerklaerung', 3, 'https://www.uni-mannheim.de/datenschutzerklaerung/');"
+    mysql -h db -D ${DB_NAME} -e "INSERT INTO pages (pid, cruser_id, perms_userid, title, slug, doktype, url) VALUES ('4', '1', '1', 'Impressum',           '/impressum', '3', 'https://www.uni-mannheim.de/impressum/');"
+    ## Embed external links: 1 viewer dropdown menu
+    # .... TODO ....
+    ## Embed external links: 2 main site header or footer
+    # .... TODO ....
+    # Translations:
+    ## Create Site configuration with two languages (en & de):
+    mkdir -p config/sites/dfgviewer/
+    echo -e "${CLR_B}[MAIN] Setup DFG-Viewer: Write site cofiguration for ${HOST} ${NC}"
+    if [ ${HOST} = 'localhost' ]; then
+        echo -e "base: '/'\nbaseVariants: {  }\nerrorHandling: {  }\nlanguages:\n  -\n    title: 'DFG-Viewer (german)'\n    enabled: true\n    base: '/'\n    typo3Language: de\n    locale: de_DE.UTF-8\n    iso-639-1: de\n    navigationTitle: DFG-Viewer\n    hreflang: de-DE\n    direction: ''\n    flag: de\n    languageId: '0'\n  -\n    title: 'DFG-Viewer (Englisch)'\n    enabled: true\n    base: /en/\n    typo3Language: default\n    locale: en_US.UTF-8\n    iso-639-1: en\n    navigationTitle: 'DFG-Viewer (English)'\n    hreflang: en-US\n    direction: ''\n    fallbackType: fallback\n    fallbacks: '0'\n    flag: gb\n    languageId: '1'\nrootPageId: 1\nroutes: {  }\n" >> config/sites/dfgviewer/config.yaml
+    else
+        echo -e "base: '${HOST}'\nbaseVariants: {  }\nerrorHandling: {  }\nlanguages:\n  -\n    title: 'DFG-Viewer (german)'\n    enabled: true\n    base: '${HOST}'\n    typo3Language: de\n    locale: de_DE.UTF-8\n    iso-639-1: de\n    navigationTitle: DFG-Viewer\n    hreflang: de-DE\n    direction: ''\n    flag: de\n    languageId: '0'\n  -\n    title: 'DFG-Viewer (Englisch)'\n    enabled: true\n    base: /en/\n    typo3Language: default\n    locale: en_US.UTF-8\n    iso-639-1: en\n    navigationTitle: 'DFG-Viewer (English)'\n    hreflang: en-US\n    direction: ''\n    fallbackType: fallback\n    fallbacks: '0'\n    flag: gb\n    languageId: '1'\nrootPageId: 1\nroutes: {  }\n" >> config/sites/dfgviewer/config.yaml
+    fi
+    chown -R www-data:www-data config
+    echo -e "${CLR_B}[MAIN] Setup DFG-Viewer: Update DB: Translations${NC}"
+    ## Insert translated pages and content elements as translations:
+    mysql -h db -D ${DB_NAME} -e "INSERT INTO pages (pid, cruser_id, sys_language_uid, l10n_parent, l10n_source, perms_userid, title, slug, doktype, is_siteroot, tsconfig_includes, tx_impexp_origuid) VALUES ('0', '1', '1', '1', '1', '2', 'DFG Viewer', '/', '1', '1', 'EXT:dfgviewer/Configuration/TsConfig/Page.ts', '0');"
+    mysql -h db -D ${DB_NAME} -e "INSERT INTO tt_content (pid, cruser_id, sys_language_uid, l18n_parent, l10n_source, t3_origuid, CType, header, bodytext) VALUES ('1', '1', '1', '1', '1', '1', 'text', 'DFG-Viewer Header',       '$(jq -r '."DFG-Viewer-Main".english."DFG-Viewer-Header"' /data/typo3ContentElementData.json)');"
+    mysql -h db -D ${DB_NAME} -e "INSERT INTO tt_content (pid, cruser_id, sys_language_uid, l18n_parent, l10n_source, t3_origuid, CType, header, bodytext) VALUES ('1', '1', '1', '2', '2', '2', 'text', 'DFG-Viewer Body',         '$(jq -r '."DFG-Viewer-Main".english."DFG-Viewer-Body"'   /data/typo3ContentElementData.json)');"
+    mysql -h db -D ${DB_NAME} -e "INSERT INTO tt_content (pid, cruser_id, sys_language_uid, l18n_parent, l10n_source, t3_origuid, CType, header, bodytext) VALUES ('1', '1', '1', '3', '3', '3', 'text', 'DFG-Viewer Examplebody',  '$(jq -r '."DFG-Viewer-Main".english."DFG-Viewer-Examplebody"' /data/typo3ContentElementData.json)');"
+    mysql -h db -D ${DB_NAME} -e "INSERT INTO tt_content (pid, cruser_id, sys_language_uid, l18n_parent, l10n_source, t3_origuid, CType, header, bodytext) VALUES ('1', '1', '1', '4', '4', '4', 'html', 'Eingabefeld',             '$(jq -r '."DFG-Viewer-Main".english."Eingabefeld"'       /data/typo3ContentElementData.json)')"
 
     # AdditionalConfiguration (Fixes TYPO3-CORE-SA-2020-006: Same-Origin Request Forgery to Backend User Interface: https://typo3.org/security/advisory/typo3-core-sa-2020-006)
     # (Only if DMZ is set in .env)
-    if [ ${AdditionalConfiguration} != 'false' ]; then
-        echo -e "<?php\n['TYPO3_CONF_VARS']['SYS']['reverseProxySSL'] = '*';\n['TYPO3_CONF_VARS']['SYS']['reverseProxyIP'] = '*';\n['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'] = '${HOSTNAME}';\n['TYPO3_CONF_VARS']['SYS']['reverseProxyHeaderMultiValue'] = 'first';" >> AdditionalConfiguration.php
+    if [ ${TYPO3_ADDITIONAL_CONFIGURATION} != 'false' ]; then
+        echo -e "${CLR_B}[MAIN] Write AdditionalConfiguration.php:${NC}"
+        echo -e "<?php\n['TYPO3_CONF_VARS']['SYS']['reverseProxySSL'] = '*';\n['TYPO3_CONF_VARS']['SYS']['reverseProxyIP'] = '*';\n['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'] = '${HOST}';\n['TYPO3_CONF_VARS']['SYS']['reverseProxyHeaderMultiValue'] = 'first';" >> public/typo3conf/AdditionalConfiguration.php
     fi
 
     # Install Tesseract v5: (https://notesalexp.org/tesseract-ocr/#tesseract_5.x)
-    echo '[MAIN] Install Tesseract v5:'
+    echo -e "${CLR_B}[MAIN] Install Tesseract v5:${NC}"
     apt-get update
     apt-get install -y apt-transport-https lsb-release wget
     echo "deb https://notesalexp.org/tesseract-ocr5/$(lsb_release -cs)/ $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/notesalexp.list > /dev/null
@@ -101,19 +136,20 @@ if [ ! -f /initFinished ]; then
     tesseract --list-langs
 
     # Cleanup:
-    echo '[MAIN] cleanup:'
+    echo -e "${CLR_B}[MAIN] cleanup:${NC}"
     apt-get purge -y jq apt-transport-https lsb-release
     apt-get autoremove -y
     apt-get clean
     rm -rf /var/lib/apt/lists/*
 
     # Check status:
-    echo '[MAIN] Check apache status:'
+    echo -e "${CLR_B}[MAIN] Check apache status:${NC}"
     service apache2 status
 
     # Mark as finished:
     touch /initFinished
-    echo '[MAIN] Finished setup '
+    echo -e "${CLR_B}[MAIN]${CLR_G} Finished setup!${NC}"
 fi
 
-echo '[MAIN] Ready: http://localhost/typo3/ '
+echo -e "${CLR_B}[MAIN]${CLR_G} Site http://${HOST} ${NC}"
+echo -e "${CLR_B}[MAIN]${CLR_G} Backend: http://${HOST}/typo3/ ${NC}"
