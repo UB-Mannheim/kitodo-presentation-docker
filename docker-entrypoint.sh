@@ -95,15 +95,16 @@ if [ ! -f /initFinished ]; then
     ## Embed external links: 2 main site header or footer
     # .... TODO ....
     # Translations:
-    echo -e "${CLR_B}[MAIN] Setup DFG-Viewer: Update DB: Translations${NC}"
     ## Create Site configuration with two languages (en & de):
     mkdir -p config/sites/dfgviewer/
-    if [ ${HOST} = 'localhost'] then
+    echo -e "${CLR_B}[MAIN] Setup DFG-Viewer: Write site cofiguration for ${HOST} ${NC}"
+    if [ ${HOST} = 'localhost' ]; then
         echo -e "base: '/'\nbaseVariants: {  }\nerrorHandling: {  }\nlanguages:\n  -\n    title: 'DFG-Viewer (german)'\n    enabled: true\n    base: '/'\n    typo3Language: de\n    locale: de_DE.UTF-8\n    iso-639-1: de\n    navigationTitle: DFG-Viewer\n    hreflang: de-DE\n    direction: ''\n    flag: de\n    languageId: '0'\n  -\n    title: 'DFG-Viewer (Englisch)'\n    enabled: true\n    base: /en/\n    typo3Language: default\n    locale: en_US.UTF-8\n    iso-639-1: en\n    navigationTitle: 'DFG-Viewer (English)'\n    hreflang: en-US\n    direction: ''\n    fallbackType: fallback\n    fallbacks: '0'\n    flag: gb\n    languageId: '1'\nrootPageId: 1\nroutes: {  }\n" >> config/sites/dfgviewer/config.yaml
     else
         echo -e "base: '${HOST}'\nbaseVariants: {  }\nerrorHandling: {  }\nlanguages:\n  -\n    title: 'DFG-Viewer (german)'\n    enabled: true\n    base: '${HOST}'\n    typo3Language: de\n    locale: de_DE.UTF-8\n    iso-639-1: de\n    navigationTitle: DFG-Viewer\n    hreflang: de-DE\n    direction: ''\n    flag: de\n    languageId: '0'\n  -\n    title: 'DFG-Viewer (Englisch)'\n    enabled: true\n    base: /en/\n    typo3Language: default\n    locale: en_US.UTF-8\n    iso-639-1: en\n    navigationTitle: 'DFG-Viewer (English)'\n    hreflang: en-US\n    direction: ''\n    fallbackType: fallback\n    fallbacks: '0'\n    flag: gb\n    languageId: '1'\nrootPageId: 1\nroutes: {  }\n" >> config/sites/dfgviewer/config.yaml
     fi
     chown -R www-data:www-data config
+    echo -e "${CLR_B}[MAIN] Setup DFG-Viewer: Update DB: Translations${NC}"
     ## Insert translated pages and content elements as translations:
     mysql -h db -D ${DB_NAME} -e "INSERT INTO pages (pid, cruser_id, sys_language_uid, l10n_parent, l10n_source, perms_userid, title, slug, doktype, is_siteroot, tsconfig_includes, tx_impexp_origuid) VALUES ('0', '1', '1', '1', '1', '2', 'DFG Viewer', '/', '1', '1', 'EXT:dfgviewer/Configuration/TsConfig/Page.ts', '0');"
     mysql -h db -D ${DB_NAME} -e "INSERT INTO tt_content (pid, cruser_id, sys_language_uid, l18n_parent, l10n_source, t3_origuid, CType, header, bodytext) VALUES ('1', '1', '1', '1', '1', '1', 'text', 'DFG-Viewer Header',       '$(jq -r '."DFG-Viewer-Main".english."DFG-Viewer-Header"' /data/typo3ContentElementData.json)');"
@@ -115,7 +116,7 @@ if [ ! -f /initFinished ]; then
     # (Only if DMZ is set in .env)
     if [ ${TYPO3_ADDITIONAL_CONFIGURATION} != 'false' ]; then
         echo -e "${CLR_B}[MAIN] Write AdditionalConfiguration.php:${NC}"
-        echo -e "<?php\n['TYPO3_CONF_VARS']['SYS']['reverseProxySSL'] = '*';\n['TYPO3_CONF_VARS']['SYS']['reverseProxyIP'] = '*';\n['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'] = '${HOST}';\n['TYPO3_CONF_VARS']['SYS']['reverseProxyHeaderMultiValue'] = 'first';" >> AdditionalConfiguration.php
+        echo -e "<?php\n['TYPO3_CONF_VARS']['SYS']['reverseProxySSL'] = '*';\n['TYPO3_CONF_VARS']['SYS']['reverseProxyIP'] = '*';\n['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'] = '${HOST}';\n['TYPO3_CONF_VARS']['SYS']['reverseProxyHeaderMultiValue'] = 'first';" >> public/typo3conf/AdditionalConfiguration.php
     fi
 
     # Install Tesseract v5: (https://notesalexp.org/tesseract-ocr/#tesseract_5.x)
