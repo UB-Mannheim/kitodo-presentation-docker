@@ -15,7 +15,7 @@ services:
     build: .
     image: kitodo/dfgviewer:5.3-ocr
     ports:
-      - "127.0.0.1:80:80"
+      - "0.0.0.0:8000:80"
     environment:
       - DB_ADDR=db
       - DB_PORT=3306
