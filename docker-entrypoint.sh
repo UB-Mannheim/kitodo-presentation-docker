@@ -116,7 +116,11 @@ if [ ! -f /initFinished ]; then
     # (Only if DMZ is set in .env)
     if [ ${TYPO3_ADDITIONAL_CONFIGURATION} != 'false' ]; then
         echo -e "${CLR_B}[MAIN] Write AdditionalConfiguration.php:${NC}"
-        echo -e "<?php\n['TYPO3_CONF_VARS']['SYS']['reverseProxySSL'] = '*';\n['TYPO3_CONF_VARS']['SYS']['reverseProxyIP'] = '*';\n['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'] = '${HOST}';\n['TYPO3_CONF_VARS']['SYS']['reverseProxyHeaderMultiValue'] = 'first';" >> public/typo3conf/AdditionalConfiguration.php
+        echo "<?php" > public/typo3conf/AdditionalConfiguration.php
+        echo "\$GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxySSL'] = '*';" >> public/typo3conf/AdditionalConfiguration.php
+        echo "\$GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyIP'] = '*';" >> public/typo3conf/AdditionalConfiguration.php
+        echo "\$GLOBALS['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'] = '${HOST}';" >> public/typo3conf/AdditionalConfiguration.php
+        echo "\$GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyHeaderMultiValue'] = 'first';" >> public/typo3conf/AdditionalConfiguration.php
     fi
 
     # Install Tesseract v5: (https://notesalexp.org/tesseract-ocr/#tesseract_5.x)
