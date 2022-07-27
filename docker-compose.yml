@@ -9,7 +9,7 @@ services:
       - MYSQL_USER=$MYSQL_USER
       - MYSQL_PASSWORD=$MYSQL_PASSWORD
     #volumes:
-    #  - ./database:/var/lib/mysql
+    #  - ./volumes/database:/var/lib/mysql
     restart: unless-stopped
   main:
     build: .
@@ -26,8 +26,8 @@ services:
       - TYPO3_ADMIN_PASSWORD=$TYPO3_ADMIN_PASSWORD
       - TYPO3_ADDITIONAL_CONFIGURATION=$TYPO3_ADDITIONAL_CONFIGURATION
       - HOST=$FullyQualifiedDomainName
-    #volumes:
-    #  - ./config:/usr/local/kitodo
+    volumes:
+      - ./volumes/fileadmin:/var/www/typo3/public/fileadmin/
     depends_on:
       - db
     restart: unless-stopped
