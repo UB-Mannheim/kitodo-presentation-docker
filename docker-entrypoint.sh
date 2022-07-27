@@ -123,20 +123,8 @@ if [ ! -f /initFinished ]; then
         echo "\$GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyHeaderMultiValue'] = 'first';" >> public/typo3conf/AdditionalConfiguration.php
     fi
 
-    # Install Tesseract v5: (https://notesalexp.org/tesseract-ocr/#tesseract_5.x)
+    # Check tesseract languages:
     echo -e "${CLR_B}[MAIN] Install Tesseract v5:${NC}"
-    apt-get update
-    apt-get install -y apt-transport-https lsb-release wget
-    echo "deb https://notesalexp.org/tesseract-ocr5/$(lsb_release -cs)/ $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/notesalexp.list > /dev/null
-    apt-get update -oAcquire::AllowInsecureRepositories=true
-    apt-get install -y --allow-unauthenticated notesalexp-keyring -oAcquire::AllowInsecureRepositories=true
-    apt-get update
-    apt-get install -y tesseract-ocr
-    cd /usr/share/tesseract-ocr/5/tessdata/
-    wget https://ub-backup.bib.uni-mannheim.de/~stweil/tesstrain/frak2021/tessdata_fast/frak2021_1.069.traineddata
-    cd /var/www/typo3/
-
-    # Check languages:
     tesseract --list-langs
 
     # Cleanup:

@@ -9,13 +9,13 @@ services:
       - MYSQL_USER=$MYSQL_USER
       - MYSQL_PASSWORD=$MYSQL_PASSWORD
     #volumes:
-    #  - ./database:/var/lib/mysql
+    #  - ./volumes/database:/var/lib/mysql
     restart: unless-stopped
   main:
     build: .
     image: kitodo/dfgviewer:5.3-ocr
     ports:
-      - "0.0.0.0:8000:80"
+      - "0.0.0.0:$PORT:80"
     environment:
       - DB_ADDR=db
       - DB_PORT=3306
@@ -26,8 +26,8 @@ services:
       - TYPO3_ADMIN_PASSWORD=$TYPO3_ADMIN_PASSWORD
       - TYPO3_ADDITIONAL_CONFIGURATION=$TYPO3_ADDITIONAL_CONFIGURATION
       - HOST=$FullyQualifiedDomainName
-    #volumes:
-    #  - ./config:/usr/local/kitodo
+    volumes:
+      - ./volumes/fileadmin:/var/www/typo3/public/fileadmin/
     depends_on:
       - db
     restart: unless-stopped
