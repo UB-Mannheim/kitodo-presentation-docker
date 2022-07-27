@@ -12,6 +12,21 @@ EXPOSE 80
 # This Dockerfile aimes to install a working typo3 v9 instance with the kitodo/presentation extension
 # based on this guide: https://github.com/UB-Mannheim/kitodo-presentation/wiki
 
+# Update and install Tesseract v5: (https://notesalexp.org/tesseract-ocr/#tesseract_5.x)
+RUN apt-get update \
+  && apt-get -y upgrade \
+  && apt-get -y install -y --no-install-recommends \
+    apt-transport-https \
+    lsb-release \
+    wget \
+  && echo "deb https://notesalexp.org/tesseract-ocr5/$(lsb_release -cs)/ $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/notesalexp.list > /dev/null\
+  && apt-get update -oAcquire::AllowInsecureRepositories=true \
+  && apt-get install -y --allow-unauthenticated notesalexp-keyring -oAcquire::AllowInsecureRepositories=true\
+  && apt-get update \
+  && apt-get install -y tesseract-ocr \
+  && cd /usr/share/tesseract-ocr/5/tessdata/ \
+  && wget https://ub-backup.bib.uni-mannheim.de/~stweil/tesstrain/frak2021/tessdata_fast/frak2021_1.069.traineddata
+
 # Copy startup script and data folder into the container:
 COPY docker-entrypoint.sh /
 ADD data/ /data
