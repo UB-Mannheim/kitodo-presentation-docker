@@ -36,7 +36,7 @@ if [ ! -f /initFinished ]; then
     echo -e "${CLR_B}[MAIN] Install Presentation and DFG-Viewer with OCR-On-Demand:${NC}"
     composer config platform.php 7.4
     apt-get update
-    apt-get install -y jq
+    apt-get install -y jq gettext
     jq '.repositories += [{"type": "git", "url": "https://github.com/csidirop/dfg-viewer.git" }, {"type": "git", "url": "https://github.com/csidirop/kitodo-presentation.git"}, {"type": "git", "url": "https://github.com/csidirop/slub_digitalcollections.git" }] | .require += {"csidirop/dfgviewer": "dev-5.3-ocr"} | . += {"minimum-stability": "dev"}' composer.json > composer-edit.json
     mv composer.json composer.json.bak
     mv composer-edit.json composer.json
@@ -118,11 +118,8 @@ if [ ! -f /initFinished ]; then
     # (Only if DMZ is set in .env)
     if [ ${TYPO3_ADDITIONAL_CONFIGURATION} != 'false' ]; then
         echo -e "${CLR_B}[MAIN] Write AdditionalConfiguration.php:${NC}"
-        echo "<?php" > public/typo3conf/AdditionalConfiguration.php
-        echo "\$GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxySSL'] = '*';" >> public/typo3conf/AdditionalConfiguration.php
-        echo "\$GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyIP'] = '*';" >> public/typo3conf/AdditionalConfiguration.php
-        echo "\$GLOBALS['TYPO3_CONF_VARS']['SYS']['trustedHostsPattern'] = '${HOST}';" >> public/typo3conf/AdditionalConfiguration.php
-        echo "\$GLOBALS['TYPO3_CONF_VARS']['SYS']['reverseProxyHeaderMultiValue'] = 'first';" >> public/typo3conf/AdditionalConfiguration.php
+        # Take AdditionalConfiguration from /data, substitute the variables except for $GLOBALS (which isnt one) and pipe it to the typo3 dir
+        envsubst '${HOST}' < /data/AdditionalConfiguration.php >> /var/www/typo3/public/typo3conf/AdditionalConfiguration.php
     fi
 
     # Check tesseract languages:
@@ -131,7 +128,7 @@ if [ ! -f /initFinished ]; then
 
     # Cleanup:
     echo -e "${CLR_B}[MAIN] cleanup:${NC}"
-    apt-get purge -y jq apt-transport-https lsb-release
+    apt-get purge -y jq gettext apt-transport-https lsb-release
     apt-get autoremove -y
     apt-get clean
     rm -rf /var/lib/apt/lists/*
