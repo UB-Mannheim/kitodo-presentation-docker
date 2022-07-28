@@ -27,6 +27,15 @@ RUN apt-get update \
   && cd /usr/share/tesseract-ocr/5/tessdata/ \
   && wget https://ub-backup.bib.uni-mannheim.de/~stweil/tesstrain/frak2021/tessdata_fast/frak2021_1.069.traineddata
 
+# Cleanup:
+RUN apt-get purge -y \
+        jq \
+        apt-transport-https \
+        lsb-release \
+    && apt-get autoremove -y \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
 # Copy startup script and data folder into the container:
 COPY docker-entrypoint.sh /
 ADD data/ /data
