@@ -99,12 +99,13 @@ if [ ! -f /initFinished ]; then
 
     # Insert Typo3 site content translations:
     ## Create Site configuration with two languages (en & de):
+    echo -e "${CLR_B}[MAIN] Setup DFG-Viewer: Write site configuration for ${HOST} ${NC}"
     mkdir -p config/sites/dfgviewer/
-    echo -e "${CLR_B}[MAIN] Setup DFG-Viewer: Write site cofiguration for ${HOST} ${NC}"
+    ### Take config.yaml from /data, substitute the variables and pipe it to the typo3 dir
+    envsubst '${HOST}' < /data/config.yaml >> /var/www/typo3/config/sites/dfgviewer/config.yaml
     if [ ${HOST} = 'localhost' ]; then
-        echo -e "base: '/'\nbaseVariants: {  }\nerrorHandling: {  }\nlanguages:\n  -\n    title: 'DFG-Viewer (german)'\n    enabled: true\n    base: '/'\n    typo3Language: de\n    locale: de_DE.UTF-8\n    iso-639-1: de\n    navigationTitle: DFG-Viewer\n    hreflang: de-DE\n    direction: ''\n    flag: de\n    languageId: '0'\n  -\n    title: 'DFG-Viewer (Englisch)'\n    enabled: true\n    base: /en/\n    typo3Language: default\n    locale: en_US.UTF-8\n    iso-639-1: en\n    navigationTitle: 'DFG-Viewer (English)'\n    hreflang: en-US\n    direction: ''\n    fallbackType: fallback\n    fallbacks: '0'\n    flag: gb\n    languageId: '1'\nrootPageId: 1\nroutes: {  }\n" >> config/sites/dfgviewer/config.yaml
-    else
-        echo -e "base: '${HOST}'\nbaseVariants: {  }\nerrorHandling: {  }\nlanguages:\n  -\n    title: 'DFG-Viewer (german)'\n    enabled: true\n    base: '${HOST}'\n    typo3Language: de\n    locale: de_DE.UTF-8\n    iso-639-1: de\n    navigationTitle: DFG-Viewer\n    hreflang: de-DE\n    direction: ''\n    flag: de\n    languageId: '0'\n  -\n    title: 'DFG-Viewer (Englisch)'\n    enabled: true\n    base: /en/\n    typo3Language: default\n    locale: en_US.UTF-8\n    iso-639-1: en\n    navigationTitle: 'DFG-Viewer (English)'\n    hreflang: en-US\n    direction: ''\n    fallbackType: fallback\n    fallbacks: '0'\n    flag: gb\n    languageId: '1'\nrootPageId: 1\nroutes: {  }\n" >> config/sites/dfgviewer/config.yaml
+        ### Replace localhost with / :
+        sed -i 's/localhost/\//g' /var/www/typo3/config/sites/dfgviewer/config.yaml
     fi
     chown -R www-data:www-data config
     ## Insert translated pages and content elements as translations:
