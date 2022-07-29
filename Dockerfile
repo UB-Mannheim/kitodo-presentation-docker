@@ -29,7 +29,6 @@ RUN apt-get update \
 
 # Cleanup:
 RUN apt-get purge -y \
-        jq \
         apt-transport-https \
         lsb-release \
     && apt-get autoremove -y \

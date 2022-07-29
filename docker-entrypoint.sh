@@ -1,7 +1,5 @@
 #!/bin/bash
 
-# Work in progress!
-
 # Some color variables:
 CLR_B='\033[1;34m' # Bold Blue
 CLR_G='\e[32m' # Green
@@ -131,7 +129,7 @@ if [ ! -f /initFinished ]; then
 
     # Cleanup:
     echo -e "${CLR_B}[MAIN] cleanup:${NC}"
-    apt-get purge -y jq gettext apt-transport-https lsb-release
+    apt-get purge -y jq gettext 
     apt-get autoremove -y
     apt-get clean
     rm -rf /var/lib/apt/lists/*
