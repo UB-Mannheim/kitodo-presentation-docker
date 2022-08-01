@@ -39,6 +39,6 @@ RUN apt-get purge -y \
 COPY docker-entrypoint.sh /
 ADD data/ /data
 # Fix wrong line endings in the startup script and just to be save in data files:
-RUN sed -i.bak 's/\r$//' /docker-entrypoint.sh  /data/* \
+RUN sed -i.bak 's/\r$//' /docker-entrypoint.sh  /data/*
 # Run startup script & start apache2 (https://github.com/docker-library/php/blob/master/7.4/bullseye/apache/apache2-foreground)
 CMD /docker-entrypoint.sh & apache2-foreground
