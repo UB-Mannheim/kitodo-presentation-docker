@@ -13,22 +13,32 @@ EXPOSE 80
 # based on this guide: https://github.com/UB-Mannheim/kitodo-presentation/wiki
 
 # Update and install Tesseract v5: (https://notesalexp.org/tesseract-ocr/#tesseract_5.x)
-RUN apt-get update
-RUN apt-get -y upgrade
-RUN apt-get -y install -y --no-install-recommends lsb-release wget
-RUN echo "deb https://notesalexp.org/tesseract-ocr5/$(lsb_release -cs)/ $(lsb_release -cs) main" > /etc/apt/sources.list.d/notesalexp.list
-RUN apt-get update -oAcquire::AllowInsecureRepositories=true
-RUN apt-get install -y --allow-unauthenticated notesalexp-keyring -oAcquire::AllowInsecureRepositories=true
-RUN apt-get update
-RUN apt-get install -y tesseract-ocr
-RUN apt-get clean
-RUN cd /usr/share/tesseract-ocr/5/tessdata/ \
+RUN apt-get update \
+  && apt-get -y upgrade \
+  && apt-get -y install -y --no-install-recommends \
+    apt-transport-https \
+    lsb-release \
+    wget \
+  && echo "deb https://notesalexp.org/tesseract-ocr5/$(lsb_release -cs)/ $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/notesalexp.list > /dev/null\
+  && apt-get update -oAcquire::AllowInsecureRepositories=true \
+  && apt-get install -y --allow-unauthenticated notesalexp-keyring -oAcquire::AllowInsecureRepositories=true\
+  && apt-get update \
+  && apt-get install -y tesseract-ocr \
+  && cd /usr/share/tesseract-ocr/5/tessdata/ \
   && wget https://ub-backup.bib.uni-mannheim.de/~stweil/tesstrain/frak2021/tessdata_fast/frak2021_1.069.traineddata
+
+# Cleanup:
+RUN apt-get purge -y \
+        apt-transport-https \
+        lsb-release \
+    && apt-get autoremove -y \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 # Copy startup script and data folder into the container:
 COPY docker-entrypoint.sh /
 ADD data/ /data
-# Fix wrong line endings in the startup script:
-RUN sed -i.bak 's/\r$//' /docker-entrypoint.sh
+# Fix wrong line endings in the startup script and just to be save in data files:
+RUN sed -i.bak 's/\r$//' /docker-entrypoint.sh  /data/*
 # Run startup script & start apache2 (https://github.com/docker-library/php/blob/master/7.4/bullseye/apache/apache2-foreground)
 CMD /docker-entrypoint.sh & apache2-foreground
