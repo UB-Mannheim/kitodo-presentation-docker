@@ -33,7 +33,7 @@ if [ ! -f /initFinished ]; then
     # Install Kitodo.Presentation v4.x:
     echo -e "${CLR_B}[MAIN] Install presentation 4.x:${NC}"
     composer config platform.php 7.4
-    composer require kitodo/presentation
+    composer require kitodo/presentation:^4
     vendor/bin/typo3 extensionmanager:extension:install dlf
     chown -R www-data:www-data .
 
