@@ -77,5 +77,5 @@ if [ ! -f /initFinished ]; then
     echo -e "${CLR_B}[MAIN]${CLR_G} Finished setup!${NC}"
 fi
 
-echo -e "${CLR_B}[MAIN]${CLR_G} Site http://${HOST} ${NC}"
+#echo -e "${CLR_B}[MAIN]${CLR_G} Site http://${HOST} ${NC}" # no site setup
 echo -e "${CLR_B}[MAIN]${CLR_G} Backend: http://${HOST}/typo3/ ${NC}"
