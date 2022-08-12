@@ -33,8 +33,6 @@ if [ ! -f /initFinished ]; then
     # Install Kitodo.Presentation and DFG-Viewer with OCR-On-Demand:
     echo -e "${CLR_B}[MAIN] Install Presentation and DFG-Viewer with OCR-On-Demand:${NC}"
     composer config platform.php 7.4
-    apt-get update
-    apt-get install -y jq gettext
     jq '.repositories += [{"type": "git", "url": "https://github.com/csidirop/dfg-viewer.git" }, {"type": "git", "url": "https://github.com/csidirop/kitodo-presentation.git"}, {"type": "git", "url": "https://github.com/csidirop/slub_digitalcollections.git" }] | .require += {"csidirop/dfgviewer": "dev-5.3-ocr"} | . += {"minimum-stability": "dev"}' composer.json > composer-edit.json
     mv composer.json composer.json.bak
     mv composer-edit.json composer.json
