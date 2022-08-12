@@ -40,6 +40,7 @@ if [ ! -f /initFinished ]; then
     vendor/bin/typo3 extensionmanager:extension:install dlf
     vendor/bin/typo3 extensionmanager:extension:install dfgviewer
     chown -R www-data:www-data .
+    chmod +x public/typo3conf/ext/dlf/Classes/Plugin/Tools/FullTextGenerationScripts/*
     ## Activate other useful extensions: (only Typo3 v9)
     vendor/bin/typo3 extensionmanager:extension:install fluid_styled_content
     vendor/bin/typo3 extensionmanager:extension:install adminpanel
