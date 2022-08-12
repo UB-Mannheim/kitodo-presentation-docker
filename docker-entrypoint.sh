@@ -30,8 +30,8 @@ if [ ! -f /initFinished ]; then
         --site-name presentation \
         --web-server-config=apache
 
-    # Install Kitodo.Presentation v4.x:
-    echo -e "${CLR_B}[MAIN] Install presentation 4.x:${NC}"
+    # Install Kitodo.Presentation:
+    echo -e "${CLR_B}[MAIN] Install presentation:${NC}"
     composer config platform.php 7.4
     composer require kitodo/presentation
     vendor/bin/typo3 extensionmanager:extension:install dlf
