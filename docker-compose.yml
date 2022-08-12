@@ -6,21 +6,28 @@ services:
     environment:
       - MYSQL_ALLOW_EMPTY_PASSWORD=yes
       - MYSQL_DATABASE=typo3-presentation-v4
-      - MYSQL_USER=typo3
-      - MYSQL_PASSWORD=password
+      - MYSQL_USER=$MYSQL_USER
+      - MYSQL_PASSWORD=$MYSQL_PASSWORD
     #volumes:
-    #  - ./database:/var/lib/mysql
+    #  - ./volumes/database:/var/lib/mysql
     restart: unless-stopped
   main:
     build: .
     image: kitodo/presentation:4.x
     ports:
-      - "127.0.0.1:80:80"
+      - "0.0.0.0:$PORT:80"
     environment:
       - DB_ADDR=db
       - DB_PORT=3306
-    #volumes:
-    #  - ./config:/usr/local/kitodo
+      - DB_NAME=typo3-presentation-v4
+      - DB_USER=$MYSQL_USER
+      - DB_PASSWORD=$MYSQL_PASSWORD
+      - TYPO3_ADMIN_USER=$TYPO3_ADMIN_USER
+      - TYPO3_ADMIN_PASSWORD=$TYPO3_ADMIN_PASSWORD
+      - TYPO3_ADDITIONAL_CONFIGURATION=$TYPO3_ADDITIONAL_CONFIGURATION
+      - HOST=$FullyQualifiedDomainName
+    volumes:
+      - ./volumes/fileadmin:/var/www/typo3/public/fileadmin/
     depends_on:
       - db
     restart: unless-stopped

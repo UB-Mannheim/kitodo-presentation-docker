@@ -25,12 +25,18 @@ There are different [Branches](https://github.com/UB-Mannheim/kitodo-presentatio
 | [dfg-viewer-5.3](https://github.com/UB-Mannheim/kitodo-presentation-docker/tree/dfg-viewer-5.3)     	| [5.3](https://github.com/slub/dfg-viewer/releases/tag/v5.3.0)                     	|      [3.x](https://github.com/kitodo/kitodo-presentation/releases/tag/v3.3.4)      	|          [typo3-v9](https://github.com/csidirop/typo3-docker/tree/typo3-v9.x)      	|
 | [dfg-viewer-5.3-ocr](https://github.com/UB-Mannheim/kitodo-presentation-docker/tree/dfg-viewer-5.3-ocr) 	| [5.3 with OCR-On-Demand](https://github.com/csidirop/dfg-viewer/tree/5.3-ocr-test)                    	|     [3.x](https://github.com/kitodo/kitodo-presentation/releases/tag/v3.3.4)                                            	|           [typo3-v9](https://github.com/csidirop/typo3-docker/tree/typo3-v9.x)     	|
 
-
 ### Checkout branch
     git checkout <branchname>
 
+### Change credentials
+Usernames and passwords for the database and typo3 backend are stored inside .env-File. It is of utmost importance to change these before productive use! Also the file should only be readable for root users.
+
 ### Run images:
-    docker compose up 
+    docker compose up
+
+or  
+
+    docker-compose up
 
 ### Ready:
 Kitodo.Presentation can be accessed at: http://localhost/typo3/
