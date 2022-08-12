@@ -1,0 +1,32 @@
+base: '${HOST}'
+baseVariants: {  }
+errorHandling: {  }
+languages:
+  -
+    title: 'Presentation (german)'
+    enabled: true
+    base: '${HOST}'
+    typo3Language: de
+    locale: de_DE.UTF-8
+    iso-639-1: de
+    navigationTitle: Presentation
+    hreflang: de-DE
+    direction: ''
+    flag: de
+    languageId: '0'
+  -
+    title: 'Presentation (Englisch)'
+    enabled: true
+    base: /en/
+    typo3Language: default
+    locale: en_US.UTF-8
+    iso-639-1: en
+    navigationTitle: 'Presentation (English)'
+    hreflang: en-US
+    direction: ''
+    fallbackType: fallback
+    fallbacks: '0'
+    flag: gb
+    languageId: '1'
+rootPageId: 1
+routes: {  }
