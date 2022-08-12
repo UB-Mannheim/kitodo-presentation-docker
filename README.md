@@ -39,7 +39,7 @@ or
     docker-compose up
 
 ### Ready:
-http://localhost/typo3/
+Typo3 backend can be accessed at: http://localhost/typo3/
 
 
 ## Code and User Feedback
