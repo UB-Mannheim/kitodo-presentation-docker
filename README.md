@@ -19,11 +19,11 @@ There are different [Branches](https://github.com/UB-Mannheim/kitodo-presentatio
 
 |     **Branch**     	| **dfg-viewer version** 	|                         **presentation version**                         	| **base image** 	|
 |:------------------:	|:----------------------:	|:------------------------------------------------------------------------:	|:--------------:	|
-| main               	| -                      	| [newest](https://github.com/kitodo/kitodo-presentation/releases)         	|         [typo3-v10](https://github.com/csidirop/typo3-docker/tree/typo3-v10.x)       	|
-| presentation-v4.x  	| -                      	| 4.x                                                                      	|       [typo3-v10](https://github.com/csidirop/typo3-docker/tree/typo3-v10.x)         	|
-| presentation-v3.x  	| -                      	| [3.x](https://github.com/kitodo/kitodo-presentation/releases/tag/v3.3.4) 	|         [typo3-v9](https://github.com/csidirop/typo3-docker/tree/typo3-v9.x)       	|
-| dfg-viewer-5.3     	| [5.3](https://github.com/slub/dfg-viewer/releases/tag/v5.3.0)                     	|      [3.x](https://github.com/kitodo/kitodo-presentation/releases/tag/v3.3.4)      	|          [typo3-v9](https://github.com/csidirop/typo3-docker/tree/typo3-v9.x)      	|
-| dfg-viewer-5.3-ocr 	| [5.3 with OCR-On-Demand](https://github.com/csidirop/dfg-viewer/tree/5.3-ocr-test)                    	|     [3.x](https://github.com/kitodo/kitodo-presentation/releases/tag/v3.3.4)                                            	|           [typo3-v9](https://github.com/csidirop/typo3-docker/tree/typo3-v9.x)     	|
+| [main](https://github.com/UB-Mannheim/kitodo-presentation-docker)               	| -                      	| [newest](https://github.com/kitodo/kitodo-presentation/releases)         	|         [typo3-v10](https://github.com/csidirop/typo3-docker/tree/typo3-v10.x)       	|
+| [presentation-v4.x](https://github.com/UB-Mannheim/kitodo-presentation-docker/tree/presentation-v4.x)  	| -                      	| [4.x](https://github.com/kitodo/kitodo-presentation/releases/tag/v4.0.1)                                                                      	|       [typo3-v10](https://github.com/csidirop/typo3-docker/tree/typo3-v10.x)         	|
+| [presentation-v3.x](https://github.com/UB-Mannheim/kitodo-presentation-docker/tree/presentation-v3.x)  	| -                      	| [3.x](https://github.com/kitodo/kitodo-presentation/releases/tag/v3.3.4) 	|         [typo3-v9](https://github.com/csidirop/typo3-docker/tree/typo3-v9.x)       	|
+| [dfg-viewer-5.3](https://github.com/UB-Mannheim/kitodo-presentation-docker/tree/dfg-viewer-5.3)     	| [5.3](https://github.com/slub/dfg-viewer/releases/tag/v5.3.0)                     	|      [3.x](https://github.com/kitodo/kitodo-presentation/releases/tag/v3.3.4)      	|          [typo3-v9](https://github.com/csidirop/typo3-docker/tree/typo3-v9.x)      	|
+| [dfg-viewer-5.3-ocr](https://github.com/UB-Mannheim/kitodo-presentation-docker/tree/dfg-viewer-5.3-ocr) 	| [5.3 with OCR-On-Demand](https://github.com/csidirop/dfg-viewer/tree/5.3-ocr-test)                    	|     [3.x](https://github.com/kitodo/kitodo-presentation/releases/tag/v3.3.4)                                            	|           [typo3-v9](https://github.com/csidirop/typo3-docker/tree/typo3-v9.x)     	|
 
 
 ### Checkout branch
@@ -36,3 +36,4 @@ There are different [Branches](https://github.com/UB-Mannheim/kitodo-presentatio
 Kitodo.Presentation can be accessed at: http://localhost/typo3/
 
 ## Code and User Feedback
+Please file your bug reports to [issues](https://github.com/UB-Mannheim/kitodo-presentation-docker/issues). Make sure that you are using the latest version of the software before sending a report.
