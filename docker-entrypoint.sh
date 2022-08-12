@@ -43,7 +43,7 @@ if [ ! -f /initFinished ]; then
     ## Activate other useful extensions: (only Typo3 v9)
     vendor/bin/typo3 extensionmanager:extension:install fluid_styled_content
     vendor/bin/typo3 extensionmanager:extension:install adminpanel
-    vendor/bin/typo3 extensionmanager:extension:install belog 
+    vendor/bin/typo3 extensionmanager:extension:install belog
     vendor/bin/typo3 extensionmanager:extension:install beuser
     vendor/bin/typo3 extensionmanager:extension:install form
     vendor/bin/typo3 extensionmanager:extension:install info
@@ -127,7 +127,7 @@ if [ ! -f /initFinished ]; then
 
     # Cleanup:
     echo -e "${CLR_B}[MAIN] cleanup:${NC}"
-    apt-get purge -y jq gettext 
+    apt-get purge -y jq gettext
     apt-get autoremove -y
     apt-get clean
     rm -rf /var/lib/apt/lists/*
