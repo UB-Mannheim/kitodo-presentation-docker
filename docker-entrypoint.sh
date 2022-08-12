@@ -44,12 +44,12 @@ if [ ! -f /initFinished ]; then
     # Insert Typo3 site content translations:
     ## Create Site configuration with two languages (en & de):
     echo -e "${CLR_B}[MAIN] Setup DFG-Viewer: Write site configuration for ${HOST} ${NC}"
-    mkdir -p config/sites/dfgviewer/
+    mkdir -p config/sites/presentation/
     ### Take config.yaml from /data, substitute the variables and pipe it to the typo3 dir
-    envsubst '${HOST}' < /data/config.yaml >> /var/www/typo3/config/sites/dfgviewer/config.yaml
+    envsubst '${HOST}' < /data/config.yaml >> /var/www/typo3/config/sites/presentation/config.yaml
     if [ ${HOST} = 'localhost' ]; then
         ### Replace localhost with / :
-        sed -i 's/localhost/\//g' /var/www/typo3/config/sites/dfgviewer/config.yaml
+        sed -i 's/localhost/\//g' /var/www/typo3/config/sites/presentation/config.yaml
     fi
     chown -R www-data:www-data config
 
