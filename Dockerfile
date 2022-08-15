@@ -20,10 +20,10 @@ RUN apt-get update \
     lsb-release \
     wget \
     jq \
-    gettext\
-  && echo "deb https://notesalexp.org/tesseract-ocr5/$(lsb_release -cs)/ $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/notesalexp.list > /dev/null\
+    gettext \
+  && echo "deb https://notesalexp.org/tesseract-ocr5/$(lsb_release -cs)/ $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/notesalexp.list > /dev/null \
   && apt-get update -oAcquire::AllowInsecureRepositories=true \
-  && apt-get install -y --allow-unauthenticated notesalexp-keyring -oAcquire::AllowInsecureRepositories=true\
+  && apt-get install -y --allow-unauthenticated notesalexp-keyring -oAcquire::AllowInsecureRepositories=true \
   && apt-get update \
   && apt-get install -y tesseract-ocr \
   && cd /usr/share/tesseract-ocr/5/tessdata/ \
