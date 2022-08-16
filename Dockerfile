@@ -12,7 +12,7 @@ EXPOSE 80
 # This Dockerfile aimes to install a working typo3 v10 instance with the kitodo/presentation extension
 # based on this guide: https://github.com/UB-Mannheim/kitodo-presentation/wiki
 
-# Update and install Tesseract v5: (https://notesalexp.org/tesseract-ocr/#tesseract_5.x)
+# Update and install packages:
 RUN apt-get update \
   && apt-get -y upgrade \
   && apt-get -y install -y --no-install-recommends \

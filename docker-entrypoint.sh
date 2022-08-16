@@ -9,7 +9,7 @@ NC='\033[0m' # No Color
 if [ ! -f /initFinished ]; then
     echo -e "${CLR_B}[MAIN] Running startup script:${NC}"
 
-    # Wait for db to be ready:
+    # Wait for db to be ready: (https://docs.docker.com/compose/startup-order/)
     wait-for-it -t 0 ${DB_ADDR}:${DB_PORT}
 
     # Setup Typo3 with typo3console (https://docs.typo3.org/p/helhum/typo3-console/main/en-us/CommandReference/InstallSetup.html):
