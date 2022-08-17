@@ -1,6 +1,9 @@
 # Kitodo.Presentation docker
 Docker configuration for [Kitodo.Presentation](https://github.com/kitodo/kitodo-presentation).
 
+
+![GitHub last commit (branch)](https://img.shields.io/github/last-commit/UB-Mannheim/kitodo-presentation-docker/main)
+
 ## Kitodo.Presentation
 Kitodo.Presentation is a feature-rich framework for building a METS- or IIIF-based digital library. It is part of the Kitodo Digital Library Suite.
 
@@ -17,13 +20,15 @@ The Docker images were built by [Mannheim University Library](https://en.wikiped
 ### Select branch
 There are different [Branches](https://github.com/UB-Mannheim/kitodo-presentation-docker/branches) that serve to provide different installations. While the main-Branch offers always the newest presentation version, the others provide following versions:
 
-|     **Branch**     	| **dfg-viewer version** 	|                         **presentation version**                         	| **base image** 	|
-|:------------------:	|:----------------------:	|:------------------------------------------------------------------------:	|:--------------:	|
-| [main](https://github.com/UB-Mannheim/kitodo-presentation-docker)               	| -                      	| [newest](https://github.com/kitodo/kitodo-presentation/releases)         	|         [typo3-v10](https://github.com/csidirop/typo3-docker/tree/typo3-v10.x)       	|
-| [presentation-v4.x](https://github.com/UB-Mannheim/kitodo-presentation-docker/tree/presentation-v4.x)  	| -                      	| [4.x](https://github.com/kitodo/kitodo-presentation/releases/tag/v4.0.1)                                                                      	|       [typo3-v10](https://github.com/csidirop/typo3-docker/tree/typo3-v10.x)         	|
-| [presentation-v3.x](https://github.com/UB-Mannheim/kitodo-presentation-docker/tree/presentation-v3.x)  	| -                      	| [3.x](https://github.com/kitodo/kitodo-presentation/releases/tag/v3.3.4) 	|         [typo3-v9](https://github.com/csidirop/typo3-docker/tree/typo3-v9.x)       	|
-| [dfg-viewer-5.3](https://github.com/UB-Mannheim/kitodo-presentation-docker/tree/dfg-viewer-5.3)     	| [5.3](https://github.com/slub/dfg-viewer/releases/tag/v5.3.0)                     	|      [3.x](https://github.com/kitodo/kitodo-presentation/releases/tag/v3.3.4)      	|          [typo3-v9](https://github.com/csidirop/typo3-docker/tree/typo3-v9.x)      	|
-| [dfg-viewer-5.3-ocr](https://github.com/UB-Mannheim/kitodo-presentation-docker/tree/dfg-viewer-5.3-ocr) 	| [5.3 with OCR-On-Demand](https://github.com/csidirop/dfg-viewer/tree/5.3-ocr-test)                    	|     [3.x](https://github.com/kitodo/kitodo-presentation/releases/tag/v3.3.4)                                            	|           [typo3-v9](https://github.com/csidirop/typo3-docker/tree/typo3-v9.x)     	|
+| **Branch** 	| **dfg-viewer version** 	| **presentation version** 	| **base image** 	| **last commit** 	|
+|:---:	|:---:	|:---:	|:---:	|:---:	|
+| [main](https://github.com/UB-Mannheim/kitodo-presentation-docker) 	| - 	| [newest](https://github.com/kitodo/kitodo-presentation/releases) 	| [typo3-v10](https://github.com/csidirop/typo3-docker/tree/typo3-v10.x) 	| ![GitHub last commit (branch)](https://img.shields.io/github/last-commit/UB-Mannheim/kitodo-presentation-docker/main?label=%20) 	|
+| [presentation-v4.x](https://github.com/UB-Mannheim/kitodo-presentation-docker/tree/presentation-v4.x) 	| - 	| [4.x](https://github.com/kitodo/kitodo-presentation/releases/tag/v4.0.1) 	| [typo3-v10](https://github.com/csidirop/typo3-docker/tree/typo3-v10.x) 	| ![GitHub last commit (branch)](https://img.shields.io/github/last-commit/UB-Mannheim/kitodo-presentation-docker/presentation-v4.x?label=%20) 	|
+| [presentation-v3.x](https://github.com/UB-Mannheim/kitodo-presentation-docker/tree/presentation-v3.x) 	| - 	| [3.x](https://github.com/kitodo/kitodo-presentation/releases/tag/v3.3.4) 	| [typo3-v9](https://github.com/csidirop/typo3-docker/tree/typo3-v9.x) 	| ![GitHub last commit (branch)](https://img.shields.io/github/last-commit/UB-Mannheim/kitodo-presentation-docker/presentation-v3.x?label=%20) 	|
+| [dfg-viewer-5.3](https://github.com/UB-Mannheim/kitodo-presentation-docker/tree/dfg-viewer-5.3) 	| [5.3](https://github.com/slub/dfg-viewer/releases/tag/v5.3.0) 	| [3.x](https://github.com/kitodo/kitodo-presentation/releases/tag/v3.3.4) 	| [typo3-v9](https://github.com/csidirop/typo3-docker/tree/typo3-v9.x) 	| ![GitHub last commit (branch)](https://img.shields.io/github/last-commit/UB-Mannheim/kitodo-presentation-docker/dfg-viewer-5.3?label=%20) 	|
+| [dfg-viewer-5.3-ocr](https://github.com/UB-Mannheim/kitodo-presentation-docker/tree/dfg-viewer-5.3-ocr) 	| [5.3 with OCR-On-Demand](https://github.com/csidirop/dfg-viewer/tree/5.3-ocr-test) 	| [3.x](https://github.com/kitodo/kitodo-presentation/releases/tag/v3.3.4) 	| [typo3-v9](https://github.com/csidirop/typo3-docker/tree/typo3-v9.x) 	| ![GitHub last commit (branch)](https://img.shields.io/github/last-commit/UB-Mannheim/kitodo-presentation-docker/dfg-viewer-5.3-ocr?label=%20) 	|
+
+<!-- Table created with:  https://www.tablesgenerator.com/markdown_tables -->
 
 ### Checkout branch
     git checkout <branchname>
