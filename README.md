@@ -1,9 +1,6 @@
 # Kitodo.Presentation docker
 Docker configuration for [Kitodo.Presentation](https://github.com/kitodo/kitodo-presentation).
 
-
-![GitHub last commit (branch)](https://img.shields.io/github/last-commit/UB-Mannheim/kitodo-presentation-docker/main)
-
 ## Kitodo.Presentation
 Kitodo.Presentation is a feature-rich framework for building a METS- or IIIF-based digital library. It is part of the Kitodo Digital Library Suite.
 
