@@ -45,3 +45,14 @@ Kitodo.Presentation can be accessed at: http://localhost/typo3/
 
 ## Code and User Feedback
 Please file your bug reports to [issues](https://github.com/UB-Mannheim/kitodo-presentation-docker/issues). Make sure that you are using the latest version of the software before sending a report.
+
+This also means making sure that old docker caches/images/containers are not present **before** making a clean install:
+- no old typo3-docker images are present: 
+  - `docker images` should not show any typo3-docker image
+  - otherwise remove it with `docker rmi <image-ids>`
+- no presentation-containers present:
+  - `docker container ls -a` should not show any kitodo-presentation container
+  - run `docker compose down` to "stop containes and remove containers, networks, volumes, and images created by `docker compose up`"
+  - run `docker rm <container_ID/NAME>` if anything kitodo-presentation related still present
+- build without using cached layers:
+  - `docker compose build --no-cache`
