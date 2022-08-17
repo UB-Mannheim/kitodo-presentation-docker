@@ -17,13 +17,15 @@ The Docker images were built by [Mannheim University Library](https://en.wikiped
 ### Select branch
 There are different [Branches](https://github.com/UB-Mannheim/kitodo-presentation-docker/branches) that serve to provide different installations. While the main-Branch offers always the newest presentation version, the others provide following versions:
 
-|     **Branch**     	| **dfg-viewer version** 	|                         **presentation version**                         	| **base image** 	|
-|:------------------:	|:----------------------:	|:------------------------------------------------------------------------:	|:--------------:	|
-| [main](https://github.com/UB-Mannheim/kitodo-presentation-docker)               	| -                      	| [newest](https://github.com/kitodo/kitodo-presentation/releases)         	|         [typo3-v10](https://github.com/csidirop/typo3-docker/tree/typo3-v10.x)       	|
-| [presentation-v4.x](https://github.com/UB-Mannheim/kitodo-presentation-docker/tree/presentation-v4.x)  	| -                      	| [4.x](https://github.com/kitodo/kitodo-presentation/releases/tag/v4.0.1)                                                                      	|       [typo3-v10](https://github.com/csidirop/typo3-docker/tree/typo3-v10.x)         	|
-| [presentation-v3.x](https://github.com/UB-Mannheim/kitodo-presentation-docker/tree/presentation-v3.x)  	| -                      	| [3.x](https://github.com/kitodo/kitodo-presentation/releases/tag/v3.3.4) 	|         [typo3-v9](https://github.com/csidirop/typo3-docker/tree/typo3-v9.x)       	|
-| [dfg-viewer-5.3](https://github.com/UB-Mannheim/kitodo-presentation-docker/tree/dfg-viewer-5.3)     	| [5.3](https://github.com/slub/dfg-viewer/releases/tag/v5.3.0)                     	|      [3.x](https://github.com/kitodo/kitodo-presentation/releases/tag/v3.3.4)      	|          [typo3-v9](https://github.com/csidirop/typo3-docker/tree/typo3-v9.x)      	|
-| [dfg-viewer-5.3-ocr](https://github.com/UB-Mannheim/kitodo-presentation-docker/tree/dfg-viewer-5.3-ocr) 	| [5.3 with OCR-On-Demand](https://github.com/csidirop/dfg-viewer/tree/5.3-ocr-test)                    	|     [3.x](https://github.com/kitodo/kitodo-presentation/releases/tag/v3.3.4)                                            	|           [typo3-v9](https://github.com/csidirop/typo3-docker/tree/typo3-v9.x)     	|
+| **Branch** 	| **dfg-viewer version** 	| **presentation version** 	| **base image** 	| **last commit** 	|
+|:---:	|:---:	|:---:	|:---:	|:---:	|
+| [main](https://github.com/UB-Mannheim/kitodo-presentation-docker) 	| - 	| [newest](https://github.com/kitodo/kitodo-presentation/releases) 	| [typo3-v10](https://github.com/csidirop/typo3-docker/tree/typo3-v10.x) 	| [![GitHub last commit (branch)](https://img.shields.io/github/last-commit/UB-Mannheim/kitodo-presentation-docker/main?label=%20)](https://github.com/UB-Mannheim/kitodo-presentation-docker/commits/main) 	|
+| [presentation-v4.x](https://github.com/UB-Mannheim/kitodo-presentation-docker/tree/presentation-v4.x) 	| - 	| [4.x](https://github.com/kitodo/kitodo-presentation/releases/tag/v4.0.1) 	| [typo3-v10](https://github.com/csidirop/typo3-docker/tree/typo3-v10.x) 	| [![GitHub last commit (branch)](https://img.shields.io/github/last-commit/UB-Mannheim/kitodo-presentation-docker/presentation-v4.x?label=%20)](https://github.com/UB-Mannheim/kitodo-presentation-docker/commits/presentation-v4.x) 	|
+| [presentation-v3.x](https://github.com/UB-Mannheim/kitodo-presentation-docker/tree/presentation-v3.x) 	| - 	| [3.x](https://github.com/kitodo/kitodo-presentation/releases/tag/v3.3.4) 	| [typo3-v9](https://github.com/csidirop/typo3-docker/tree/typo3-v9.x) 	| [![GitHub last commit (branch)](https://img.shields.io/github/last-commit/UB-Mannheim/kitodo-presentation-docker/presentation-v3.x?label=%20)](https://github.com/UB-Mannheim/kitodo-presentation-docker/commits/presentation-v3.x) 	|
+| [dfg-viewer-5.3](https://github.com/UB-Mannheim/kitodo-presentation-docker/tree/dfg-viewer-5.3) 	| [5.3](https://github.com/slub/dfg-viewer/releases/tag/v5.3.0) 	| [3.x](https://github.com/kitodo/kitodo-presentation/releases/tag/v3.3.4) 	| [typo3-v9](https://github.com/csidirop/typo3-docker/tree/typo3-v9.x) 	| [![GitHub last commit (branch)](https://img.shields.io/github/last-commit/UB-Mannheim/kitodo-presentation-docker/dfg-viewer-5.3?label=%20)](https://github.com/UB-Mannheim/kitodo-presentation-docker/commits/dfg-viewer-5.3) 	|
+| [dfg-viewer-5.3-ocr](https://github.com/UB-Mannheim/kitodo-presentation-docker/tree/dfg-viewer-5.3-ocr) 	| [5.3 with OCR-On-Demand](https://github.com/csidirop/dfg-viewer/tree/5.3-ocr-test) 	| [3.x](https://github.com/kitodo/kitodo-presentation/releases/tag/v3.3.4) 	| [typo3-v9](https://github.com/csidirop/typo3-docker/tree/typo3-v9.x) 	| [![GitHub last commit (branch)](https://img.shields.io/github/last-commit/UB-Mannheim/kitodo-presentation-docker/dfg-viewer-5.3-ocr?label=%20)](https://github.com/UB-Mannheim/kitodo-presentation-docker/commits/dfg-viewer-5.3-ocr) 	|
+
+<!-- Table created with:  https://www.tablesgenerator.com/markdown_tables -->
 
 ### Checkout branch
     git checkout <branchname>
@@ -43,3 +45,14 @@ Kitodo.Presentation can be accessed at: http://localhost/typo3/
 
 ## Code and User Feedback
 Please file your bug reports to [issues](https://github.com/UB-Mannheim/kitodo-presentation-docker/issues). Make sure that you are using the latest version of the software before sending a report.
+
+This also means making sure that old docker caches/images/containers are not present **before** making a clean install:
+- no old typo3-docker images are present: 
+  - `docker images` should not show any typo3-docker image
+  - otherwise remove it with `docker rmi <image-ids>`
+- no presentation-containers present:
+  - `docker container ls -a` should not show any kitodo-presentation container
+  - run `docker compose down` to "stop containes and remove containers, networks, volumes, and images created by `docker compose up`"
+  - run `docker rm <container_ID/NAME>` if anything kitodo-presentation related still present
+- build without using cached layers:
+  - `docker compose build --no-cache`
