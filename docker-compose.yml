@@ -4,8 +4,8 @@ services:
   db:
     image: mariadb:10
     environment:
-      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
       - MYSQL_DATABASE=typo3-presentation-v4
+      - MARIADB_ROOT_PASSWORD=$MARIADB_ROOT_PASSWORD
       - MYSQL_USER=$MYSQL_USER
       - MYSQL_PASSWORD=$MYSQL_PASSWORD
     #volumes:

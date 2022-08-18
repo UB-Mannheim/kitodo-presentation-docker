@@ -52,7 +52,7 @@ if [ ! -f /initFinished ]; then
         sed -i 's/localhost/\//g' /var/www/typo3/config/sites/presentation/config.yaml
     fi
     chown -R www-data:www-data config
-
+    
     # AdditionalConfiguration (Fixes TYPO3-CORE-SA-2020-006: Same-Origin Request Forgery to Backend User Interface: https://typo3.org/security/advisory/typo3-core-sa-2020-006)
     # (Only if DMZ is set in .env)
     if [ ${TYPO3_ADDITIONAL_CONFIGURATION} != 'false' ]; then
