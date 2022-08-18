@@ -4,10 +4,10 @@ services:
   db:
     image: mariadb:10
     environment:
-      - MYSQL_DATABASE=typo3-dfgviewer-v5
+      - MARIADB_DATABASE=typo3-dfgviewer-v5
       - MARIADB_ROOT_PASSWORD=$MARIADB_ROOT_PASSWORD
-      - MYSQL_USER=$MYSQL_USER
-      - MYSQL_PASSWORD=$MYSQL_PASSWORD
+      - MARIADB_USER=$MARIADB_USER
+      - MARIADB_PASSWORD=$MARIADB_PASSWORD
     #volumes:
     #  - ./volumes/database:/var/lib/mysql
     restart: unless-stopped
@@ -20,8 +20,8 @@ services:
       - DB_ADDR=db
       - DB_PORT=3306
       - DB_NAME=typo3-dfgviewer-v5
-      - DB_USER=$MYSQL_USER
-      - DB_PASSWORD=$MYSQL_PASSWORD
+      - DB_USER=$MARIADB_USER
+      - DB_PASSWORD=$MARIADB_PASSWORD
       - TYPO3_ADMIN_USER=$TYPO3_ADMIN_USER
       - TYPO3_ADMIN_PASSWORD=$TYPO3_ADMIN_PASSWORD
       - TYPO3_ADDITIONAL_CONFIGURATION=$TYPO3_ADDITIONAL_CONFIGURATION
