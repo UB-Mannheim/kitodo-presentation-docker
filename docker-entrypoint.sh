@@ -90,9 +90,10 @@ if [ ! -f /initFinished ]; then
     mysql -h db --user=$DB_USER --password=$DB_PASSWORD -D ${DB_NAME} -e "INSERT INTO pages (pid, cruser_id, perms_userid, title, slug, doktype, url) VALUES ('4', '1', '1', 'Datenschuterklaerung', '/datenschutzerklaerung', 3, 'https://www.uni-mannheim.de/datenschutzerklaerung/');"
     mysql -h db --user=$DB_USER --password=$DB_PASSWORD -D ${DB_NAME} -e "INSERT INTO pages (pid, cruser_id, perms_userid, title, slug, doktype, url) VALUES ('4', '1', '1', 'Impressum',           '/impressum', '3', 'https://www.uni-mannheim.de/impressum/');"
     ## Embed external links: 1 viewer dropdown menu
-    ### .... TODO ....
+    mysql -h db --user=$DB_USER --password=$DB_PASSWORD -D ${DB_NAME} -e "UPDATE sys_template SET constants = 'config.storagePid = 3\n config.rootPid = 1\n config.headNavPid = 0\n config.viewerNavPids = 1, 5, 6\n config.kitodoPageView = 2\n' WHERE sitetitle = 'DFG-Viewer';"
     ## Embed external links: 2 main site header or footer
-    ### .... TODO ....
+    mysql -h db --user=$DB_USER --password=$DB_PASSWORD -D ${DB_NAME} -e "INSERT INTO tt_content (pid, cruser_id, CType, header) VALUES ('1', '1', 'div', 'Divider');"
+    mysql -h db --user=$DB_USER --password=$DB_PASSWORD -D ${DB_NAME} -e "INSERT INTO tt_content (pid, cruser_id, CType, pages) VALUES ('1', '1', 'menu_section_pages', '4');"
 
     # Insert Typo3 site content translations:
     ## Create Site configuration with two languages (en & de):
