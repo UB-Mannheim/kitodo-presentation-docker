@@ -21,13 +21,14 @@ RUN apt-get update \
     wget \
     jq \
     gettext \
+  # install tesseract:
   && echo "deb https://notesalexp.org/tesseract-ocr5/$(lsb_release -cs)/ $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/notesalexp.list > /dev/null \
   && apt-get update -oAcquire::AllowInsecureRepositories=true \
   && apt-get install -y --allow-unauthenticated notesalexp-keyring -oAcquire::AllowInsecureRepositories=true \
   && apt-get update \
   && apt-get install -y tesseract-ocr \
-  && cd /usr/share/tesseract-ocr/5/tessdata/ \
-  && wget https://ub-backup.bib.uni-mannheim.de/~stweil/tesstrain/frak2021/tessdata_fast/frak2021_1.069.traineddata
+  # Get language data from UB Mannheim:
+  && wget https://ub-backup.bib.uni-mannheim.de/~stweil/tesstrain/frak2021/tessdata_fast/frak2021_1.069.traineddata -O /usr/share/tesseract-ocr/5/tessdata/frak2021_1.069.traineddata
 
 # Cleanup:
 RUN apt-get purge -y \
