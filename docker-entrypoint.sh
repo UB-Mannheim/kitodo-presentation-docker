@@ -87,8 +87,8 @@ if [ ! -f /initFinished ]; then
     mysql -h db --user=$DB_USER --password=$DB_PASSWORD -D ${DB_NAME} -e "INSERT INTO tt_content (pid, cruser_id, CType, header, bodytext) VALUES ('1', '1', 'text', 'DFG-Viewer Body',         '$(jq -r '."DFG-Viewer-Main".german."DFG-Viewer-Body"'   /data/typo3ContentElementData.json)');"
     ## Create external links:
     mysql -h db --user=$DB_USER --password=$DB_PASSWORD -D ${DB_NAME} -e "INSERT INTO pages (pid, cruser_id, perms_userid, title, slug, doktype)      VALUES ('1', '1', '1', 'Links',               '/links', '254');"
-    mysql -h db --user=$DB_USER --password=$DB_PASSWORD -D ${DB_NAME} -e "INSERT INTO pages (pid, cruser_id, perms_userid, title, slug, doktype, url) VALUES ('4', '1', '1', 'Datenschuterklaerung', '/datenschutzerklaerung', 3, 'https://www.uni-mannheim.de/datenschutzerklaerung/');"
-    mysql -h db --user=$DB_USER --password=$DB_PASSWORD -D ${DB_NAME} -e "INSERT INTO pages (pid, cruser_id, perms_userid, title, slug, doktype, url) VALUES ('4', '1', '1', 'Impressum',           '/impressum', '3', 'https://www.uni-mannheim.de/impressum/');"
+    mysql -h db --user=$DB_USER --password=$DB_PASSWORD -D ${DB_NAME} -e "INSERT INTO pages (pid, cruser_id, perms_userid, title, slug, doktype, url) VALUES ('4', '1', '1', 'Datenschuterklaerung', '/datenschutzerklaerung', 3, '$(jq -r '."DFG-Viewer-Main".nolang.datenschutzerklaerung' /data/typo3ContentElementData.json)');"
+    mysql -h db --user=$DB_USER --password=$DB_PASSWORD -D ${DB_NAME} -e "INSERT INTO pages (pid, cruser_id, perms_userid, title, slug, doktype, url) VALUES ('4', '1', '1', 'Impressum',           '/impressum', '3',            '$(jq -r '."DFG-Viewer-Main".nolang.impressum'             /data/typo3ContentElementData.json)');"
     ## Embed external links: 1 viewer dropdown menu
     mysql -h db --user=$DB_USER --password=$DB_PASSWORD -D ${DB_NAME} -e "UPDATE sys_template SET constants = 'config.storagePid = 3\n config.rootPid = 1\n config.headNavPid = 0\n config.viewerNavPids = 1, 5, 6\n config.kitodoPageView = 2\n' WHERE sitetitle = 'DFG-Viewer';"
     ## Embed external links: 2 main site header or footer
