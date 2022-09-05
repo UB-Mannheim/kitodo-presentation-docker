@@ -12,7 +12,7 @@ EXPOSE 80
 # This Dockerfile aimes to install a working typo3 v10 instance with the kitodo/presentation extension
 # based on this guide: https://github.com/UB-Mannheim/kitodo-presentation/wiki
 
-# Update:
+# Update and install packages:
 RUN apt-get update \
   && apt-get -y upgrade \
   && apt-get -y install -y --no-install-recommends \
@@ -29,6 +29,6 @@ RUN apt-get purge -y \
 COPY docker-entrypoint.sh /
 ADD data/ /data
 # Fix wrong line endings in the startup script and just to be save in data files:
-RUN sed -i.bak 's/\r$//' /docker-entrypoint.sh  /data/*
+RUN sed -i.bak 's/\r$//' /docker-entrypoint.sh /data/*
 # Run startup script & start apache2 (https://github.com/docker-library/php/blob/master/7.4/bullseye/apache/apache2-foreground)
 CMD /docker-entrypoint.sh & apache2-foreground
