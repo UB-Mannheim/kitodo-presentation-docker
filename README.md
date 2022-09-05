@@ -25,13 +25,33 @@ There are different [Branches](https://github.com/UB-Mannheim/kitodo-presentatio
 | [dfg-viewer-5.3](https://github.com/UB-Mannheim/kitodo-presentation-docker/tree/dfg-viewer-5.3) 	| [5.3](https://github.com/slub/dfg-viewer/releases/tag/v5.3.0) 	| [3.x](https://github.com/kitodo/kitodo-presentation/releases/tag/v3.3.4) 	| [typo3-v9](https://github.com/csidirop/typo3-docker/tree/typo3-v9.x) 	| [![GitHub last commit (branch)](https://img.shields.io/github/last-commit/UB-Mannheim/kitodo-presentation-docker/dfg-viewer-5.3?label=%20)](https://github.com/UB-Mannheim/kitodo-presentation-docker/commits/dfg-viewer-5.3) 	|
 | [dfg-viewer-5.3-ocr](https://github.com/UB-Mannheim/kitodo-presentation-docker/tree/dfg-viewer-5.3-ocr) 	| [5.3 with OCR-On-Demand](https://github.com/csidirop/dfg-viewer/tree/5.3-ocr-test) 	| [3.x](https://github.com/kitodo/kitodo-presentation/releases/tag/v3.3.4) 	| [typo3-v9](https://github.com/csidirop/typo3-docker/tree/typo3-v9.x) 	| [![GitHub last commit (branch)](https://img.shields.io/github/last-commit/UB-Mannheim/kitodo-presentation-docker/dfg-viewer-5.3-ocr?label=%20)](https://github.com/UB-Mannheim/kitodo-presentation-docker/commits/dfg-viewer-5.3-ocr) 	|
 
-<!-- Table created with:  https://www.tablesgenerator.com/markdown_tables -->
+<!-- Table created with: https://www.tablesgenerator.com/markdown_tables -->
 
 ### Checkout branch
     git checkout <branchname>
 
 ### Change credentials
-Usernames and passwords for the database and typo3 backend are stored inside .env-File. It is of utmost importance to change these before productive use! Also the file should only be readable for root users.
+Usernames and passwords for the database and TYPO3 backend are stored inside .env-File. It is of utmost importance to change these before productive use! Also the file should only be readable for root users.
+
+### Environment variables
+There are 13 environment variables. 8 of them that can be set in the .env-File. The following table shows the default values and a short description.
+
+|        **Name**       | **Default Value** |    **Description**    |
+|:---------------------:|:-----------------:|:---------------------:|
+| MARIADB_ROOT_PASSWORD |  _'rootpassword'_ | MariaDB root password |
+| MARIADB_USER          |      _typo3_      | MariaDB username      |
+| MARIADB_PASSWORD      |    _'password'_   | MariaDB user password |
+
+#### TYPO3 Variables:
+|            **Name**            | **Default Value** |                     **Description**                     |
+|:------------------------------:|:-----------------:|:-------------------------------------------------------:|
+| PORT                           |        _80_       | Local port for TYPO3                                    |
+| TYPO3_ADMIN_USER               |       _test_      | TYPO3 admin username                                    |
+| TYPO3_ADMIN_PASSWORD           |    _'test1234'_   | TYPO3 admin password in ''                              |
+| TYPO3_ADDITIONAL_CONFIGURATION |      _false_      | Set to true if you want to add additional configuration |
+| FullyQualifiedDomainName       |    _localhost_    | Fully qualified domain name                             |
+
+The other 5 variables are set in the docker-compose.yml and should not be changed.
 
 ### Run images:
     docker compose up
