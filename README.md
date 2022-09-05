@@ -31,10 +31,10 @@ There are different [Branches](https://github.com/UB-Mannheim/kitodo-presentatio
     git checkout <branchname>
 
 ### Change credentials
-Usernames and passwords for the database and TYPO3 backend are stored inside .env-File. It is of utmost importance to change these before productive use! Also the file should only be readable for root users.
+Usernames and passwords for the database and TYPO3 backend are passed as [environment variables](https://docs.docker.com/compose/environment-variables/) and stored inside [.env-File](https://github.com/UB-Mannheim/kitodo-presentation-docker/blob/main/.env). It is of utmost importance to change these before productive use! Also the file should only be readable for root users.
 
 ### Environment variables
-There are 13 environment variables. 8 of them that can be set in the .env-File. The following table shows the default values and a short description.
+There are 13 environment variables. 8 of them that can be set in the [.env-File](https://github.com/UB-Mannheim/kitodo-presentation-docker/blob/main/.env). The following table shows the default values and a short description.
 
 |        **Name**       | **Default Value** |    **Description**    |
 |:----------------------|:-----------------:|:----------------------|
