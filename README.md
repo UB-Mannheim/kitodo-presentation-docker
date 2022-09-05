@@ -37,14 +37,14 @@ Usernames and passwords for the database and TYPO3 backend are stored inside .en
 There are 13 environment variables. 8 of them that can be set in the .env-File. The following table shows the default values and a short description.
 
 |        **Name**       | **Default Value** |    **Description**    |
-|:---------------------:|:-----------------:|:---------------------:|
+|:----------------------|:-----------------:|:----------------------|
 | MARIADB_ROOT_PASSWORD |  _'rootpassword'_ | MariaDB root password |
 | MARIADB_USER          |      _typo3_      | MariaDB username      |
 | MARIADB_PASSWORD      |    _'password'_   | MariaDB user password |
 
 #### TYPO3 Variables:
 |            **Name**            | **Default Value** |                     **Description**                     |
-|:------------------------------:|:-----------------:|:-------------------------------------------------------:|
+|:-------------------------------|:-----------------:|:--------------------------------------------------------|
 | PORT                           |        _80_       | Local port for TYPO3                                    |
 | TYPO3_ADMIN_USER               |       _test_      | TYPO3 admin username                                    |
 | TYPO3_ADMIN_PASSWORD           |    _'test1234'_   | TYPO3 admin password in ''                              |
