@@ -1,4 +1,4 @@
-# Kitodo.Presentation docker
+# Kitodo.Presentation Docker
 Docker configuration for [Kitodo.Presentation](https://github.com/kitodo/kitodo-presentation).
 
 ## Kitodo.Presentation
@@ -61,14 +61,14 @@ or
     docker-compose up
 
 ### Ready:
-Typo3 backend can be accessed at: http://localhost/typo3/
-
+Typo3 backend can be accessed at: <http://localhost/typo3/>
 
 ## Code and User Feedback
 Please file your bug reports to [issues](https://github.com/UB-Mannheim/kitodo-presentation-docker/issues). Make sure that you are using the latest version of the software before sending a report.
 
 This also means making sure that old docker caches/images/containers are not present **before** making a clean install:
-- no old typo3-docker images are present: 
+
+- no old typo3-docker images are present:
   - `docker images` should not show any typo3-docker image
   - otherwise remove it with `docker rmi <image-ids>`
 - no presentation-containers present:
