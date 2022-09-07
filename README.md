@@ -73,7 +73,7 @@ This also means making sure that old docker caches/images/containers are not pre
   - otherwise remove it with `docker rmi <image-ids>`
 - no presentation-containers present:
   - `docker container ls -a` should not show any kitodo-presentation container
-  - run `docker compose down` to "stop containes and remove containers, networks, volumes, and images created by `docker compose up`"
+  - run `docker compose down` to "stop containers and remove containers, networks, volumes, and images created by `docker compose up`"
   - run `docker rm <container_ID/NAME>` if anything kitodo-presentation related still present
 - build without using cached layers:
   - `docker compose build --no-cache`
