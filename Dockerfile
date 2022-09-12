@@ -21,7 +21,6 @@ RUN apt-get update \
     wget \
     jq \
     gettext \
-    locales \
   # install tesseract:
   && echo "deb https://notesalexp.org/tesseract-ocr5/$(lsb_release -cs)/ $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/notesalexp.list > /dev/null \
   && apt-get update -oAcquire::AllowInsecureRepositories=true \
@@ -30,13 +29,6 @@ RUN apt-get update \
   && apt-get install -y tesseract-ocr \
   # Get language data from UB Mannheim:
   && wget https://ub-backup.bib.uni-mannheim.de/~stweil/tesstrain/frak2021/tessdata_fast/frak2021_1.069.traineddata -O /usr/share/tesseract-ocr/5/tessdata/frak2021_1.069.traineddata
-
-RUN sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && \
-    locale-gen
-
-ENV LANG en_US.UTF-8
-ENV LANGUAGE en_US:en
-ENV LC_ALL en_US.UTF-8
 
 # Cleanup:
 RUN apt-get purge -y \
