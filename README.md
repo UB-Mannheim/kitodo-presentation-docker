@@ -36,6 +36,7 @@ Usernames and passwords for the database and TYPO3 backend are passed as [enviro
 ### Environment variables
 There are 13 environment variables. 8 of them that can be set in the [.env-File](https://github.com/UB-Mannheim/kitodo-presentation-docker/blob/main/.env). The following table shows the default values and a short description.
 
+#### MariaDB Variables:
 |        **Name**       | **Default Value** |    **Description**    |
 |:----------------------|:-----------------:|:----------------------|
 | MARIADB_ROOT_PASSWORD |  _'rootpassword'_ | MariaDB root password |
