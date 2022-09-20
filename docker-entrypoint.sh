@@ -38,6 +38,20 @@ if [ ! -f /initFinished ]; then
     vendor/bin/typo3 extensionmanager:extension:install dfgviewer
     chown -R www-data:www-data .
 
+    # Setup Kitodo.Presentation: (https://github.com/UB-Mannheim/kitodo-presentation/wiki/Installation-Kitodo.Presentation)
+    echo -e "${CLR_B}[MAIN] Setup Kitodo.Presentation:${NC}"
+    cd /var/www/typo3/
+    ## Configure TYPO3 and Kitodo.Presentation:
+    vendor/bin/typo3cms configuration:set FE/pageNotFoundOnCHashError 0
+    vendor/bin/typo3cms configuration:set FE/cacheHash/requireCacheHashPresenceParameters '["tx_dlf[id]"]' --json
+    vendor/bin/typo3cms configuration:set SYS/fileCreateMask 0660
+    vendor/bin/typo3cms configuration:set SYS/folderCreateMask 2770
+    vendor/bin/typo3cms configuration:set SYS/systemLocale en_US.UTF-8
+    ## Set right permissions for existing folders:
+    chmod -R 2770 .
+    find .       -name .htaccess  -exec chmod -v 0660 {} \;
+    find public/ -name index.html -exec chmod -v 0660 {} \;
+
     # Insert Typo3 site content:
     ## Main site content elements:
     ### .... INSERT HERE ....
