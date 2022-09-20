@@ -66,7 +66,6 @@ if [ ! -f /initFinished ]; then
     chmod -R 2770 .
     find .       -name .htaccess  -exec chmod -v 0660 {} \;
     find public/ -name index.html -exec chmod -v 0660 {} \;
-
     ## OCR-On-Demand options:
     vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/fulltextFolder 'fileadmin/fulltextFolder'
     vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/fulltextTempFolder 'fileadmin/_temp_/fulltextTempFolder'
