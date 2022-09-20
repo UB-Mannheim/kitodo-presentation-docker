@@ -31,10 +31,14 @@ if [ ! -f /initFinished ]; then
         --web-server-config=apache
 
     # Install Kitodo.Presentation v4.x:
-    echo -e "${CLR_B}[MAIN] Install presentation 4.x:${NC}"
+    echo -e "${CLR_B}[MAIN] Install Kitodo.Presentation 4.x and DFG-Viewer:${NC}"
     composer config platform.php 7.4
-    composer require kitodo/presentation:^4
+    jq '.repositories += [{"type": "git", "url": "https://github.com/slub/dfg-viewer" }] | .require += {"slub/dfgviewer": "dev-master"} | . += {"minimum-stability": "dev"}' composer.json > composer-edit.json
+    mv composer.json composer.json.bak
+    mv composer-edit.json composer.json
+    composer update
     vendor/bin/typo3 extensionmanager:extension:install dlf
+    vendor/bin/typo3 extensionmanager:extension:install dfgviewer
     chown -R www-data:www-data .
 
     # Insert Typo3 site content:
@@ -77,5 +81,5 @@ if [ ! -f /initFinished ]; then
     echo -e "${CLR_B}[MAIN]${CLR_G} Finished setup!${NC}"
 fi
 
-#echo -e "${CLR_B}[MAIN]${CLR_G} Site http://${HOST} ${NC}" # no site setup
+echo -e "${CLR_B}[MAIN]${CLR_G} Site http://${HOST} ${NC}"
 echo -e "${CLR_B}[MAIN]${CLR_G} Backend: http://${HOST}/typo3/ ${NC}"
