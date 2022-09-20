@@ -14,6 +14,7 @@ services:
   main:
     build: .
     image: kitodo/dfg-viewer-newest-dev
+    container_name: kitodo-presentation-main
     ports:
       - "0.0.0.0:$PORT:80"
     environment:
