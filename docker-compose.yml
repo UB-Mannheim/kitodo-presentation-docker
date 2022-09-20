@@ -13,13 +13,13 @@ services:
     restart: unless-stopped
   main:
     build: .
-    image: kitodo/dfgviewer:5.x-220913
+    image: kitodo/dfgviewer:5.x
     ports:
       - "0.0.0.0:$PORT:80"
     environment:
       - DB_ADDR=db
       - DB_PORT=3306
-      - DB_NAME=typo3-dfgviewer-v5-220913
+      - DB_NAME=typo3-dfgviewer-v5
       - DB_USER=$MARIADB_USER
       - DB_PASSWORD=$MARIADB_PASSWORD
       - TYPO3_ADMIN_USER=$TYPO3_ADMIN_USER
