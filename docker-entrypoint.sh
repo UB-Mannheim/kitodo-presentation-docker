@@ -30,7 +30,7 @@ if [ ! -f /initFinished ]; then
         --site-name presentation \
         --web-server-config=apache
 
-    # Install Kitodo.Presentation v4.x:
+    # Install Kitodo.Presentation v4.x and DFG-Viewer main-branch:
     echo -e "${CLR_B}[MAIN] Install Kitodo.Presentation 4.x and DFG-Viewer:${NC}"
     composer config platform.php 7.4
     jq '.repositories += [{"type": "git", "url": "https://github.com/slub/dfg-viewer" }] | .require += {"slub/dfgviewer": "dev-master"} | . += {"minimum-stability": "dev"}' composer.json > composer-edit.json
@@ -41,12 +41,12 @@ if [ ! -f /initFinished ]; then
     vendor/bin/typo3 extensionmanager:extension:install dfgviewer
     chown -R www-data:www-data .
 
-    # Setup Kitodo.Presentation: (https://github.com/UB-Mannheim/kitodo-presentation/wiki/Installation-Kitodo.Presentation)
-    echo -e "${CLR_B}[MAIN] Setup Kitodo.Presentation:${NC}"
+    # Setup Kitodo.Presentation and DFG-Viewer: (https://github.com/UB-Mannheim/kitodo-presentation/wiki/Installation-Kitodo.Presentation-mit-DFG-Viewer-als-Beispielanwendung)
+    echo -e "${CLR_B}[MAIN] Setup Kitodo.Presentation and DFG-Viewer:${NC}"
     cd /var/www/typo3/
     ## Configure TYPO3 and Kitodo.Presentation:
     vendor/bin/typo3cms configuration:set FE/pageNotFoundOnCHashError 0
-    vendor/bin/typo3cms configuration:set FE/cacheHash/requireCacheHashPresenceParameters '["tx_dlf[id]"]' --json
+    vendor/bin/typo3cms configuration:set FE/cacheHash/requireCacheHashPresenceParameters '["tx_dlf[id]", "set[mets]"]' --json
     vendor/bin/typo3cms configuration:set SYS/fileCreateMask 0660
     vendor/bin/typo3cms configuration:set SYS/folderCreateMask 2770
     vendor/bin/typo3cms configuration:set SYS/systemLocale en_US.UTF-8
@@ -61,7 +61,7 @@ if [ ! -f /initFinished ]; then
 
     # Insert Typo3 site content translations:
     ## Create Site configuration with two languages (en & de):
-    echo -e "${CLR_B}[MAIN] Setup DFG-Viewer: Write site configuration for ${HOST} ${NC}"
+    echo -e "${CLR_B}[MAIN] Setup Kitodo.Presentation and DFG-Viewer: Write site configuration for ${HOST} ${NC}"
     mkdir -p config/sites/presentation/
     ### Take config.yaml from /data, substitute the variables and pipe it to the typo3 dir
     envsubst '${HOST}' < /data/config.yaml >> /var/www/typo3/config/sites/presentation/config.yaml
