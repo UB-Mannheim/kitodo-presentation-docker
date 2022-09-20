@@ -12,7 +12,7 @@ if [ ! -f /initFinished ]; then
     # Wait for db to be ready: (https://docs.docker.com/compose/startup-order/)
     wait-for-it -t 0 ${DB_ADDR}:${DB_PORT}
 
-    # Setup Typo3 with typo3console (https://docs.typo3.org/p/helhum/typo3-console/main/en-us/CommandReference/InstallSetup.html):
+    # Setup TYPO3 with typo3console (https://docs.typo3.org/p/helhum/typo3-console/main/en-us/CommandReference/InstallSetup.html):
     cd /var/www/typo3/
     docker-php-ext-install -j$(nproc) mysqli
     echo -e "${CLR_B}[MAIN] Auto setup typo3:${NC}"
@@ -80,7 +80,7 @@ if [ ! -f /initFinished ]; then
     mkdir public/fileadmin/_temp_/imagesTempFolder
     chown -R www-data public/fileadmin/
 
-    # Insert Typo3 site content:
+    # Insert TYPO3 site content:
     ## Main site content elements:
     echo -e "${CLR_B}[MAIN] Setup DFG-Viewer: Update DB${NC}"
     echo -e "${CLR_B}[MAIN] Setup DFG-Viewer: Update DB: Insert sites and properties${NC}"
@@ -103,12 +103,12 @@ if [ ! -f /initFinished ]; then
     mysql -h db --user=$DB_USER --password=$DB_PASSWORD -D ${DB_NAME} -e "INSERT INTO tt_content (pid, cruser_id, CType, header) VALUES ('1', '1', 'div', 'Divider');"
     mysql -h db --user=$DB_USER --password=$DB_PASSWORD -D ${DB_NAME} -e "INSERT INTO tt_content (pid, cruser_id, CType, pages) VALUES ('1', '1', 'menu_section_pages', '2');" # Unterseiten von viewer: Datenschutzerklärung, Impressum
 
-    # Insert Typo3 site content translations:
+    # Insert TYPO3 site content translations:
     ## Create Site configuration with two languages (en & de):
-    echo -e "${CLR_B}[MAIN] Setup DFG-Viewer: Write site configuration for ${HOST} ${NC}"
-    mkdir -p config/sites/dfgviewer/
-    ### Take config.yaml from /data, substitute the variables and pipe it to the typo3 dir
-    envsubst '${HOST}' < /data/config.yaml >> /var/www/typo3/config/sites/dfgviewer/config.yaml
+    echo -e "${CLR_B}[MAIN] Setup Kitodo.Presentation: Write site configuration for ${HOST} ${NC}"
+    mkdir -p config/sites/presentation/
+    ### Take config.yaml from /data, substitute the variables and pipe it to the TYPO3 dir:
+    envsubst '${HOST}' < /data/config.yaml >> /var/www/typo3/config/sites/presentation/config.yaml
     if [ ${HOST} = 'localhost' ]; then
         ### Replace localhost with / :
         sed -i 's/localhost/\//g' /var/www/typo3/config/sites/dfgviewer/config.yaml

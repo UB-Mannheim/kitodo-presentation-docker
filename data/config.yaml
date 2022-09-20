@@ -1,6 +1,4 @@
 base: '${HOST}'
-baseVariants: {  }
-errorHandling: {  }
 languages:
   -
     title: 'DFG-Viewer (german)'
@@ -13,7 +11,7 @@ languages:
     hreflang: de-DE
     direction: ''
     flag: de
-    languageId: '0'
+    languageId: 0
   -
     title: 'DFG-Viewer (Englisch)'
     enabled: true
@@ -27,6 +25,6 @@ languages:
     fallbackType: fallback
     fallbacks: '0'
     flag: gb
-    languageId: '1'
+    languageId: 1
 rootPageId: 1
-routes: {  }
+websiteTitle: ''
