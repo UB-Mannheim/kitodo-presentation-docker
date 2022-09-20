@@ -12,7 +12,7 @@ if [ ! -f /initFinished ]; then
     # Wait for db to be ready: (https://docs.docker.com/compose/startup-order/)
     wait-for-it -t 0 ${DB_ADDR}:${DB_PORT}
 
-    # Setup Typo3 with typo3console (https://docs.typo3.org/p/helhum/typo3-console/main/en-us/CommandReference/InstallSetup.html):
+    # Setup TYPO3 with typo3console (https://docs.typo3.org/p/helhum/typo3-console/main/en-us/CommandReference/InstallSetup.html):
     cd /var/www/typo3/
     docker-php-ext-install -j$(nproc) mysqli
     echo -e "${CLR_B}[MAIN] Auto setup typo3:${NC}"
@@ -52,15 +52,15 @@ if [ ! -f /initFinished ]; then
     find .       -name .htaccess  -exec chmod -v 0660 {} \;
     find public/ -name index.html -exec chmod -v 0660 {} \;
 
-    # Insert Typo3 site content:
+    # Insert TYPO3 site content:
     ## Main site content elements:
     ### .... INSERT HERE ....
 
-    # Insert Typo3 site content translations:
+    # Insert TYPO3 site content translations:
     ## Create Site configuration with two languages (en & de):
-    echo -e "${CLR_B}[MAIN] Setup DFG-Viewer: Write site configuration for ${HOST} ${NC}"
+    echo -e "${CLR_B}[MAIN] Setup Kitodo.Presentation: Write site configuration for ${HOST} ${NC}"
     mkdir -p config/sites/presentation/
-    ### Take config.yaml from /data, substitute the variables and pipe it to the typo3 dir
+    ### Take config.yaml from /data, substitute the variables and pipe it to the TYPO3 dir:
     envsubst '${HOST}' < /data/config.yaml >> /var/www/typo3/config/sites/presentation/config.yaml
     if [ ${HOST} = 'localhost' ]; then
         ### Replace localhost with / :
