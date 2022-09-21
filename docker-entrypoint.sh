@@ -47,9 +47,10 @@ if [ ! -f /initFinished ]; then
     vendor/bin/typo3cms configuration:set SYS/folderCreateMask 2770
     vendor/bin/typo3cms configuration:set SYS/systemLocale en_US.UTF-8
     ## Set right permissions for existing folders:
-    chmod -R 2770 .
-    find .       -name .htaccess  -exec chmod -v 0660 {} \;
-    find public/ -name index.html -exec chmod -v 0660 {} \;
+    chmod 2770 public/typo3conf/ext/                                    # set permissions for ext folder: owner and group can read, write and execute + inherit permissions
+    find .       -name ext\* -prune -o -name \* -exec chmod 2770 {} \;  # set permissions for all other: owner and group can read, write and execute + inherit permissions
+    find .       -name .htaccess  -exec chmod -v 0660 {} \;             # set permissions for .htaccess: owner and group can read and write
+    find public/ -name index.html -exec chmod -v 0660 {} \;             # set permissions for index.html: owner and group can read and write
 
     # Insert TYPO3 site content:
     ## Main site content elements:
