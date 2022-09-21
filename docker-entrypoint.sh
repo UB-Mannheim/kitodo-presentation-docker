@@ -71,7 +71,7 @@ if [ ! -f /initFinished ]; then
     # (Only if DMZ is set in .env)
     if [ ${TYPO3_ADDITIONAL_CONFIGURATION} != 'false' ]; then
         echo -e "${CLR_B}[MAIN] Write AdditionalConfiguration.php:${NC}"
-        ### Take AdditionalConfiguration from /data, substitute the variables except for $GLOBALS (which isnt one) and pipe it to the typo3 dir
+        ### Take AdditionalConfiguration from /data, substitute the variables except for $GLOBALS (which isnt one) and pipe it to the TYPO3 dir
         envsubst '${HOST}' < /data/AdditionalConfiguration.php >> /var/www/typo3/public/typo3conf/AdditionalConfiguration.php
     fi
 
