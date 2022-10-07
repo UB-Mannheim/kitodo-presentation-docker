@@ -9,7 +9,7 @@ ENV DB_PORT=3306
 
 EXPOSE 80
 
-# This Dockerfile aimes to install a working typo3 v10 instance with the kitodo/presentation extension
+# This Dockerfile aimes to install a working TYPO3 v10 instance with the kitodo/presentation extension
 # based on this guide: https://github.com/UB-Mannheim/kitodo-presentation/wiki
 
 # Update and install packages:
