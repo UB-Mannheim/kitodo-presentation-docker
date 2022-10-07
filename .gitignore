@@ -1,3 +1,4 @@
 *~
 /volumes/
 .markdownlint.json
+.env

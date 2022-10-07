@@ -1,4 +1,4 @@
-# Use local typo3 v9 base image based on Apache2 on Debian 11 bullseye
+# Use local TYPO3 v9 base image based on Apache2 on Debian 11 bullseye
 # https://github.com/csidirop/typo3-docker/tree/typo3-v9.x
 FROM csidirop/typo3-v9:9.5-220913
 
@@ -9,7 +9,7 @@ ENV DB_PORT=3306
 
 EXPOSE 80
 
-# This Dockerfile aimes to install a working typo3 v9 instance with the kitodo/presentation extension
+# This Dockerfile aimes to install a working TYPO3 v9 instance with the kitodo/presentation extension
 # based on this guide: https://github.com/UB-Mannheim/kitodo-presentation/wiki
 
 # Update and install Tesseract v5: (https://notesalexp.org/tesseract-ocr/#tesseract_5.x)
