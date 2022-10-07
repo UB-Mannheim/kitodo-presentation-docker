@@ -48,9 +48,10 @@ if [ ! -f /initFinished ]; then
     vendor/bin/typo3cms configuration:set SYS/folderCreateMask 2770
     vendor/bin/typo3cms configuration:set SYS/systemLocale en_US.UTF-8
     ## Set right permissions for existing folders:
-    chmod -R 2770 .
-    find .       -name .htaccess  -exec chmod -v 0660 {} \;
-    find public/ -name index.html -exec chmod -v 0660 {} \;
+    chmod 2770 public/typo3conf/ext/                                    # set permissions for ext folder: owner and group can read, write and execute + inherit permissions
+    find .       -name ext\* -prune -o -name \* -exec chmod 2770 {} \;  # set permissions for all other: owner and group can read, write and execute + inherit permissions
+    find .       -name .htaccess  -exec chmod -v 0660 {} \;             # set permissions for .htaccess: owner and group can read and write
+    find public/ -name index.html -exec chmod -v 0660 {} \;             # set permissions for index.html: owner and group can read and write
 
     # Insert TYPO3 site content:
     ## Main site content elements:
@@ -72,7 +73,7 @@ if [ ! -f /initFinished ]; then
     # (Only if DMZ is set in .env)
     if [ ${TYPO3_ADDITIONAL_CONFIGURATION} != 'false' ]; then
         echo -e "${CLR_B}[MAIN] Write AdditionalConfiguration.php:${NC}"
-        ### Take AdditionalConfiguration from /data, substitute the variables except for $GLOBALS (which isnt one) and pipe it to the typo3 dir
+        ### Take AdditionalConfiguration from /data, substitute the variables except for $GLOBALS (which isnt one) and pipe it to the TYPO3 dir
         envsubst '${HOST}' < /data/AdditionalConfiguration.php >> /var/www/typo3/public/typo3conf/AdditionalConfiguration.php
     fi
 
