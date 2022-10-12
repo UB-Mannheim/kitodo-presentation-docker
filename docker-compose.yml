@@ -14,7 +14,7 @@ services:
     restart: unless-stopped
   main:
     build: .
-    image: kitodo/dfgviewer:5.3-ocr-220913
+    image: kitodo/dfgviewer:5.3-ocr-221012
     container_name: kitodo-presentation-main
     ports:
       - "0.0.0.0:$PORT:80"
