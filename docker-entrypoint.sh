@@ -73,7 +73,7 @@ if [ ! -f /initFinished ]; then
     vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/fulltextImagesFolder 'fileadmin/_temp_/imagesTempFolder'
     vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/ocrDebug 0 # 0 = off, 1 = on
     vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/ocrDelay '0' # time in seconds
-    vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/ocrDummy 1
+    vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/ocrPlaceholder 1
     vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/ocrLanguages 'frak2021_1.069' #TODO
     vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/ocrLock 1
     mkdir public/fileadmin/fulltextFolder
