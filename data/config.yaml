@@ -28,3 +28,22 @@ languages:
     languageId: 1
 rootPageId: 1
 websiteTitle: ''
+routes: {  }
+routeEnhancers:
+  dfgviewer:
+    type: Plugin
+    limitToPages: [2]
+    extension: dfgviewer
+    routePath: '/{id}/page-{page}/{pagegrid}/{double}'
+    namespace: 'tx_dlf'
+    requirements:
+      id: '.*'
+      page: '[0-9]*'
+      double: '0|1'
+      pagegrid: '0|1'
+    aspects:
+      double:
+        type: 'StaticValueMapper'
+        map:
+          1: 'double'
+          0: 'single'
