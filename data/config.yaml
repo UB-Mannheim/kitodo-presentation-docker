@@ -34,16 +34,14 @@ routeEnhancers:
     type: Plugin
     limitToPages: [2]
     extension: dfgviewer
-    routePath: '/{id}/page-{page}/{pagegrid}/{double}'
+    routePath: '/{id}/page-{page}/{pagegrid}-{double}'
     namespace: 'tx_dlf'
+    defaults:
+      page: ''
+      double: '0'
+      pagegrid: '0'
     requirements:
       id: '.*'
       page: '[0-9]*'
       double: '0|1'
       pagegrid: '0|1'
-    aspects:
-      double:
-        type: 'StaticValueMapper'
-        map:
-          1: 'double'
-          0: 'single'
