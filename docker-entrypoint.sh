@@ -33,7 +33,13 @@ if [ ! -f /initFinished ]; then
     # Install Kitodo.Presentation and DFG-Viewer with OCR-On-Demand:
     echo -e "${CLR_B}[MAIN] Install Presentation and DFG-Viewer with OCR-On-Demand:${NC}"
     composer config platform.php 7.4
-    jq '.repositories += [{"type": "git", "url": "https://github.com/csidirop/dfg-viewer.git" }, {"type": "git", "url": "https://github.com/csidirop/kitodo-presentation.git"}, {"type": "git", "url": "https://github.com/csidirop/slub_digitalcollections.git" }] | .require += {"csidirop/dfgviewer": "dev-5.3-ocr"} | . += {"minimum-stability": "dev"}' composer.json > composer-edit.json
+    ## Add the custom repositories to the composer file:
+    jq '  .repositories += [
+            {"type": "git", "url": "https://github.com/csidirop/dfg-viewer.git" },
+            {"type": "git", "url": "https://github.com/csidirop/kitodo-presentation.git"},
+            {"type": "git", "url": "https://github.com/csidirop/slub_digitalcollections.git" }]
+        | .require += {"csidirop/dfgviewer": "dev-5.3-ocr"}
+        | . += {"minimum-stability": "dev"}' composer.json > composer-edit.json
     mv composer.json composer.json.bak
     mv composer-edit.json composer.json
     composer update
@@ -41,7 +47,7 @@ if [ ! -f /initFinished ]; then
     vendor/bin/typo3 extensionmanager:extension:install dfgviewer
     chown -R www-data:www-data .
     chmod +x public/typo3conf/ext/dlf/Classes/Plugin/Tools/FullTextGenerationScripts/*
-    ## Activate other useful extensions: (only Typo3 v9)
+    ## Activate other useful extensions: (only TYPO3 v9)
     vendor/bin/typo3 extensionmanager:extension:install fluid_styled_content
     vendor/bin/typo3 extensionmanager:extension:install adminpanel
     vendor/bin/typo3 extensionmanager:extension:install belog
