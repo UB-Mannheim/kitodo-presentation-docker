@@ -1,6 +1,6 @@
 # Use local TYPO3 v10 base image based on Apache2 on Debian 11 bullseye
 # https://github.com/csidirop/typo3-docker/tree/typo3-v10.x
-FROM csidirop/typo3-v10:10.4-220913
+FROM csidirop/typo3-v10:10.4-221101
 
 LABEL authors='Christos Sidiropoulos <Christos.Sidiropoulos@uni-mannheim.de>'
 
