@@ -1,4 +1,5 @@
-# Use local typo3 v9 base image based on Apache2 on Debian 11 bullseye
+# Use TYPO3 v9 base image based on Apache2 on Debian 11 bullseye
+# https://hub.docker.com/r/csidirop/typo3-v9/
 # https://github.com/csidirop/typo3-docker/tree/typo3-v9.x
 FROM csidirop/typo3-v9:9.5-221101
 
