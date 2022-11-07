@@ -73,6 +73,8 @@ if [ ! -f /initFinished ]; then
     find .       -name ext\* -prune -o -name \* -exec chmod 2770 {} \;  # set permissions for all other: owner and group can read, write and execute + inherit permissions
     find .       -name .htaccess  -exec chmod -v 0660 {} \;             # set permissions for .htaccess: owner and group can read and write
     find public/ -name index.html -exec chmod -v 0660 {} \;             # set permissions for index.html: owner and group can read and write
+    ## Presentation options:
+    vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/fileGrpImages 'DEFAULT,MASTER,MAX,ORIGINAL' # Add additional fileGrps: ORIGINAL (SLUB), MASTER (TU Braunschweig)
     ## OCR-On-Demand options:
     vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/fulltextFolder 'fileadmin/fulltextFolder'
     vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/fulltextTempFolder 'fileadmin/_temp_/fulltextTempFolder'
