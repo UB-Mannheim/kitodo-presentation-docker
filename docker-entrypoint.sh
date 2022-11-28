@@ -5,6 +5,8 @@ CLR_B='\033[1;34m' # Bold Blue
 CLR_G='\e[32m' # Green
 NC='\033[0m' # No Color
 
+set -euo pipefail # exit on: error, undefined variable, pipefail
+
 # Run main part of this script only one time (if /initFinished does not exists!):
 if [ ! -f /initFinished ]; then
     echo -e "${CLR_B}[MAIN] Running startup script:${NC}"
@@ -84,9 +86,9 @@ if [ ! -f /initFinished ]; then
     vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/ocrPlaceholder 1
     vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/ocrLanguages 'frak2021_1.069' #TODO
     vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/ocrLock 1
-    mkdir public/fileadmin/fulltextFolder
-    mkdir public/fileadmin/_temp_/fulltextTempFolder
-    mkdir public/fileadmin/_temp_/imagesTempFolder
+    mkdir -v -p public/fileadmin/fulltextFolder
+    mkdir -v -p public/fileadmin/_temp_/fulltextTempFolder
+    mkdir -v -p public/fileadmin/_temp_/imagesTempFolder
     chown -R www-data public/fileadmin/
 
     # Insert TYPO3 site content:
