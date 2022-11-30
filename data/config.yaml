@@ -34,7 +34,7 @@ routeEnhancers:
     type: Plugin
     limitToPages: [2]
     extension: dfgviewer
-    routePath: '/{id}/page-{page}/{pagegrid}-{double}'
+    routePath: '/url={id}/page-{page}/{pagegrid}-{double}'
     namespace: 'tx_dlf'
     defaults:
       page: ''
