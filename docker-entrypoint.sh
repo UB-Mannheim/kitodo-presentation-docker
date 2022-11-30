@@ -79,16 +79,18 @@ if [ ! -f /initFinished ]; then
     vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/fileGrpImages 'DEFAULT,DEFAULTPLUS,MASTER,MAX,ORIGINAL' # Add additional fileGrps: ORIGINAL (SLUB), MASTER (TU Braunschweig), DEFAULTPLUS (UB HD)
     ## OCR-On-Demand options:
     vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/fulltextFolder 'fileadmin/fulltextFolder'
-    vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/fulltextTempFolder 'fileadmin/_temp_/fulltextTempFolder'
-    vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/fulltextImagesFolder 'fileadmin/_temp_/imagesTempFolder'
+    vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/fulltextTempFolder 'fileadmin/_temp_/ocrTempFolder/fulltext'
+    vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/fulltextImagesFolder 'fileadmin/_temp_/ocrTempFolder/images'
+    vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/fulltextLockFolder 'fileadmin/_temp_/ocrTempFolder/lock'
     vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/ocrDebug 0 # 0 = off, 1 = on
     vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/ocrDelay '0' # time in seconds
     vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/ocrPlaceholder 1
     vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/ocrLanguages 'frak2021_1.069' #TODO
     vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/ocrLock 1
     mkdir -v -p public/fileadmin/fulltextFolder
-    mkdir -v -p public/fileadmin/_temp_/fulltextTempFolder
-    mkdir -v -p public/fileadmin/_temp_/imagesTempFolder
+    mkdir -v -p public/fileadmin/_temp_/ocrTempFolder/fulltext
+    mkdir -v -p public/fileadmin/_temp_/ocrTempFolder/images
+    mkdir -v -p public/fileadmin/_temp_/ocrTempFolder/lock
     chown -R www-data public/fileadmin/
 
     # Insert TYPO3 site content:
