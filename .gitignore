@@ -1,4 +1,5 @@
 *~
+/data/scripts/*.*
 /volumes/
 .markdownlint.json
 .env

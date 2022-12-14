@@ -1,0 +1,1 @@
+All scripts in this directory will be execuded after the docker-entrypoint script has been succesfully executed.

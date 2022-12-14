@@ -156,9 +156,10 @@ if [ ! -f /initFinished ]; then
     apt-get clean
     rm -rf /var/lib/apt/lists/*
 
-    # Check status:
-    echo -e "${CLR_B}[MAIN] Check apache status:${NC}"
-    service apache2 status
+    # Run further scripts:
+    echo -e "${CLR_B}[MAIN] run further scripts:${NC}"
+    chmod +x /data/scripts/*.sh
+    run-parts --regex '.*sh$' /data/scripts/
 
     # Mark as finished:
     touch /initFinished
