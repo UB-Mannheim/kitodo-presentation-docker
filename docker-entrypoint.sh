@@ -1,15 +1,17 @@
 #!/bin/bash
 
 # Some color variables:
-CLR_B='\033[1;34m' # Bold Blue
+CLR_B='\e[1;34m' # Bold Blue
 CLR_G='\e[32m' # Green
-NC='\033[0m' # No Color
+CLR_R='\e[31m' # Red
+NC='\e[0m' # No Color
 
 set -euo pipefail # exit on: error, undefined variable, pipefail
 
 # Run main part of this script only one time (if /initFinished does not exists!):
 if [ ! -f /initFinished ]; then
     echo -e "${CLR_B}[MAIN] Running startup script:${NC}"
+    SECONDS=0 #messure time
 
     # Wait for db to be ready: (https://docs.docker.com/compose/startup-order/)
     wait-for-it -t 0 ${DB_ADDR}:${DB_PORT}
@@ -158,11 +160,12 @@ if [ ! -f /initFinished ]; then
 
     # Run further scripts:
     echo -e "${CLR_B}[MAIN] run further scripts:${NC}"
-    chmod +x /data/scripts/*.sh
+    chmod +x /data/scripts/*
     run-parts --regex '.*sh$' /data/scripts/
 
     # Mark as finished:
     touch /initFinished
+    echo -e "Completed in $SECONDS seconds"
     echo -e "${CLR_B}[MAIN]${CLR_G} Finished setup!${NC}"
 fi
 
