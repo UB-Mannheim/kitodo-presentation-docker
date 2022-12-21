@@ -32,4 +32,11 @@ services:
       - ./volumes/fileadmin:/var/www/typo3/public/fileadmin/
     depends_on:
       - db
+      - solr
+    restart: unless-stopped
+  solr:
+    container_name: kitodo-presentation-solr
+    image: solr:8
+    ports:
+      - "0.0.0.0:8983:80"
     restart: unless-stopped
