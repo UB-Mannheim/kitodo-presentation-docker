@@ -13,7 +13,7 @@ EXPOSE 80
 # This Dockerfile aimes to install a working TYPO3 v9 instance with the kitodo/presentation extension
 # based on this guide: https://github.com/UB-Mannheim/kitodo-presentation/wiki
 
-# Update and install Tesseract v5: (https://notesalexp.org/tesseract-ocr/#tesseract_5.x)
+# Update and install packages:
 RUN apt-get update \
   && apt-get -y upgrade \
   && apt-get -y install -y --no-install-recommends \
@@ -22,11 +22,20 @@ RUN apt-get update \
     wget \
     jq \
     gettext \
-    # install kraken:
     python3 \
     python3-pip \
-  && pip install kraken \
-  && pip install kraken[pdf] \
+  && pip install virtualenv
+
+# Install OCR Engines: Tesseract v5 (https://notesalexp.org/tesseract-ocr/#tesseract_5.x) and Kraken (https://github.com/mittagessen/kraken)
+SHELL ["/bin/bash", "-c"]
+RUN \
+  # install kraken:
+  virtualenv -p python3 /opt/kraken_venv \
+  && source /opt/kraken_venv/bin/activate \
+    && pip install kraken \
+    && pip install kraken[pdf] \
+    && deactivate \
+# && export PATH=$PATH:/opt/kraken_venv/bin/ \
   # install tesseract:
   && echo "deb https://notesalexp.org/tesseract-ocr5/$(lsb_release -cs)/ $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/notesalexp.list > /dev/null \
   && apt-get update -oAcquire::AllowInsecureRepositories=true \
