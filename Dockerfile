@@ -22,6 +22,11 @@ RUN apt-get update \
     wget \
     jq \
     gettext \
+    # install kraken:
+    python3 \
+    python3-pip \
+  && pip install kraken \
+  && pip install kraken[pdf] \
   # install tesseract:
   && echo "deb https://notesalexp.org/tesseract-ocr5/$(lsb_release -cs)/ $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/notesalexp.list > /dev/null \
   && apt-get update -oAcquire::AllowInsecureRepositories=true \
