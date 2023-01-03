@@ -34,8 +34,14 @@ RUN \
   && source /opt/kraken_venv/bin/activate \
     && pip install kraken \
     && pip install kraken[pdf] \
+    && python3 -m pip install numpy==1.23.5 \
     && deactivate \
 # && export PATH=$PATH:/opt/kraken_venv/bin/ \
+  && /opt/kraken_venv/bin/kraken get 10.5281/zenodo.2577813 \
+  && /opt/kraken_venv/bin/kraken get 10.5281/zenodo.6891852 \
+  && mkdir /opt/kraken_models/ \
+  && wget https://ub-backup.bib.uni-mannheim.de/~stweil/tesstrain/kraken/digitue-gt/digitue_best.mlmodel -P /opt/kraken_models/ \
+  && wget https://ub-backup.bib.uni-mannheim.de/~stweil/tesstrain/kraken/german_handwriting/german_handwriting_best.mlmodel -P /opt/kraken_models/ \
   # install tesseract:
   && echo "deb https://notesalexp.org/tesseract-ocr5/$(lsb_release -cs)/ $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/notesalexp.list > /dev/null \
   && apt-get update -oAcquire::AllowInsecureRepositories=true \
