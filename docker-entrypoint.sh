@@ -42,7 +42,7 @@ if [ ! -f /initFinished ]; then
             {"type": "git", "url": "https://github.com/csidirop/dfg-viewer.git" },
             {"type": "git", "url": "https://github.com/csidirop/kitodo-presentation.git"},
             {"type": "git", "url": "https://github.com/csidirop/slub_digitalcollections.git" }]
-        | .require += {"csidirop/dfgviewer": "dev-5.3-ocr"}
+        | .require += {"csidirop/dfgviewer": "dev-master"}
         | . += {"minimum-stability": "dev"}' composer.json > composer-edit.json
     mv composer.json composer.json.bak
     mv composer-edit.json composer.json
@@ -50,15 +50,15 @@ if [ ! -f /initFinished ]; then
     vendor/bin/typo3 extensionmanager:extension:install dlf
     vendor/bin/typo3 extensionmanager:extension:install dfgviewer
     chown -R www-data:www-data .
-    chmod +x public/typo3conf/ext/dlf/Classes/Plugin/Tools/FullTextGenerationScripts/*.sh
+    # chmod +x public/typo3conf/ext/dlf/Classes/Plugin/Tools/FullTextGenerationScripts/*.sh
     ## Activate other useful extensions: (only TYPO3 v9)
     vendor/bin/typo3 extensionmanager:extension:install fluid_styled_content
-    vendor/bin/typo3 extensionmanager:extension:install adminpanel
+    # vendor/bin/typo3 extensionmanager:extension:install adminpanel
     vendor/bin/typo3 extensionmanager:extension:install belog
     vendor/bin/typo3 extensionmanager:extension:install beuser
     vendor/bin/typo3 extensionmanager:extension:install form
     vendor/bin/typo3 extensionmanager:extension:install info
-    vendor/bin/typo3 extensionmanager:extension:install redirects
+    # vendor/bin/typo3 extensionmanager:extension:install redirects
     vendor/bin/typo3 extensionmanager:extension:install rte_ckeditor
     vendor/bin/typo3 extensionmanager:extension:install tstemplate
     vendor/bin/typo3 extensionmanager:extension:install viewpage
