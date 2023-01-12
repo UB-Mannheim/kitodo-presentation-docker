@@ -36,7 +36,6 @@ RUN \
     && pip install kraken[pdf] \
     && python3 -m pip install numpy==1.23.5 \
     && deactivate \
-# && export PATH=$PATH:/opt/kraken_venv/bin/ \
   && /opt/kraken_venv/bin/kraken get 10.5281/zenodo.2577813 \
   && /opt/kraken_venv/bin/kraken get 10.5281/zenodo.6891852 \
   && mkdir /opt/kraken_models/ \
@@ -47,7 +46,6 @@ RUN \
   && source /opt/calamari_venv/bin/activate \
     && pip install calamari-ocr \
     && deactivate \
-# && export PATH=$PATH:/opt/calamari_venv/bin/ \
   # install tesseract:
   && echo "deb https://notesalexp.org/tesseract-ocr5/$(lsb_release -cs)/ $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/notesalexp.list > /dev/null \
   && apt-get update -oAcquire::AllowInsecureRepositories=true \
@@ -56,6 +54,9 @@ RUN \
   && apt-get install -y tesseract-ocr \
   # Get language data from UB Mannheim:
   && wget https://ub-backup.bib.uni-mannheim.de/~stweil/tesstrain/frak2021/tessdata_fast/frak2021_1.069.traineddata -O /usr/share/tesseract-ocr/5/tessdata/frak2021_1.069.traineddata
+
+# Update $PATH to include pip OCR Engines:
+ENV PATH="$PATH:/opt/kraken_venv/bin/:/opt/calamari_venv/bin/"
 
 # Cleanup:
 RUN apt-get purge -y \
