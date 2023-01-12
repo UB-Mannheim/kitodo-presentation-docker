@@ -37,32 +37,19 @@ services:
   solr:
     container_name: kitodo-presentation-solr
     image: solr:8
+    environment:
+      - PATH=/opt/solr/bin:/opt/docker-solr/scripts:/usr/local/openjdk-11/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
     user: root:root
-    command: bash -c "find '/opt/solr/bin/' -maxdepth 1 -type f -name '*' -exec ln -v -s -f {} '/usr/games/' ';' \; 
-              find '/opt/docker-solr/scripts' -maxdepth 1 -type f -name '*' -exec ln -v -s -f {} '/usr/games/' ';' \; 
-              find '/opt/java/openjdk/bin' -maxdepth 1 -type f -name '*' -exec ln -v -s -f {} '/usr/games/' ';' \; 
-              ls -l /usr/games/ 
-              && apt-get install lsof 
+    command: bash -c "apt-get install lsof 
               && cp -av /data/solrconfig/dlf /opt/solr/server/solr/configsets/ 
-              && chown -R solr /opt/solr/server/solr/configsets
+              && chown -R solr /opt/solr/server/solr/configsets 
               && mkdir -p /opt/solr/contrib/ocrsearch/lib 
               && cd  /opt/solr/contrib/ocrsearch/lib/ 
               && wget https://github.com/dbmdz/solr-ocrhighlighting/releases/download/wip/solr-ocrhighlighting-0.8.4-SNAPSHOT.jar 
-              && chown -R solr .
+              && chown -R solr . 
               && su -c 'solr-create -c presentation' solr"
-
-#TODO: find a better solution for broken $PATH ("su -c 'echo $PATH' solr/root" not the same as "echo $PATH" from rsp. users -> not finding the solr paths -> find and /usr/games workaround)
-#some commands worth keeping for the moment
-    # command: 
-              # && cd /opt/docker-solr/scripts/
-              # && su -c 'echo $$PATH' solr"
-              # && su -c 'PATH=$$PATH:/opt/docker-solr/scripts && solr-create -c presentation' solr"
-    # command: solr-create -c presentation
-    # command: solr-precreate my_core /data/solrconfig/dlf
-
     volumes:
       - ./volumes/solr/solrconfig:/data/solrconfig/
-      - ./volumes/solr/solrsetup.sh:/data/solrsetup.sh
       # - ./volumes/solr/solrdata:/var/solr
     ports:
       - "0.0.0.0:8983:8983"
