@@ -38,9 +38,12 @@ services:
     container_name: kitodo-presentation-solr
     image: solr:8
     environment:
+      - SOLR_OPTS=-XX:-UseLargePages #Fixes JVM out of memory error
       - PATH=/opt/solr/bin:/opt/docker-solr/scripts:/usr/local/openjdk-11/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
     user: root:root
     command: bash -c "apt-get install lsof 
+              && echo '* hard nofile 65000' >> /etc/security/limits.conf 
+              && echo '* soft nofile 65000' >> /etc/security/limits.conf 
               && cp -av /data/solrconfig/dlf /opt/solr/server/solr/configsets/ 
               && chown -R solr /opt/solr/server/solr/configsets 
               && mkdir -p /opt/solr/contrib/ocrsearch/lib 
