@@ -26,7 +26,7 @@ RUN apt-get update \
     python3-pip \
   && pip install virtualenv
 
-# Install OCR Engines: Tesseract v5 (https://notesalexp.org/tesseract-ocr/#tesseract_5.x), Kraken (https://github.com/mittagessen/kraken) and Calamari ()
+# Install OCR Engines: Tesseract v5 (https://notesalexp.org/tesseract-ocr/#tesseract_5.x), Kraken (https://github.com/mittagessen/kraken) and Calamari (https://github.com/Calamari-OCR/calamari)
 SHELL ["/bin/bash", "-c"]
 RUN \
   # install kraken:
