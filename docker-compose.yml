@@ -48,9 +48,9 @@ services:
               && chown -R solr /opt/solr/server/solr/configsets 
               && mkdir -p /opt/solr/contrib/ocrsearch/lib 
               && cd  /opt/solr/contrib/ocrsearch/lib/ 
-              && wget https://github.com/dbmdz/solr-ocrhighlighting/releases/download/wip/solr-ocrhighlighting-0.8.4-SNAPSHOT.jar 
+              && wget -q https://github.com/dbmdz/solr-ocrhighlighting/releases/download/wip/solr-ocrhighlighting-0.8.4-SNAPSHOT.jar 
               && chown -R solr . 
-              && su -c 'solr-create -c presentation' solr"
+              && su -c 'solr-precreate presentation' solr"
     volumes:
       - ./volumes/solr/solrconfig:/data/solrconfig/
       # - ./volumes/solr/solrdata:/var/solr
