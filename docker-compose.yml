@@ -38,21 +38,12 @@ services:
     container_name: kitodo-presentation-solr
     image: solr:8
     environment:
+      # All vars: /etc/default/solr.in.sh
       - SOLR_OPTS=-XX:-UseLargePages #Fixes JVM out of memory error
-      - PATH=/opt/solr/bin:/opt/docker-solr/scripts:/usr/local/openjdk-11/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-    user: root:root
-    command: bash -c "apt-get install lsof 
-              && echo '* hard nofile 65000' >> /etc/security/limits.conf 
-              && echo '* soft nofile 65000' >> /etc/security/limits.conf 
-              && cp -av /data/solrconfig/dlf /opt/solr/server/solr/configsets/ 
-              && chown -R solr /opt/solr/server/solr/configsets 
-              && mkdir -p /opt/solr/contrib/ocrsearch/lib 
-              && cd  /opt/solr/contrib/ocrsearch/lib/ 
-              && wget -q https://github.com/dbmdz/solr-ocrhighlighting/releases/download/wip/solr-ocrhighlighting-0.8.4-SNAPSHOT.jar 
-              && chown -R solr . 
-              && su -c 'solr-precreate presentation' solr"
+    command: solr-precreate presentation
     volumes:
-      - ./volumes/solr/solrconfig:/data/solrconfig/
+      - ./volumes/solr/solrconfig/dlf:/var/solr/data/configsets/dlf
+      - ./volumes/solr/plugin:/opt/solr/contrib/ocrsearch/lib/
       # - ./volumes/solr/solrdata:/var/solr
     ports:
       - "0.0.0.0:8983:8983"
