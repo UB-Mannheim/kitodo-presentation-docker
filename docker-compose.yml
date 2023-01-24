@@ -40,7 +40,7 @@ services:
     environment:
       # All vars: /etc/default/solr.in.sh
       - SOLR_OPTS=-XX:-UseLargePages #Fixes JVM out of memory error
-    command: solr-precreate presentation
+    command: solr-precreate dlf
     volumes:
       - ./volumes/solr/solrconfig/dlf:/var/solr/data/configsets/dlf
       - ./volumes/solr/plugin:/opt/solr/contrib/ocrsearch/lib/
