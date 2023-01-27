@@ -59,7 +59,7 @@ limitations under the License.
             <!-- TODO: check why some filters are outcommented -->
             <analyzer type="index">
                 <!-- For converting OCR to plaintext -->
-                <charFilter class="de.digitalcollections.solrocr.lucene.filters.OcrCharFilterFactory" />
+                <charFilter class="solrocr.OcrCharFilterFactory" />
 
                 <charFilter class="solr.HTMLStripCharFilterFactory" />
                 <tokenizer class="solr.WhitespaceTokenizerFactory" />
