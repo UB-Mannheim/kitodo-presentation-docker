@@ -48,3 +48,5 @@ services:
     ports:
       - "0.0.0.0:8983:8983"
     restart: unless-stopped
+    profiles:
+      - with-solr
