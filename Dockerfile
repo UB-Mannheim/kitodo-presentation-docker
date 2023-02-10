@@ -1,7 +1,7 @@
 # Use TYPO3 v10 base image based on Apache2 on Debian 11 bullseye
 # https://hub.docker.com/r/csidirop/typo3-v10/
 # https://github.com/csidirop/typo3-docker/tree/typo3-v10.x
-FROM csidirop/typo3-v10:10.4-221101
+FROM csidirop/typo3-v10:10.4-230202
 
 LABEL authors='Christos Sidiropoulos <Christos.Sidiropoulos@uni-mannheim.de>'
 
@@ -30,6 +30,6 @@ RUN apt-get purge -y \
 COPY docker-entrypoint.sh /
 ADD data/ /data
 # Fix wrong line endings in the startup script and just to be save in data files:
-RUN sed -i.bak 's/\r$//' /docker-entrypoint.sh /data/*
+RUN sed -i.bak 's/\r$//' /docker-entrypoint.sh /data/*.*
 # Run startup script & start apache2 (https://github.com/docker-library/php/blob/master/7.4/bullseye/apache/apache2-foreground)
 CMD /docker-entrypoint.sh & apache2-foreground
