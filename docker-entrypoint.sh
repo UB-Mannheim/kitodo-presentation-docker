@@ -37,7 +37,8 @@ if [ ! -f /initFinished ]; then
     # Install Kitodo.Presentation:
     printHeadline "Install Presentation:"
     composer config platform.php 8.2
-    composer require kitodo/presentation
+    composer require kitodo/presentation:dev-master
+    composer require slub/dfgviewer:dev-master
     composer update
     vendor/bin/typo3 extension:setup
 
