@@ -50,6 +50,7 @@ if [ ! -f /initFinished ]; then
     vendor/bin/typo3cms configuration:set SYS/fileCreateMask 0660
     vendor/bin/typo3cms configuration:set SYS/folderCreateMask 2770
     vendor/bin/typo3cms configuration:set SYS/systemLocale en_US.UTF-8
+    vendor/bin/typo3cms configuration:set SYS/trustedHostsPattern '.*\.?localhost\.?.*' #TODO: get $HOST and refactor + use usefull regex
     ## Set right permissions for existing folders:
     chmod 2770 public/typo3conf/ext/                                    # set permissions for ext folder: owner and group can read, write and execute + inherit permissions
     find .       -name ext\* -prune -o -name \* -exec chmod 2770 {} \;  # set permissions for all other: owner and group can read, write and execute + inherit permissions
