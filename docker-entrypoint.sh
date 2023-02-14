@@ -36,6 +36,10 @@ if [ ! -f /initFinished ]; then
     composer require kitodo/presentation
     vendor/bin/typo3 extensionmanager:extension:install dlf
     chown -R www-data:www-data .
+    ## Activate other useful extensions:
+    ### .... INSERT HERE ....
+    vendor/bin/typo3 extensionmanager:extension:install info # (activating info (or any other) is a workaround so the site config is red correctly)
+    vendor/bin/typo3 extension:list
 
     # Setup Kitodo.Presentation: (https://github.com/UB-Mannheim/kitodo-presentation/wiki/Installation-Kitodo.Presentation)
     echo -e "${CLR_B}[MAIN] Setup Kitodo.Presentation:${NC}"
