@@ -34,7 +34,6 @@ RUN \
   && source /opt/kraken_venv/bin/activate \
     && pip install kraken \
     && pip install kraken[pdf] \
-    && python3 -m pip install numpy==1.23.5 \
     && deactivate \
   && /opt/kraken_venv/bin/kraken get 10.5281/zenodo.2577813 \
   && /opt/kraken_venv/bin/kraken get 10.5281/zenodo.6891852 \
