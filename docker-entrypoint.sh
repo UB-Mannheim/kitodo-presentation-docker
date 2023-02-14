@@ -36,6 +36,10 @@ if [ ! -f /initFinished ]; then
     composer require kitodo/presentation:^4
     vendor/bin/typo3 extensionmanager:extension:install dlf
     chown -R www-data:www-data .
+    ## Activate other useful extensions:
+    ### .... INSERT HERE ....
+    vendor/bin/typo3 extensionmanager:extension:install info # (activating info (or any other) is a workaround so the site config is red correctly)
+    vendor/bin/typo3 extension:list
 
     # Setup Kitodo.Presentation: (https://github.com/UB-Mannheim/kitodo-presentation/wiki/Installation-Kitodo.Presentation)
     echo -e "${CLR_B}[MAIN] Setup Kitodo.Presentation:${NC}"
@@ -54,7 +58,12 @@ if [ ! -f /initFinished ]; then
     find public/ -name index.html -exec chmod -v 0660 {} \;             # set permissions for index.html: owner and group can read and write
 
     # Insert TYPO3 site content:
+
+    ## Setup and update pages:
+    echo -e "${CLR_B}[MAIN] Setup DFG-Viewer: Update DB${NC}"
+    mysql -h db --user=$DB_USER --password=$DB_PASSWORD -v -D ${DB_NAME} -e "INSERT INTO be_dashboards VALUES (1,0,0,0,1,0,0,0,0,'3b40de016dfd4ba9c78a77acae795b67c5ae6dee','My dashboard','{\"58e0b3ef88b5520d21317f6f12c962e4f6336019\":{\"identifier\":\"t3information\"},\"b64400e7b9bc9da61c66dd05b90173ef8a0f4d73\":{\"identifier\":\"t3news\"},\"8827c68f64868f01727a2c3a1cfdc9785ef01846\":{\"identifier\":\"sysLogErrors\"},\"5f62783836befcbb19ce903265794e26152705c3\":{\"identifier\":\"t3securityAdvisories\"},\"202988d35cdc05eb4d810430930c3452e4ae936d\":{\"identifier\":\"failedLogins\"},\"ee4b3965195d8b863885499fa9780576d079748d\":{\"identifier\":\"typeOfUsers\"}}');"
     ## Main site content elements:
+    # echo -e "${CLR_B}[MAIN] Setup DFG-Viewer: Update DB: Insert sites and properties${NC}"
     ### .... INSERT HERE ....
 
     # Insert TYPO3 site content translations:
@@ -83,10 +92,6 @@ if [ ! -f /initFinished ]; then
     apt-get autoremove -y
     apt-get clean
     rm -rf /var/lib/apt/lists/*
-
-    # Check status:
-    echo -e "${CLR_B}[MAIN] Check apache status:${NC}"
-    service apache2 status
 
     # Mark as finished:
     touch /initFinished
