@@ -6,11 +6,11 @@ CLR_G='\e[32m' # Green
 CLR_R='\e[31m' # Red
 NC='\e[0m' # No Color
 
-set -euo pipefail # exit on: error, undefined variable, pipefail
+# check if solr is running:
+wait-for-it -t 5 solr:8983
+if [[ $? == 0 ]]; then solr=1; else solr=0; fi
 
-# check if solr is running: # TODO: found a nicer way
-ping -c 1 solr > /dev/null 2>&1
-[[ $? == 0 ]] && solr=1
+set -euo pipefail # exit on: error, undefined variable, pipefail
 
 # Run main part of this script only one time (if /initFinished does not exists!):
 if [ ! -f /initFinished ]; then
