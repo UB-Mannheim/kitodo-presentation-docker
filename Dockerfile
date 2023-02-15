@@ -18,6 +18,7 @@ RUN apt-get update \
     lsb-release \
     wget \
     jq \
+    iputils-ping\
     gettext \
     python3 \
     python3-pip \

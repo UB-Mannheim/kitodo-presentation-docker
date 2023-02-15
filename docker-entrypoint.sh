@@ -8,6 +8,10 @@ NC='\e[0m' # No Color
 
 set -euo pipefail # exit on: error, undefined variable, pipefail
 
+# check if solr is running: # TODO: found a nicer way
+ping -c 1 solr > /dev/null 2>&1
+[[ $? == 0 ]] && solr=1
+
 # Run main part of this script only one time (if /initFinished does not exists!):
 if [ ! -f /initFinished ]; then
     echo -e "${CLR_B}[MAIN] Running startup script:${NC}"
@@ -73,6 +77,8 @@ if [ ! -f /initFinished ]; then
     find public/ -name index.html -exec chmod -v 0660 {} \;             # set permissions for index.html: owner and group can read and write
     ## Presentation options:
     vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/fileGrpImages 'DEFAULT,DEFAULTPLUS,MASTER,MAX,ORIGINAL' # Add additional fileGrps: ORIGINAL (SLUB), MASTER (TU Braunschweig), DEFAULTPLUS (UB HD)
+    ## Solr options:
+    [[ $solr == 1 ]] && vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/solrHost "solr" # Inside the container solr is reacheble under 'solr'
     ## OCR-On-Demand options:
     vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/fulltextFolder 'fileadmin/fulltextFolder'
     vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/fulltextTempFolder 'fileadmin/_temp_/ocrTempFolder/fulltext'
@@ -113,6 +119,21 @@ if [ ! -f /initFinished ]; then
     ### Embed external links: 2 main site header or footer
     mysql -h db --user=$DB_USER --password=$DB_PASSWORD -v -D ${DB_NAME} -e "INSERT INTO tt_content (pid, cruser_id, CType, header) VALUES ('1', '1', 'div', 'Divider');"
     mysql -h db --user=$DB_USER --password=$DB_PASSWORD -v -D ${DB_NAME} -e "INSERT INTO tt_content (pid, cruser_id, CType, pages) VALUES ('1', '1', 'menu_section_pages', '2');" # Unterseiten von viewer: Datenschutzerklärung, Impressum
+    ### Add solr related pages and settings:
+    if [ $solr == 1 ]; then
+        #### New Tenant & set core in List -> Solr Cores
+        mysql -h db --user=$DB_USER --password=$DB_PASSWORD -D ${DB_NAME} -e "INSERT INTO tx_dlf_solrcores (pid, cruser_id, label, index_name) VALUES (3, 1, 'Solr Core (PID 1)','dlf');"
+        #### Pages and contentelements #TODO cleanup!
+        #### PageView: (not needed with DFG-Viewer)
+        # mysql -h db --user=$DB_USER --password=$DB_PASSWORD -D ${DB_NAME} -e "INSERT INTO pages VALUES (7,1,0,0,1,0,0,0,0,'',64,'',0,0,0,0,NULL,0,'',0,0,'',0,0,0,0,0,0,1,0,31,27,0,'Seitenansicht','/seitenansicht',1,'',0,0,'',0,0,'',0,'',0,0,'',0,'',0,'',0,1674036059,'','',0,'','','',1,0,0,0,'',0,0,'','','',0,0,'',0,0,'','',0,'','',0,'',0)"
+        # mysql -h db --user=$DB_USER --password=$DB_PASSWORD -D ${DB_NAME} -e "INSERT INTO tt_content VALUES (11,'',7,0,0,1,0,0,0,0,'',256,0,0,0,0,NULL,0,'',0,0,'',0,0,0,0,0,0,'list','','',NULL,0,0,0,0,0,0,0,2,0,0,0,'default',0,0,0,'','',NULL,NULL,0,'','',0,'0','dlf_pageview',1,0,NULL,0,'','','',0,0,0,'<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\" ?>\n<T3FlexForms>\n    <data>\n        <sheet index=\"sDEF\">\n            <language index=\"lDEF\">\n                <field index=\"pages\">\n                    <value index=\"vDEF\">3</value>\n                </field>\n                <field index=\"excludeOther\">\n                    <value index=\"vDEF\">1</value>\n                </field>\n                <field index=\"features\">\n                    <value index=\"vDEF\"></value>\n                </field>\n                <field index=\"elementId\">\n                    <value index=\"vDEF\">tx-dlf-map</value>\n                </field>\n                <field index=\"crop\">\n                    <value index=\"vDEF\">0</value>\n                </field>\n                <field index=\"useInternalProxy\">\n                    <value index=\"vDEF\">0</value>\n                </field>\n                <field index=\"magnifier\">\n                    <value index=\"vDEF\">0</value>\n                </field>\n                <field index=\"basketButton\">\n                    <value index=\"vDEF\">0</value>\n                </field>\n                <field index=\"targetBasket\">\n                    <value index=\"vDEF\"></value>\n                </field>\n                <field index=\"templateFile\">\n                    <value index=\"vDEF\"></value>\n                </field>\n            </language>\n        </sheet>\n    </data>\n</T3FlexForms>','',0,'',NULL,'','',NULL,124,0,0,0,0,0)"
+        #### ListView:
+        mysql -h db --user=$DB_USER --password=$DB_PASSWORD -D ${DB_NAME} -e "INSERT INTO pages VALUES (8,1,1675264343,0,1,0,0,0,0,'',288,'',0,0,0,0,NULL,0,'',0,0,'',0,0,0,0,0,0,1,0,31,27,0,'Suchergebnisse','/suchergebnisse',1,'',0,0,'',0,0,'',0,'',0,0,'',0,'',0,'',0,1674036774,'','',0,'','','',1,0,0,0,'',0,0,'','','',0,0,'',0,0,'','',0,'','',0,'',0)"
+        mysql -h db --user=$DB_USER --password=$DB_PASSWORD -D ${DB_NAME} -e "INSERT INTO tt_content VALUES (12,'',8,0,0,1,0,0,0,0,'',256,0,0,0,0,NULL,0,'',0,0,'',0,0,0,0,0,0,'list','','',NULL,0,0,0,0,0,0,0,2,0,0,0,'default',0,0,0,'','',NULL,NULL,0,'','',0,'0','dlf_listview',1,0,NULL,0,'','','',0,0,0,'<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\" ?>\n<T3FlexForms>\n    <data>\n        <sheet index=\"sDEF\">\n            <language index=\"lDEF\">\n                <field index=\"pages\">\n                    <value index=\"vDEF\">3</value>\n                </field>\n                <field index=\"limit\">\n                    <value index=\"vDEF\">25</value>\n                </field>\n                <field index=\"targetPid\">\n                    <value index=\"vDEF\">2</value>\n                </field>\n                <field index=\"getTitle\">\n                    <value index=\"vDEF\">0</value>\n                </field>\n                <field index=\"basketButton\">\n                    <value index=\"vDEF\">0</value>\n                </field>\n                <field index=\"targetBasket\">\n                    <value index=\"vDEF\"></value>\n                </field>\n                <field index=\"templateFile\">\n                    <value index=\"vDEF\"></value>\n                </field>\n            </language>\n        </sheet>\n    </data>\n</T3FlexForms>','',0,'',NULL,'','',NULL,124,0,0,0,0,0)"
+        #### Search:
+        mysql -h db --user=$DB_USER --password=$DB_PASSWORD -D ${DB_NAME} -e "INSERT INTO pages VALUES (9,1,0,0,1,0,0,0,0,'',400,'',0,0,0,0,NULL,0,'',0,0,'',0,0,0,0,0,0,1,0,31,27,0,'Suche','/suche',1,'',0,0,'',0,0,'',0,'',0,0,'',0,'',0,'',0,0,'','',0,'','','',0,0,0,0,'',0,0,'','','',0,0,'',0,0,'','',0,'','',0,'',0)"
+        mysql -h db --user=$DB_USER --password=$DB_PASSWORD -D ${DB_NAME} -e "INSERT INTO tt_content VALUES (13,'',9,0,0,1,0,0,0,0,'',256,0,0,0,0,NULL,0,'',0,0,'',0,0,0,0,0,0,'list','','',NULL,0,0,0,0,0,0,0,2,0,0,0,'default',0,0,0,'','',NULL,NULL,0,'','',0,'0','dlf_search',1,0,NULL,0,'','','',0,0,0,'<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\" ?>\n<T3FlexForms>\n    <data>\n        <sheet index=\"sDEF\">\n            <language index=\"lDEF\">\n                <field index=\"pages\">\n                    <value index=\"vDEF\">3</value>\n                </field>\n                <field index=\"fulltext\">\n                    <value index=\"vDEF\">1</value>\n                </field>\n                <field index=\"searchIn\">\n                    <value index=\"vDEF\">none</value>\n                </field>\n                <field index=\"resetFacets\">\n                    <value index=\"vDEF\">0</value>\n                </field>\n                <field index=\"sortingFacets\">\n                    <value index=\"vDEF\">count</value>\n                </field>\n                <field index=\"suggest\">\n                    <value index=\"vDEF\">1</value>\n                </field>\n                <field index=\"showLogicalPageField\">\n                    <value index=\"vDEF\">0</value>\n                </field>\n                <field index=\"showSingleResult\">\n                    <value index=\"vDEF\">0</value>\n                </field>\n                <field index=\"targetPid\">\n                    <value index=\"vDEF\">8</value>\n                </field>\n                <field index=\"templateFile\">\n                    <value index=\"vDEF\"></value>\n                </field>\n                <field index=\"solrcore\">\n                    <value index=\"vDEF\">1</value>\n                </field>\n                <field index=\"extendedSlotCount\">\n                    <value index=\"vDEF\">1</value>\n                </field>\n                <field index=\"extendedFields\">\n                    <value index=\"vDEF\">title,author,repository,shelfmark,issue,place,year</value>\n                </field>\n                <field index=\"collections\">\n                    <value index=\"vDEF\"></value>\n                </field>\n                <field index=\"facets\">\n                    <value index=\"vDEF\"></value>\n                </field>\n                <field index=\"facetCollections\">\n                    <value index=\"vDEF\"></value>\n                </field>\n                <field index=\"limitFacets\">\n                    <value index=\"vDEF\">15</value>\n                </field>\n            </language>\n        </sheet>\n    </data>\n</T3FlexForms>','',0,'',NULL,'','',NULL,124,0,0,0,0,0)"
+    fi
 
     # Insert TYPO3 site content translations:
     ## Create Site configuration with two languages (en & de):
@@ -164,5 +185,6 @@ if [ ! -f /initFinished ]; then
     echo -e "${CLR_B}[MAIN]${CLR_G} Finished setup!${NC}"
 fi
 
-echo -e "${CLR_B}[MAIN]${CLR_G} Site http://${HOST} ${NC}"
+echo -e "${CLR_B}[MAIN]${CLR_G} Site:    http://${HOST} ${NC}"
 echo -e "${CLR_B}[MAIN]${CLR_G} Backend: http://${HOST}/typo3/ ${NC}"
+[[ $solr == 1 ]] && echo -e "${CLR_B}[MAIN]${CLR_G} Solr:    http://${HOST}:8983 ${NC}"
