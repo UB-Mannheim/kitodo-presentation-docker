@@ -5,9 +5,6 @@ FROM csidirop/typo3-v10:10.4-230202
 
 LABEL authors='Christos Sidiropoulos <Christos.Sidiropoulos@uni-mannheim.de>'
 
-ENV DB_ADDR=localhost
-ENV DB_PORT=3306
-
 EXPOSE 80
 
 # This Dockerfile aimes to install a working TYPO3 v9 instance with the kitodo/presentation extension
