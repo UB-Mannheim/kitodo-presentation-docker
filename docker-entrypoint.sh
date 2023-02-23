@@ -102,6 +102,11 @@ if [ ! -f /initFinished ]; then
     apt-get clean
     rm -rf /var/lib/apt/lists/*
 
+    # Run further scripts:
+    echo -e "${CLR_B}[MAIN] run further scripts:${NC}"
+    chmod +x /data/scripts/*.sh
+    run-parts --regex '.*sh$' /data/scripts/
+
     # Mark as finished:
     touch /initFinished
     echo -e "${CLR_B}[MAIN]${CLR_G} Finished setup!${NC}"
