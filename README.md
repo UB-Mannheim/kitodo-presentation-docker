@@ -69,6 +69,12 @@ or
 Typo3 backend can be accessed at: http://localhost/typo3/
 
 
+### Run further scripts:
+You can customize your setup by adding additional scripts! Just throw them into `/data/scripts/` and make sure they are ending with `.sh`. As soon as the entryscript has setup TYPO3 and the extensions it will run the additional scripts.   
+**Because the scripts will be executed as root they can break the system!**
+
+You can temporally disable your scripts by changing the extension to something else like `.off`. You can even add more directories your scripts can refer to.
+
 ## Code and User Feedback
 Please file your bug reports to [issues](https://github.com/UB-Mannheim/kitodo-presentation-docker/issues).
 Make sure that you are using the latest version of the software before sending a report.
