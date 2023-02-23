@@ -33,8 +33,15 @@ if [ ! -f /initFinished ]; then
     # Install Kitodo.Presentation v4.x and DFG-Viewer main-branch:
     echo -e "${CLR_B}[MAIN] Install Kitodo.Presentation 4.x and DFG-Viewer:${NC}"
     composer config platform.php 7.4
-    composer require kitodo/presentation:dev-master
-    composer require slub/dfgviewer:dev-master
+    ## Add the custom repositories to the composer file:
+    jq '  .repositories += [
+            {"type": "git", "url": "https://github.com/csidirop/dfg-viewer.git" },
+            {"type": "git", "url": "https://github.com/csidirop/kitodo-presentation.git"}]
+        | .require += {"csidirop/dfgviewer": "6.x"}
+        | . += {"minimum-stability": "dev"}' composer.json > composer-edit.json
+    mv composer.json composer.json.bak
+    mv composer-edit.json composer.json
+    composer update
     vendor/bin/typo3 extensionmanager:extension:install dlf
     vendor/bin/typo3 extensionmanager:extension:install dfgviewer
     chown -R www-data:www-data .
