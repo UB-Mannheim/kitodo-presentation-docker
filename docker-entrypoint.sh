@@ -46,7 +46,7 @@ if [ ! -f /initFinished ]; then
             {"type": "git", "url": "https://github.com/csidirop/dfg-viewer.git" },
             {"type": "git", "url": "https://github.com/csidirop/kitodo-presentation.git"},
             {"type": "git", "url": "https://github.com/csidirop/slub_digitalcollections.git" }]
-        | .require += {"csidirop/dfgviewer": "dev-update-ocr-merge"}
+        | .require += {"csidirop/dfgviewer": "dev-6.x-ocr"}
         | . += {"minimum-stability": "dev"}' composer.json > composer-edit.json
     mv composer.json composer.json.bak
     mv composer-edit.json composer.json
