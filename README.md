@@ -59,7 +59,7 @@ The following table shows the default values and a short description.
 The other 5 variables are set in the docker-compose.yml and should not be changed.
 
 ### solr
-Apache Solr is an open-source search platform with  full-text search, hit highlighting, faceted search and real-time indexing.
+Apache Solr is an open-source search platform with full-text search, hit highlighting, faceted search and real-time indexing.
 To create an additional solr container use the docker profile `with-solr` when starting the containers.
 
 ### Run images:
@@ -70,7 +70,7 @@ or with solr
     docker compose --profile with-solr up
 
 ### Ready:
-Typo3 backend can be accessed at: <http://localhost/typo3/>
+TYPO3 backend can be accessed at: <http://localhost/typo3/>
 
 ## Code and User Feedback
 Please file your bug reports to [issues](https://github.com/UB-Mannheim/kitodo-presentation-docker/issues).
@@ -83,7 +83,13 @@ This also means making sure that old docker caches/images/containers are not pre
   - otherwise remove it with `docker rmi <image-ids>`
 - no presentation-containers present:
   - `docker container ls -a` should not show any kitodo-presentation container
-  - run `docker compose down` to "stop containers and remove containers, networks, volumes, and images created by `docker compose up`"
   - run `docker rm <container_ID/NAME>` if anything kitodo-presentation related still present
 - build without using cached layers:
   - `docker compose build --no-cache`
+
+The safest way to terminate the container is to run:
+
+  - `docker compose down` or
+  - `docker compose --profile with-solr down`
+
+to "stop containers and remove containers, networks, volumes, and images created by `docker compose up`"
