@@ -5,7 +5,7 @@ services:
     container_name: kitodo-presentation-db
     image: mariadb:10
     environment:
-      - MARIADB_DATABASE=typo3-update
+      - MARIADB_DATABASE=typo3-dfgviewer-v6-ocr
       - MARIADB_ROOT_PASSWORD=$MARIADB_ROOT_PASSWORD
       - MARIADB_USER=$MARIADB_USER
       - MARIADB_PASSWORD=$MARIADB_PASSWORD
@@ -16,14 +16,14 @@ services:
     restart: unless-stopped
   main:
     build: .
-    image: kitodo/dfgviewer:update-solr
+    image: kitodo/dfgviewer:6.x-ocr
     container_name: kitodo-presentation-main
     ports:
       - "0.0.0.0:$PORT:80"
     environment:
       - DB_ADDR=db
       - DB_PORT=3306
-      - DB_NAME=typo3-update
+      - DB_NAME=typo3-dfgviewer-v6-ocr
       - DB_USER=$MARIADB_USER
       - DB_PASSWORD=$MARIADB_PASSWORD
       - TYPO3_ADMIN_USER=$TYPO3_ADMIN_USER
