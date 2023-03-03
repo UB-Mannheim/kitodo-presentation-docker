@@ -9,8 +9,6 @@ services:
       - MARIADB_ROOT_PASSWORD=$MARIADB_ROOT_PASSWORD
       - MARIADB_USER=$MARIADB_USER
       - MARIADB_PASSWORD=$MARIADB_PASSWORD
-    ports:
-      - "127.0.0.1:3307:3306"
     #volumes:
     #  - ./volumes/database:/var/lib/mysql
     restart: unless-stopped
