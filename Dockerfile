@@ -14,7 +14,6 @@ EXPOSE 80
 RUN apt-get update \
   && apt-get -y upgrade \
   && apt-get -y install -y --no-install-recommends \
-    apt-transport-https \
     lsb-release \
     wget \
     jq \
@@ -56,7 +55,6 @@ ENV PATH="$PATH:/opt/kraken_venv/bin/:/opt/calamari_venv/bin/"
 
 # Cleanup:
 RUN apt-get purge -y \
-        apt-transport-https \
         lsb-release \
     && apt-get autoremove -y \
     && apt-get clean \
