@@ -7,7 +7,7 @@ LABEL authors='Christos Sidiropoulos <Christos.Sidiropoulos@uni-mannheim.de>'
 
 EXPOSE 80
 
-# This Dockerfile aimes to install a working TYPO3 v9 instance with the kitodo/presentation extension
+# This Dockerfile aims to install a working TYPO3 v10 instance with the kitodo/presentation extension
 # based on this guide: https://github.com/UB-Mannheim/kitodo-presentation/wiki
 
 # Update and install packages:
