@@ -27,7 +27,7 @@ SHELL ["/bin/bash", "-c"]
 RUN \
   # install kraken:
   virtualenv -p python3 /opt/kraken_venv \
-  && source /opt/kraken_venv/bin/activate \
+  && . /opt/kraken_venv/bin/activate \
     && pip install kraken \
     && pip install kraken[pdf] \
     && deactivate \
@@ -38,7 +38,7 @@ RUN \
   && wget https://ub-backup.bib.uni-mannheim.de/~stweil/tesstrain/kraken/german_handwriting/german_handwriting_best.mlmodel -P /opt/kraken_models/ \
   # install calamari:
   && virtualenv -p python3 /opt/calamari_venv \
-  && source /opt/calamari_venv/bin/activate \
+  && . /opt/calamari_venv/bin/activate \
     && pip install calamari-ocr \
     && deactivate \
   # install tesseract:
