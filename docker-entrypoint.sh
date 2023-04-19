@@ -129,7 +129,7 @@ if [ ! -f /initFinished ]; then
 
     # Run further scripts:
     echo -e "${CLR_B}[MAIN] run further scripts:${NC}"
-    chmod +x /data/scripts/*.sh
+    chmod +x /data/scripts/*
     run-parts --regex '.*sh$' /data/scripts/
 
     # Mark as finished:
