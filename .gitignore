@@ -1,4 +1,5 @@
 *~
 /data/scripts/*.*
-/volumes/
+/volumes/fileadmin/
+/volumes/solr/solrdata/
 .env

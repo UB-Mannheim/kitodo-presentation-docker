@@ -59,12 +59,16 @@ The following table shows the default values and a short description.
 
 The other 5 variables are set in the docker-compose.yml and should not be changed.
 
+### solr
+Apache Solr is an open-source search platform with  full-text search, hit highlighting, faceted search and real-time indexing.
+To create an additional solr container use the docker profile `with-solr` when starting the containers.
+
 ### Run images:
     docker compose up
 
-or
+or with solr
 
-    docker-compose up
+    docker compose --profile with-solr up
 
 ### Ready:
 Typo3 backend can be accessed at: http://localhost/typo3/
