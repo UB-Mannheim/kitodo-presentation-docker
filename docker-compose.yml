@@ -31,4 +31,21 @@ services:
       - ./volumes/fileadmin:/var/www/typo3/public/fileadmin/
     depends_on:
       - db
+      - solr
     restart: unless-stopped
+  solr:
+    container_name: kitodo-presentation-solr
+    image: solr:8
+    environment:
+      # All vars: /etc/default/solr.in.sh
+      - SOLR_OPTS=-XX:-UseLargePages #Fixes JVM out of memory error
+    command: solr-precreate dlf /var/solr/data/configsets/dlf
+    volumes:
+      - ./volumes/solr/solrconfig/dlf:/var/solr/data/configsets/dlf
+      - ./volumes/solr/plugin:/opt/solr/contrib/ocrsearch/lib/
+      # - ./volumes/solr/solrdata:/var/solr
+    ports:
+      - "0.0.0.0:8983:8983"
+    restart: unless-stopped
+    profiles:
+      - with-solr
