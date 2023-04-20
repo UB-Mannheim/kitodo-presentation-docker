@@ -1,1 +1,2 @@
-All scripts in this directory will be execuded after the docker-entrypoint script has been succesfully executed.
+All scripts with `.sh` endings in this directory will be executed after the docker-entrypoint script has been successfully executed.
+You can temporally disable your scripts by changing the extension to something else like `.off`. You can even add more directories your scripts can refer to.

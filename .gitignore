@@ -2,5 +2,4 @@
 /data/scripts/*.*
 /volumes/fileadmin/
 /volumes/solr/solrdata/
-.markdownlint.json
 .env
