@@ -71,7 +71,7 @@ or with solr
     docker compose --profile with-solr up
 
 ### Ready:
-Typo3 backend can be accessed at: http://localhost/typo3/
+TYPO3 backend can be accessed at: http://localhost/typo3/
 
 
 ### Run further scripts:
