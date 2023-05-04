@@ -43,10 +43,10 @@ if [ ! -f /initFinished ]; then
     composer config platform.php 7.4
     ## Add the custom repositories to the composer file:
     jq '  .repositories += [
-            {"type": "git", "url": "https://github.com/csidirop/dfg-viewer.git" },
-            {"type": "git", "url": "https://github.com/csidirop/kitodo-presentation.git"},
+            {"type": "git", "url": "https://github.com/UB-Mannheim/dfg-viewer.git" },
+            {"type": "git", "url": "https://github.com/UB-Mannheim/kitodo-presentation.git"},
             {"type": "git", "url": "https://github.com/csidirop/slub_digitalcollections.git" }]
-        | .require += {"csidirop/dfgviewer": "dev-6.x-ocr"}
+        | .require += {"ub-mannheim/dfgviewer": "dev-6.x-ocr"}
         | . += {"minimum-stability": "dev"}' composer.json > composer-edit.json
     mv composer.json composer.json.bak
     mv composer-edit.json composer.json
