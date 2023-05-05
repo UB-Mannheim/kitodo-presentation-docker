@@ -45,7 +45,7 @@ if [ ! -f /initFinished ]; then
     jq '  .repositories += [
             {"type": "git", "url": "https://github.com/UB-Mannheim/dfg-viewer.git" },
             {"type": "git", "url": "https://github.com/UB-Mannheim/kitodo-presentation.git"},
-            {"type": "git", "url": "https://github.com/csidirop/slub_digitalcollections.git" }]
+            {"type": "git", "url": "https://github.com/UB-Mannheim/ubma_digitalcollections.git" }]
         | .require += {"ub-mannheim/dfgviewer": "dev-6.x-ocr"}
         | . += {"minimum-stability": "dev"}' composer.json > composer-edit.json
     mv composer.json composer.json.bak
