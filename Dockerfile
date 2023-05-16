@@ -35,7 +35,10 @@ RUN \
   && /opt/kraken_venv/bin/kraken get 10.5281/zenodo.6891852 \
   && mkdir /opt/kraken_models/ \
   && wget https://ub-backup.bib.uni-mannheim.de/~stweil/tesstrain/kraken/digitue-gt/digitue_best.mlmodel -P /opt/kraken_models/ \
-  && wget https://ub-backup.bib.uni-mannheim.de/~stweil/tesstrain/kraken/german_handwriting/german_handwriting_best.mlmodel -P /opt/kraken_models/ \
+  #&& wget https://ub-backup.bib.uni-mannheim.de/~stweil/tesstrain/kraken/german_handwriting/german_handwriting_best.mlmodel -P /opt/kraken_models/ \
+  && wget https://ub-backup.bib.uni-mannheim.de/~stweil/tesstrain/kraken/german_handwriting/20230512/german_handwriting_best.mlmodel -P /opt/kraken_models/ \
+  && wget https://ub-backup.bib.uni-mannheim.de/~stweil/tesstrain/kraken/german_print/german_print_best.mlmodel -P /opt/kraken_models/ \
+  && wget https://ocr-bw.bib.uni-mannheim.de/escriptorium/media/models/337db636/ubma_segmentation.mlmodel -P /opt/kraken_models/ \
   # install calamari:
   && virtualenv -p python3 /opt/calamari_venv \
   && . /opt/calamari_venv/bin/activate \
