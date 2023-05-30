@@ -34,9 +34,9 @@ RUN \
   # get model en_best:
   && /opt/kraken_venv/bin/kraken get 10.5281/zenodo.2577813 \
   # get model austriannewspapers:
-  && /opt/kraken_venv/bin/kraken get 10.5281/zenodo.7933402 \ 
+  && /opt/kraken_venv/bin/kraken get 10.5281/zenodo.7933402 \
   # get model german_handwriting:
-  && /opt/kraken_venv/bin/kraken get 10.5281/zenodo.7933463 \ 
+  && /opt/kraken_venv/bin/kraken get 10.5281/zenodo.7933463 \
   # get custom more specialized models:
   && mkdir /opt/kraken_models/ \
   && wget https://ub-backup.bib.uni-mannheim.de/~stweil/tesstrain/kraken/digitue-gt/digitue_best.mlmodel -P /opt/kraken_models/ \
