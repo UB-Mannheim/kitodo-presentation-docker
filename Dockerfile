@@ -22,7 +22,7 @@ RUN apt-get update \
     python3-pip \
   && pip install virtualenv
 
-# Install OCR Engines: Tesseract v5 (https://notesalexp.org/tesseract-ocr/#tesseract_5.x), Kraken (https://github.com/mittagessen/kraken) and Calamari (https://github.com/Calamari-OCR/calamari)
+# Install OCR Engines: Tesseract v5 (https://notesalexp.org/tesseract-ocr/#tesseract_5.x) and Kraken (https://github.com/mittagessen/kraken)
 SHELL ["/bin/bash", "-c"]
 RUN \
   # install kraken:
@@ -44,11 +44,6 @@ RUN \
   && wget https://ub-backup.bib.uni-mannheim.de/~stweil/tesstrain/kraken/german_handwriting/20230512/german_handwriting_best.mlmodel -P /opt/kraken_models/ \
   && wget https://ub-backup.bib.uni-mannheim.de/~stweil/tesstrain/kraken/german_print/german_print_best.mlmodel -P /opt/kraken_models/ \
   && wget https://ocr-bw.bib.uni-mannheim.de/escriptorium/media/models/337db636/ubma_segmentation.mlmodel -P /opt/kraken_models/ \
-  # install calamari:
-  && virtualenv -p python3 /opt/calamari_venv \
-  && . /opt/calamari_venv/bin/activate \
-    && pip install calamari-ocr \
-    && deactivate \
   # install tesseract:
   && echo "deb https://notesalexp.org/tesseract-ocr5/$(lsb_release -cs)/ $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/notesalexp.list > /dev/null \
   && apt-get update -oAcquire::AllowInsecureRepositories=true \
