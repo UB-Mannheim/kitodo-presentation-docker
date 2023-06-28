@@ -53,6 +53,12 @@ RUN \
   # Get language data from UB Mannheim:
   && wget https://ub-backup.bib.uni-mannheim.de/~stweil/tesstrain/frak2021/tessdata_fast/frak2021_1.069.traineddata -O /usr/share/tesseract-ocr/5/tessdata/frak2021_1.069.traineddata
 
+# Install OCR-D for cli usage:
+RUN \
+  virtualenv -p python3 /opt/ocrd_venv \
+  && . /opt/ocrd_venv/bin/activate \
+  && pip install -U pip wheel ocrd
+
 # Update $PATH to include pip OCR Engines:
 ENV PATH="$PATH:/opt/kraken_venv/bin/:/opt/calamari_venv/bin/"
 
