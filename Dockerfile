@@ -59,8 +59,14 @@ RUN \
   && . /opt/ocrd_venv/bin/activate \
   && pip install -U pip wheel ocrd
 
+# Install mm-update from mets-mods2tei
+RUN \
+  virtualenv -p python3 /opt/mm-update_venv \
+  && . /opt/mm-update_venv/bin/activate \
+  && pip install mets-mods2tei
+
 # Update $PATH to include pip OCR Engines:
-ENV PATH="$PATH:/opt/kraken_venv/bin/:/opt/calamari_venv/bin/"
+ENV PATH="$PATH:/opt/kraken_venv/bin/:/opt/ocrd_venv/bin/:/opt/mm-update_venv/bin/"
 
 # Cleanup:
 RUN apt-get purge -y \
