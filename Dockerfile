@@ -65,6 +65,9 @@ RUN \
   && . /opt/mm-update_venv/bin/activate \
   && pip install mets-mods2tei
 
+RUN \
+  apt-get install -y xmlstarlet libxml2-utils
+
 # Update $PATH to include pip OCR Engines:
 ENV PATH="$PATH:/opt/kraken_venv/bin/:/opt/ocrd_venv/bin/:/opt/mm-update_venv/bin/"
 
