@@ -53,23 +53,17 @@ RUN \
   # Get language data from UB Mannheim:
   && wget https://ub-backup.bib.uni-mannheim.de/~stweil/tesstrain/frak2021/tessdata_fast/frak2021_1.069.traineddata -O /usr/share/tesseract-ocr/5/tessdata/frak2021_1.069.traineddata
 
-# Install OCR-D for cli usage:
+# Install tools for mets.xml manipulation:
 RUN \
+  # install OCR-D for cli usage:
   virtualenv -p python3 /opt/ocrd_venv \
   && . /opt/ocrd_venv/bin/activate \
-  && pip install -U pip wheel ocrd
+  && pip install -U pip wheel ocrd \ 
+  # xml utils:
+  && apt-get install -y xmlstarlet libxml2-utils
 
-# Install mm-update from mets-mods2tei
-RUN \
-  virtualenv -p python3 /opt/mm-update_venv \
-  && . /opt/mm-update_venv/bin/activate \
-  && pip install mets-mods2tei
-
-RUN \
-  apt-get install -y xmlstarlet libxml2-utils
-
-# Update $PATH to include pip OCR Engines:
-ENV PATH="$PATH:/opt/kraken_venv/bin/:/opt/ocrd_venv/bin/:/opt/mm-update_venv/bin/"
+# Update $PATH:
+ENV PATH="$PATH:/opt/kraken_venv/bin/:/opt/ocrd_venv/bin/"
 
 # Cleanup:
 RUN apt-get purge -y \
