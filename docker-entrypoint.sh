@@ -77,8 +77,6 @@ if [ ! -f /initFinished ]; then
     find public/ -name index.html -exec chmod -v 0660 {} \;             # set permissions for index.html: owner and group can read and write
     ## Presentation options:
     vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/fileGrpImages 'DEFAULT,DEFAULTPLUS,MASTER,MAX,ORIGINAL' # Add additional fileGrps: ORIGINAL (SLUB), MASTER (TU Braunschweig), DEFAULTPLUS (UB HD)
-    ## Solr options:
-    [[ $solr == 1 ]] && vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/solrHost "solr" # Inside the container solr is reacheble under 'solr'
     ## OCR-On-Demand options:
     vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/fulltextFolder 'fileadmin/fulltextFolder'
     vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/fulltextTempFolder 'fileadmin/_temp_/ocrTempFolder/fulltext'
@@ -88,8 +86,14 @@ if [ ! -f /initFinished ]; then
     vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/ocrDelay '0' # time in seconds
     vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/ocrPlaceholder 1
     vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/ocrLock 1
-    vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/ocrUpdateMets 1
-    vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/ocrIndexMets 1
+    vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/ocrUpdateMets 0
+    vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/ocrIndexMets 0
+    ## Solr options:
+    [[ $solr == 1 ]]; then
+        vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/solrHost "solr" # Inside the container solr is reacheble under 'solr'
+        vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/ocrUpdateMets 1
+        vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/ocrIndexMets 1
+    fi
     mkdir -v -p public/fileadmin/fulltextFolder
     mkdir -v -p public/fileadmin/_temp_/ocrTempFolder/fulltext
     mkdir -v -p public/fileadmin/_temp_/ocrTempFolder/images
