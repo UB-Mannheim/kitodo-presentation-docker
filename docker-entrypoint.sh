@@ -89,7 +89,7 @@ if [ ! -f /initFinished ]; then
     vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/ocrUpdateMets 0
     vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/ocrIndexMets 0
     ## Solr options:
-    [[ $solr == 1 ]]; then
+    if [ $solr == 1 ]; then
         vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/solrHost "solr" # Inside the container solr is reacheble under 'solr'
         vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/ocrUpdateMets 1
         vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/ocrIndexMets 1
