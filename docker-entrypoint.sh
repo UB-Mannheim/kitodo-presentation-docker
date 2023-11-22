@@ -15,7 +15,7 @@ set -euo pipefail # exit on: error, undefined variable, pipefail
 # Run main part of this script only one time (if /initFinished does not exists!):
 if [ ! -f /initFinished ]; then
     echo -e "${CLR_B}[MAIN] Running startup script:${NC}"
-    SECONDS=0 #messure time
+    SECONDS=0 #measure time
 
     # Wait for db to be ready: (https://docs.docker.com/compose/startup-order/)
     wait-for-it -t 0 ${DB_ADDR}:${DB_PORT}
@@ -69,7 +69,7 @@ if [ ! -f /initFinished ]; then
     vendor/bin/typo3cms configuration:set SYS/systemLocale en_US.UTF-8
     vendor/bin/typo3cms configuration:set SYS/fileCreateMask 0660
     vendor/bin/typo3cms configuration:set SYS/folderCreateMask 2770
-    vendor/bin/typo3cms configuration:set SYS/trustedHostsPattern '.*\.?localhost\.?.*' #TODO: get $HOST and refactor + use usefull regex
+    vendor/bin/typo3cms configuration:set SYS/trustedHostsPattern '.*\.?localhost\.?.*' #TODO: get $HOST and refactor + use useful regex
     ## Set right permissions for existing folders:
     chmod 2770 public/typo3conf/ext/                                    # set permissions for ext folder: owner and group can read, write and execute + inherit permissions
     find .       -name ext\* -prune -o -name \* -exec chmod 2770 {} \;  # set permissions for all other: owner and group can read, write and execute + inherit permissions
