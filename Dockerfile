@@ -33,25 +33,12 @@ RUN \
     && deactivate \
   # get model en_best:
   && /opt/kraken_venv/bin/kraken get 10.5281/zenodo.2577813 \
-  # get model austriannewspapers:
-  && /opt/kraken_venv/bin/kraken get 10.5281/zenodo.7933402 \
-  # get model german_handwriting:
-  && /opt/kraken_venv/bin/kraken get 10.5281/zenodo.7933463 \
-  # get custom more specialized models:
-  && mkdir /opt/kraken_models/ \
-  && wget https://ub-backup.bib.uni-mannheim.de/~stweil/tesstrain/kraken/digitue-gt/digitue_best.mlmodel -P /opt/kraken_models/ \
-  #&& wget https://ub-backup.bib.uni-mannheim.de/~stweil/tesstrain/kraken/german_handwriting/german_handwriting_best.mlmodel -P /opt/kraken_models/ \
-  && wget https://ub-backup.bib.uni-mannheim.de/~stweil/tesstrain/kraken/german_handwriting/20230512/german_handwriting_best.mlmodel -P /opt/kraken_models/ \
-  && wget https://ub-backup.bib.uni-mannheim.de/~stweil/tesstrain/kraken/german_print/german_print_best.mlmodel -P /opt/kraken_models/ \
-  && wget https://ocr-bw.bib.uni-mannheim.de/escriptorium/media/models/337db636/ubma_segmentation.mlmodel -P /opt/kraken_models/ \
   # install tesseract:
   && echo "deb https://notesalexp.org/tesseract-ocr5/$(lsb_release -cs)/ $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/notesalexp.list > /dev/null \
   && apt-get update -oAcquire::AllowInsecureRepositories=true \
   && apt-get install -y --allow-unauthenticated notesalexp-keyring -oAcquire::AllowInsecureRepositories=true \
   && apt-get update \
-  && apt-get install -y tesseract-ocr \
-  # Get language data from UB Mannheim:
-  && wget https://ub-backup.bib.uni-mannheim.de/~stweil/tesstrain/frak2021/tessdata_fast/frak2021_1.069.traineddata -O /usr/share/tesseract-ocr/5/tessdata/frak2021_1.069.traineddata
+  && apt-get install -y tesseract-ocr
 
 # Install tools for mets.xml manipulation:
 RUN \
