@@ -140,6 +140,6 @@ if [ ! -f /initFinished ]; then
     echo -e "${CLR_B}[MAIN]${CLR_G} Finished setup!${NC}"
 fi
 
-echo -e "${CLR_B}[MAIN]${CLR_G} Site:    http://${HOST} ${NC}"
-echo -e "${CLR_B}[MAIN]${CLR_G} Backend: http://${HOST}/typo3/ ${NC}"
+echo -e "${CLR_B}[MAIN]${CLR_G} Site:    http://${HOST}:${PORT} ${NC}"
+echo -e "${CLR_B}[MAIN]${CLR_G} Backend: http://${HOST}:${PORT}/typo3/ ${NC}"
 [[ $solr == 1 ]] && echo -e "${CLR_B}[MAIN]${CLR_G} Solr:    http://${HOST}:8983 ${NC}"
