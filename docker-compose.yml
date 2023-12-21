@@ -15,6 +15,7 @@ services:
     build: .
     image: kitodo/presentation
     container_name: kitodo-presentation-main
+    hostname: $FullyQualifiedDomainName
     ports:
       - "0.0.0.0:$PORT:80"
     environment:
