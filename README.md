@@ -56,7 +56,7 @@ The following table shows the default values and a short description.
 | TYPO3_ADMIN_USER               |       _test_      | TYPO3 admin username                                    |
 | TYPO3_ADMIN_PASSWORD           |    _'test1234'_   | TYPO3 admin password in ''                              |
 | TYPO3_ADDITIONAL_CONFIGURATION |      _false_      | Set to true if you want to add additional configuration |
-| FullyQualifiedDomainName       |    _localhost_    | Fully qualified domain name                             |
+| PQDN       |    _localhost_    | Partially qualified domain name (eg. _www.test.de_)                   |
 
 The other 5 variables are set in the docker-compose.yml and should not be changed.
 

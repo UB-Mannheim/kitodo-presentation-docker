@@ -15,7 +15,7 @@ services:
     build: .
     image: kitodo/presentation
     container_name: kitodo-presentation-main
-    hostname: $FullyQualifiedDomainName
+    hostname: $PQDN
     ports:
       - "0.0.0.0:$PORT:80"
     environment:
@@ -27,7 +27,7 @@ services:
       - TYPO3_ADMIN_USER=$TYPO3_ADMIN_USER
       - TYPO3_ADMIN_PASSWORD=$TYPO3_ADMIN_PASSWORD
       - TYPO3_ADDITIONAL_CONFIGURATION=$TYPO3_ADDITIONAL_CONFIGURATION
-      - HOST=$FullyQualifiedDomainName
+      - HOST=$PQDN
       - PHP_MEMORY_LIMIT=$PHP_MEMORY_LIMIT
     volumes:
       - ./volumes/fileadmin:/var/www/typo3/public/fileadmin/
