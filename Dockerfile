@@ -21,7 +21,7 @@ RUN apt-get update \
     gettext
 
 # Copy startup script and data folder into the container:
-COPY docker-entrypoint.sh /
+COPY docker-entrypoint.sh docker-entrypoint-aux.sh /
 ADD data/ /data
 
 # Cleanup and last steps:
@@ -30,7 +30,7 @@ RUN apt-get purge -y \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists \
   # Fix wrong line endings in the startup script and just to be save in data files:
-  && sed -i.bak 's/\r$//' /docker-entrypoint.sh /data/*.* /data/scripts/* \
+  && sed -i.bak 's/\r$//' /docker-entrypoint.sh /docker-entrypoint-aux.sh /data/*.* /data/scripts/* \
   # Set PHP memory limit:
   && sed -i "s/memory_limit = .*/memory_limit = ${PHP_MEMORY_LIMIT}/" /etc/php/7.4/apache2/php.ini
 

@@ -1,10 +1,6 @@
 #!/bin/bash
 
-# Some color variables:
-CLR_B='\033[1;34m' # Bold Blue
-CLR_G='\e[32m' # Green
-CLR_R='\e[31m' # Red
-NC='\e[0m' # No Color
+source /docker-entrypoint-aux.sh
 
 # check if solr is running:
 wait-for-it -t 5 solr:8983
@@ -14,7 +10,7 @@ set -euo pipefail # exit on: error, undefined variable, pipefail
 
 # Run main part of this script only one time (if /initFinished does not exists!):
 if [ ! -f /initFinished ]; then
-    echo -e "${CLR_B}[MAIN] Running startup script:${NC}"
+    printHeadline "Running Startup Script:"
 
     # Wait for db to be ready: (https://docs.docker.com/compose/startup-order/)
     wait-for-it -t 0 ${DB_ADDR}:${DB_PORT}
@@ -22,7 +18,7 @@ if [ ! -f /initFinished ]; then
     # Setup TYPO3 with typo3console (https://docs.typo3.org/p/helhum/typo3-console/main/en-us/CommandReference/InstallSetup.html):
     cd /var/www/typo3/
     docker-php-ext-install -j$(nproc) mysqli
-    echo -e "${CLR_B}[MAIN] Auto setup typo3:${NC}"
+    printHeadline "Starting TYPO3 auto setup:"
     vendor/bin/typo3cms install:setup \
         --use-existing-database \
         --database-driver='mysqli' \
@@ -38,7 +34,7 @@ if [ ! -f /initFinished ]; then
         --web-server-config=apache
 
     # Install Kitodo.Presentation:
-    echo -e "${CLR_B}[MAIN] Install presentation:${NC}"
+    printHeadline "Install presentation:"
     composer config platform.php 7.4
     composer require kitodo/presentation
     vendor/bin/typo3 extensionmanager:extension:install dlf
@@ -49,7 +45,7 @@ if [ ! -f /initFinished ]; then
     vendor/bin/typo3 extension:list
 
     # Setup Kitodo.Presentation: (https://github.com/UB-Mannheim/kitodo-presentation/wiki/Installation-Kitodo.Presentation)
-    echo -e "${CLR_B}[MAIN] Setup Kitodo.Presentation:${NC}"
+    printHeadline "Setup Kitodo.Presentation:"
     cd /var/www/typo3/
     ## Configure TYPO3 and Kitodo.Presentation:
     vendor/bin/typo3cms configuration:set FE/pageNotFoundOnCHashError 0
@@ -69,7 +65,7 @@ if [ ! -f /initFinished ]; then
     # Insert TYPO3 site content:
 
     ## Setup and update pages:
-    echo -e "${CLR_B}[MAIN] Setup DFG-Viewer: Update DB${NC}"
+    printHeadline "Setup DFG-Viewer: Update DB:"
 
     ## Add solr related pages and settings:
     if [ $solr == 1 ]; then
@@ -105,7 +101,7 @@ if [ ! -f /initFinished ]; then
 
     # Insert TYPO3 site content translations:
     ## Create Site configuration with two languages (en & de):
-    echo -e "${CLR_B}[MAIN] Setup Kitodo.Presentation: Write site configuration for ${HOST} ${NC}"
+    printHeadline "Setup Kitodo.Presentation: Write site configuration for ${HOST}"
     mkdir -p config/sites/presentation/
     ### Take config.yaml from /data, substitute the variables and pipe it to the TYPO3 dir:
     envsubst '${HOST}' < /data/config.yaml >> /var/www/typo3/config/sites/presentation/config.yaml
@@ -118,28 +114,33 @@ if [ ! -f /initFinished ]; then
     # AdditionalConfiguration (Fixes TYPO3-CORE-SA-2020-006: Same-Origin Request Forgery to Backend User Interface: https://typo3.org/security/advisory/typo3-core-sa-2020-006)
     # (Only if DMZ is set in .env)
     if [ ${TYPO3_ADDITIONAL_CONFIGURATION} != 'false' ]; then
-        echo -e "${CLR_B}[MAIN] Write AdditionalConfiguration.php:${NC}"
+        printHeadline "Write AdditionalConfiguration.php:"
         ### Take AdditionalConfiguration from /data, substitute the variables except for $GLOBALS (which isnt one) and pipe it to the TYPO3 dir
         envsubst '${HOST}' < /data/AdditionalConfiguration.php >> /var/www/typo3/public/typo3conf/AdditionalConfiguration.php
     fi
 
     # Cleanup:
-    echo -e "${CLR_B}[MAIN] cleanup:${NC}"
+    printHeadline "Cleanup:"
     apt-get purge -y jq gettext
     apt-get autoremove -y
     apt-get clean
     rm -rf /var/lib/apt/lists/*
 
     # Run further scripts:
-    echo -e "${CLR_B}[MAIN] run further scripts:${NC}"
+    printHeadline "Running further scripts:"
     chmod +x /data/scripts/*
     run-parts --regex '.*sh$' /data/scripts/
 
     # Mark as finished:
     touch /initFinished
-    echo -e "${CLR_B}[MAIN]${CLR_G} Finished setup!${NC}"
+    printSuccessLine "Finished setup!"
 fi
 
-echo -e "${CLR_B}[MAIN]${CLR_G} Site:    http://${HOST}:${PORT} ${NC}"
-echo -e "${CLR_B}[MAIN]${CLR_G} Backend: http://${HOST}:${PORT}/typo3/ ${NC}"
-[[ $solr == 1 ]] && echo -e "${CLR_B}[MAIN]${CLR_G} Solr:    http://${HOST}:8983 ${NC}"
+if [ $PORT == 80 ]; then # default PORT
+    printSuccessLine "Site:    http://${HOST}"
+    printSuccessLine "Backend: http://${HOST}/typo3/"
+else # Non default PORT
+    printSuccessLine "Site:    http://${HOST}:${PORT}"
+    printSuccessLine "Backend: http://${HOST}:${PORT}/typo3/"
+fi
+[[ $solr == 1 ]] && printSuccessLine "Solr:    http://${HOST}:8983"
