@@ -28,6 +28,7 @@ services:
       - TYPO3_ADMIN_PASSWORD=$TYPO3_ADMIN_PASSWORD
       - TYPO3_ADDITIONAL_CONFIGURATION=$TYPO3_ADDITIONAL_CONFIGURATION
       - HOST=$PQDN
+      - PORT=$PORT
       - PHP_MEMORY_LIMIT=$PHP_MEMORY_LIMIT
     volumes:
       - ./volumes/fileadmin:/var/www/typo3/public/fileadmin/
