@@ -56,7 +56,8 @@ The following table shows the default values and a short description.
 | TYPO3_ADMIN_USER               |       _test_      | TYPO3 admin username                                    |
 | TYPO3_ADMIN_PASSWORD           |    _'test1234'_   | TYPO3 admin password in ''                              |
 | TYPO3_ADDITIONAL_CONFIGURATION |      _false_      | Set to true if you want to add additional configuration |
-| PQDN       |    _localhost_    | Partially qualified domain name (eg. _www.test.de_)                   |
+| PQDN                           |    _localhost_    | Partially qualified domain name (eg. _www.test.de_)     |
+| PHP_MEMORY_LIMIT               |    _512M_         | PHP memory limit                                        |
 
 The other 5 variables are set in the docker-compose.yml and should not be changed.
 
@@ -72,7 +73,7 @@ or with solr
     docker compose --profile with-solr up
 
 ### Ready:
-TYPO3 backend can be accessed at: http://localhost/typo3/
+TYPO3 backend can be accessed at: http://localhost/typo3/ (of whatever you set as PQDN)
 
 
 ### Run further scripts:
@@ -93,5 +94,9 @@ This also means making sure that old docker caches/images/containers are not pre
   - `docker container ls -a` should not show any kitodo-presentation container
   - run `docker compose down` to "stop containes and remove containers, networks, volumes, and images created by `docker compose up`"
   - run `docker rm <container_ID/NAME>` if anything kitodo-presentation related still present
-- build without using cached layers:
+- build without using cached layers (may take a while):
   - `docker compose build --no-cache`
+
+##### Common practice:
+1. `docker compose down` or `docker compose --profile with-solr down`
+2. `docker compose up --build` or `docker compose --profile with-solr up --build`
