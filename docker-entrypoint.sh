@@ -180,10 +180,6 @@ if [ ! -f /initFinished ]; then
         envsubst '${HOST}' < /data/AdditionalConfiguration.php >> /var/www/typo3/public/typo3conf/AdditionalConfiguration.php
     fi
 
-    # Check tesseract languages:
-    printHeadline "Install Tesseract v5:"
-    tesseract --list-langs
-
     # Cleanup:
     printHeadline "Cleanup:"
     apt-get purge -y jq gettext
