@@ -12,7 +12,10 @@ services:
     #  - ./volumes/database:/var/lib/mysql
     restart: unless-stopped
   main:
-    build: .
+    build:
+      context: .
+      args:
+        - PHP_MEMORY_LIMIT=$PHP_MEMORY_LIMIT
     image: kitodo/presentation
     container_name: kitodo-presentation-main
     hostname: $PQDN
@@ -29,7 +32,6 @@ services:
       - TYPO3_ADDITIONAL_CONFIGURATION=$TYPO3_ADDITIONAL_CONFIGURATION
       - HOST=$PQDN
       - PORT=$PORT
-      - PHP_MEMORY_LIMIT=$PHP_MEMORY_LIMIT
     volumes:
       - ./volumes/fileadmin:/var/www/typo3/public/fileadmin/
     depends_on:

@@ -5,9 +5,6 @@ FROM csidirop/typo3-v10:10.4-230202
 
 LABEL authors='Christos Sidiropoulos <Christos.Sidiropoulos@uni-mannheim.de>'
 
-ENV DB_ADDR=localhost
-ENV DB_PORT=3306
-
 EXPOSE 80
 
 # This Dockerfile aims to install a working TYPO3 v10 instance with the kitodo/presentation extension
@@ -23,6 +20,9 @@ RUN apt-get update \
 # Copy startup script and data folder into the container:
 COPY docker-entrypoint.sh docker-entrypoint-aux.sh /
 ADD data/ /data
+
+ARG PHP_MEMORY_LIMIT
+ENV PHP_MEMORY_LIMIT $PHP_MEMORY_LIMIT
 
 # Cleanup and last steps:
 RUN apt-get purge -y \
