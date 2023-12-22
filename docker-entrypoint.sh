@@ -3,7 +3,7 @@
 source /docker-entrypoint-aux.sh
 
 # check if solr is running:
-wait-for-it -t 5 solr:8983
+wait-for-it -t 10 solr:8983
 if [[ $? == 0 ]]; then solr=1; else solr=0; fi
 
 set -euo pipefail # exit on: error, undefined variable, pipefail
