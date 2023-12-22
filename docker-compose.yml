@@ -13,9 +13,13 @@ services:
     #  - ./volumes/database:/var/lib/mysql
     restart: unless-stopped
   main:
-    build: .
+    build:
+      context: .
+      args:
+        - PHP_MEMORY_LIMIT=$PHP_MEMORY_LIMIT
     image: kitodo/dfgviewer:6.x-ocr
     container_name: kitodo-presentation-main
+    hostname: $PQDN
     ports:
       - "0.0.0.0:$PORT:80"
     environment:
@@ -27,7 +31,8 @@ services:
       - TYPO3_ADMIN_USER=$TYPO3_ADMIN_USER
       - TYPO3_ADMIN_PASSWORD=$TYPO3_ADMIN_PASSWORD
       - TYPO3_ADDITIONAL_CONFIGURATION=$TYPO3_ADDITIONAL_CONFIGURATION
-      - HOST=$FullyQualifiedDomainName
+      - HOST=$PQDN
+      - PORT=$PORT
     volumes:
       - ./volumes/fileadmin:/var/www/typo3/public/fileadmin/
     depends_on:

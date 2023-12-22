@@ -25,8 +25,9 @@ While the main branch always offers the latest presentation version, the others 
 | [presentation-v3.x](https://github.com/UB-Mannheim/kitodo-presentation-docker/tree/presentation-v3.x) 	| - 	| [3.x](https://github.com/kitodo/kitodo-presentation/releases/tag/v3.3.4) 	| - 	| [typo3-v9](https://github.com/csidirop/typo3-docker/tree/typo3-v9.x) 	| [![GitHub last commit (branch)](https://img.shields.io/github/last-commit/UB-Mannheim/kitodo-presentation-docker/presentation-v3.x?label=%20)](https://github.com/UB-Mannheim/kitodo-presentation-docker/commits/presentation-v3.x) 	|
 | [dfg-viewer-dev](https://github.com/UB-Mannheim/kitodo-presentation-docker/tree/dfg-viewer-dev) 	| [dev-master](https://packagist.org/packages/slub/dfgviewer#dev-master) 	| [dev-master](https://packagist.org/packages/kitodo/presentation#dev-master) 	| [8.11.x](https://github.com/apache/solr-docker/tree/main/8.11) 	| [typo3-v10](https://github.com/csidirop/typo3-docker/tree/typo3-v10.x) 	| [![GitHub last commit (branch)](https://img.shields.io/github/last-commit/UB-Mannheim/kitodo-presentation-docker/dfg-viewer-dev?label=%20)](https://github.com/UB-Mannheim/kitodo-presentation-docker/commits/dfg-viewer-dev) 	|
 | [dfg-viewer-6.x](https://github.com/UB-Mannheim/kitodo-presentation-docker/tree/dfg-viewer-6.x) 	| [6.0.0](https://github.com/slub/dfg-viewer/) 	| [4.x](https://github.com/kitodo/kitodo-presentation/releases/tag/v4.0.1) 	| [8.11.x](https://github.com/apache/solr-docker/tree/main/8.11) 	| [typo3-v10](https://github.com/csidirop/typo3-docker/tree/typo3-v10.x) 	| [![GitHub last commit (branch)](https://img.shields.io/github/last-commit/UB-Mannheim/kitodo-presentation-docker/dfg-viewer-6.x?label=%20)](https://github.com/UB-Mannheim/kitodo-presentation-docker/commits/dfg-viewer-6.x) 	|
+| [dfg-viewer-6.x-ocr](https://github.com/UB-Mannheim/kitodo-presentation-docker/tree/dfg-viewer-6.x-ocr) 	| [6.0.0 with OCR-On-Demand](https://github.com/UB-Mannheim/dfg-viewer/tree/6.x-ocr) 	| [4.x-ocr](https://github.com/UB-Mannheim/kitodo-presentation/tree/4.x-ocr) 	| [8.11.x](https://github.com/apache/solr-docker/tree/main/8.11) 	| [typo3-v10](https://github.com/csidirop/typo3-docker/tree/typo3-v10.x) 	| [![GitHub last commit (branch)](https://img.shields.io/github/last-commit/UB-Mannheim/kitodo-presentation-docker/dfg-viewer-6.x-ocr?label=%20)](https://github.com/UB-Mannheim/kitodo-presentation-docker/commits/dfg-viewer-6.x-ocr) 	|
 | [dfg-viewer-5.3](https://github.com/UB-Mannheim/kitodo-presentation-docker/tree/dfg-viewer-5.3) 	| [5.3](https://github.com/slub/dfg-viewer/releases/tag/v5.3.0) 	| [3.x](https://github.com/kitodo/kitodo-presentation/releases/tag/v3.3.4) 	| - 	| [typo3-v9](https://github.com/csidirop/typo3-docker/tree/typo3-v9.x) 	| [![GitHub last commit (branch)](https://img.shields.io/github/last-commit/UB-Mannheim/kitodo-presentation-docker/dfg-viewer-5.3?label=%20)](https://github.com/UB-Mannheim/kitodo-presentation-docker/commits/dfg-viewer-5.3) 	|
-| [dfg-viewer-5.3-ocr](https://github.com/UB-Mannheim/kitodo-presentation-docker/tree/dfg-viewer-5.3-ocr) 	| [5.3 with OCR-On-Demand](https://github.com/csidirop/dfg-viewer/tree/5.3-ocr-test) 	| [3.x](https://github.com/kitodo/kitodo-presentation/releases/tag/v3.3.4) 	| [8.11.x](https://github.com/apache/solr-docker/tree/main/8.11) 	| [typo3-v9](https://github.com/csidirop/typo3-docker/tree/typo3-v9.x) 	| [![GitHub last commit (branch)](https://img.shields.io/github/last-commit/UB-Mannheim/kitodo-presentation-docker/dfg-viewer-5.3-ocr?label=%20)](https://github.com/UB-Mannheim/kitodo-presentation-docker/commits/dfg-viewer-5.3-ocr) 	|
+| [dfg-viewer-5.3-ocr](https://github.com/UB-Mannheim/kitodo-presentation-docker/tree/dfg-viewer-5.3-ocr) 	| [5.3 with OCR-On-Demand](https://github.com/UB-Mannheim/dfg-viewer/tree/5.3-ocr) 	| [3.x-ocr](https://github.com/UB-Mannheim/kitodo-presentation/tree/4.x-ocr) 	| [8.11.x](https://github.com/apache/solr-docker/tree/main/8.11) 	| [typo3-v9](https://github.com/csidirop/typo3-docker/tree/typo3-v9.x) 	| [![GitHub last commit (branch)](https://img.shields.io/github/last-commit/UB-Mannheim/kitodo-presentation-docker/dfg-viewer-5.3-ocr?label=%20)](https://github.com/UB-Mannheim/kitodo-presentation-docker/commits/dfg-viewer-5.3-ocr) 	|
 
 <!-- Table created with: https://www.tablesgenerator.com/markdown_tables -->
 
@@ -55,7 +56,8 @@ The following table shows the default values and a short description.
 | TYPO3_ADMIN_USER               |       _test_      | TYPO3 admin username                                    |
 | TYPO3_ADMIN_PASSWORD           |    _'test1234'_   | TYPO3 admin password in ''                              |
 | TYPO3_ADDITIONAL_CONFIGURATION |      _false_      | Set to true if you want to add additional configuration |
-| FullyQualifiedDomainName       |    _localhost_    | Fully qualified domain name                             |
+| PQDN                           |    _localhost_    | Partially qualified domain name (eg. _www.test.de_)     |
+| PHP_MEMORY_LIMIT               |    _512M_         | PHP memory limit                                        |
 
 The other 5 variables are set in the docker-compose.yml and should not be changed.
 
@@ -71,7 +73,7 @@ or with solr
     docker compose --profile with-solr up
 
 ### Ready:
-TYPO3 backend can be accessed at: http://localhost/typo3/
+TYPO3 backend can be accessed at: http://localhost/typo3/ (of whatever you set as PQDN)
 
 
 ### Run further scripts:
@@ -92,12 +94,9 @@ This also means making sure that old docker caches/images/containers are not pre
 - no presentation-containers present:
   - `docker container ls -a` should not show any kitodo-presentation container
   - run `docker rm <container_ID/NAME>` if anything kitodo-presentation related still present
-- build without using cached layers:
+- build without using cached layers (may take a while):
   - `docker compose build --no-cache`
 
-The safest way to terminate the container is to run:
-
-  - `docker compose down` or
-  - `docker compose --profile with-solr down`
-
-to "stop containers and remove containers, networks, volumes, and images created by `docker compose up`"
+##### Common practice:
+1. `docker compose down` or `docker compose --profile with-solr down`
+2. `docker compose up --build` or `docker compose --profile with-solr up --build`

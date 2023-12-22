@@ -52,17 +52,23 @@ RUN \
 # Update $PATH:
 ENV PATH="$PATH:/opt/kraken_venv/bin/:/opt/ocrd_venv/bin/"
 
-# Cleanup:
+# Copy startup script and data folder into the container:
+COPY docker-entrypoint.sh docker-entrypoint-aux.sh /
+ADD data/ /data
+
+ARG PHP_MEMORY_LIMIT
+ENV PHP_MEMORY_LIMIT $PHP_MEMORY_LIMIT
+
+# Cleanup and last steps:
 RUN apt-get purge -y \
         lsb-release \
     && apt-get autoremove -y \
     && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists \
+  # Fix wrong line endings in the startup script and just to be save in data files:
+  && sed -i.bak 's/\r$//' /docker-entrypoint.sh /docker-entrypoint-aux.sh /data/*.* /data/scripts/* \
+  # Set PHP memory limit:
+  && sed -i "s/memory_limit = .*/memory_limit = ${PHP_MEMORY_LIMIT}/" /etc/php/7.4/apache2/php.ini
 
-# Copy startup script and data folder into the container:
-COPY docker-entrypoint.sh /
-ADD data/ /data
-# Fix wrong line endings in the startup script and just to be save in data files:
-RUN sed -i.bak 's/\r$//' /docker-entrypoint.sh /data/*.* /data/scripts/*
 # Run startup script & start apache2 (https://github.com/docker-library/php/blob/master/7.4/bullseye/apache/apache2-foreground)
 CMD /docker-entrypoint.sh & apache2-foreground
