@@ -2,6 +2,7 @@ version: '3.7'
 
 services:
   db:
+    container_name: kitodo-presentation-db
     image: mariadb:10
     environment:
       - MARIADB_DATABASE=typo3-presentation-v4
