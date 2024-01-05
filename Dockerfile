@@ -31,7 +31,7 @@ RUN \
     && pip install kraken \
     && pip install kraken[pdf] \
     && deactivate \
-  # get model en_best:
+  # get default model (en_best):
   && /opt/kraken_venv/bin/kraken get 10.5281/zenodo.2577813 \
   # install tesseract:
   && echo "deb https://notesalexp.org/tesseract-ocr5/$(lsb_release -cs)/ $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/notesalexp.list > /dev/null \
