@@ -194,7 +194,7 @@ if [ ! -f /initFinished ]; then
 
     # Mark as finished:
     touch /initFinished
-    printInfoline "Completed in $SECONDS seconds"
+    printInfoLine "Completed in $SECONDS seconds"
     printSuccessLine "Finished setup!"
 fi
 
