@@ -42,7 +42,7 @@ if [ ! -f /initFinished ]; then
             {"type": "git", "url": "https://github.com/UB-Mannheim/dfg-viewer.git" },
             {"type": "git", "url": "https://github.com/UB-Mannheim/kitodo-presentation.git"},
             {"type": "git", "url": "https://github.com/UB-Mannheim/ubma_digitalcollections.git" }]
-        | .require += {"ub-mannheim/dfgviewer": "dev-6.x-ocr#fc6142b3579a30706bd643ed456f4f91cc6f032d"}
+        | .require += {"ub-mannheim/dfgviewer": "dev-6.x-ocr-dev"}
         | . += {"minimum-stability": "dev"}' composer.json > composer-edit.json
     # TODO: remove fixed commit hash after updating to presentation v5 and dfgviewer v6 (official)
     mv composer.json composer.json.bak
