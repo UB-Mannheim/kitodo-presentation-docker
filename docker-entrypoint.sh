@@ -65,29 +65,34 @@ if [ ! -f /initFinished ]; then
     # Insert TYPO3 site content:
 
     ## Setup and update pages:
-    printHeadline "Setup DFG-Viewer: Update DB:"
+    printHeadline "Setup Kitodo.Presentation: Update DB:"
 
     ## Add solr related pages and settings:
+    printInfoLine "Setup Kitodo.Presentation: Add solr related pages and settings:"
     if [ $solr == 1 ]; then
         ### New Tenant & set core in List -> Solr Cores
         mysql -h db --user=$DB_USER --password=$DB_PASSWORD -v -D ${DB_NAME} -e "INSERT INTO tx_dlf_solrcores (pid, cruser_id, label, index_name) VALUES (3, 1, 'Solr Core (PID 1)','dlf');"
         #### Create Tenant Structures:
-        mysql -h db --user=$DB_USER --password=$DB_PASSWORD -v -D ${DB_NAME} -e "INSERT INTO tx_dlf_structures (pid, l18n_diffsource, toplevel, label, index_name, oai_name, thumbnail, status) VALUES (3,'',1,'Konzertprogramm','ephemera','',0,0);"
-        mysql -h db --user=$DB_USER --password=$DB_PASSWORD -v -D ${DB_NAME} -e "INSERT INTO tx_dlf_structures (pid, l18n_diffsource, toplevel, label, index_name, oai_name, thumbnail, status) VALUES (3,'',0,'Ephemera','ephemera','',0,0);"
-        mysql -h db --user=$DB_USER --password=$DB_PASSWORD -v -D ${DB_NAME} -e "INSERT INTO tx_dlf_structures (pid, l18n_diffsource, toplevel, label, index_name, oai_name, thumbnail, status) VALUES (3,'',0,'Abbildung','figure','',0,0);"
-        mysql -h db --user=$DB_USER --password=$DB_PASSWORD -v -D ${DB_NAME} -e "INSERT INTO tx_dlf_structures (pid, l18n_diffsource, toplevel, label, index_name, oai_name, thumbnail, status) VALUES (3,'',0,'Figure','figure','',0,0);"
-        mysql -h db --user=$DB_USER --password=$DB_PASSWORD -v -D ${DB_NAME} -e "INSERT INTO tx_dlf_structures (pid, l18n_diffsource, toplevel, label, index_name, oai_name, thumbnail, status) VALUES (3,'',1,'Bestand','inventory','',0,0);"
-        mysql -h db --user=$DB_USER --password=$DB_PASSWORD -v -D ${DB_NAME} -e "INSERT INTO tx_dlf_structures (pid, l18n_diffsource, toplevel, label, index_name, oai_name, thumbnail, status) VALUES (3,'',0,'Inventory','inventory','',0,0);"
-        mysql -h db --user=$DB_USER --password=$DB_PASSWORD -v -D ${DB_NAME} -e "INSERT INTO tx_dlf_structures (pid, l18n_diffsource, toplevel, label, index_name, oai_name, thumbnail, status) VALUES (3,'',0,'Seite','page','',0,0);"
-        mysql -h db --user=$DB_USER --password=$DB_PASSWORD -v -D ${DB_NAME} -e "INSERT INTO tx_dlf_structures (pid, l18n_diffsource, toplevel, label, index_name, oai_name, thumbnail, status) VALUES (3,'',0,'Page','page','',0,0);"
+        # mysql -h db --user=$DB_USER --password=$DB_PASSWORD -v -D ${DB_NAME} -e "INSERT INTO tx_dlf_structures (pid, l18n_diffsource, toplevel, label, index_name, oai_name, thumbnail, status) VALUES (3,'',1,'Konzertprogramm','ephemera','',0,0);"
+        # mysql -h db --user=$DB_USER --password=$DB_PASSWORD -v -D ${DB_NAME} -e "INSERT INTO tx_dlf_structures (pid, l18n_diffsource, toplevel, label, index_name, oai_name, thumbnail, status) VALUES (3,'',0,'Ephemera','ephemera','',0,0);"
+        # mysql -h db --user=$DB_USER --password=$DB_PASSWORD -v -D ${DB_NAME} -e "INSERT INTO tx_dlf_structures (pid, l18n_diffsource, toplevel, label, index_name, oai_name, thumbnail, status) VALUES (3,'',0,'Abbildung','figure','',0,0);"
+        # mysql -h db --user=$DB_USER --password=$DB_PASSWORD -v -D ${DB_NAME} -e "INSERT INTO tx_dlf_structures (pid, l18n_diffsource, toplevel, label, index_name, oai_name, thumbnail, status) VALUES (3,'',0,'Figure','figure','',0,0);"
+        # mysql -h db --user=$DB_USER --password=$DB_PASSWORD -v -D ${DB_NAME} -e "INSERT INTO tx_dlf_structures (pid, l18n_diffsource, toplevel, label, index_name, oai_name, thumbnail, status) VALUES (3,'',1,'Bestand','inventory','',0,0);"
+        # mysql -h db --user=$DB_USER --password=$DB_PASSWORD -v -D ${DB_NAME} -e "INSERT INTO tx_dlf_structures (pid, l18n_diffsource, toplevel, label, index_name, oai_name, thumbnail, status) VALUES (3,'',0,'Inventory','inventory','',0,0);"
+        # mysql -h db --user=$DB_USER --password=$DB_PASSWORD -v -D ${DB_NAME} -e "INSERT INTO tx_dlf_structures (pid, l18n_diffsource, toplevel, label, index_name, oai_name, thumbnail, status) VALUES (3,'',0,'Seite','page','',0,0);"
+        # mysql -h db --user=$DB_USER --password=$DB_PASSWORD -v -D ${DB_NAME} -e "INSERT INTO tx_dlf_structures (pid, l18n_diffsource, toplevel, label, index_name, oai_name, thumbnail, status) VALUES (3,'',0,'Page','page','',0,0);"
+        mysql -h db --user=$DB_USER --password=$DB_PASSWORD -v -D ${DB_NAME} < /data/tx_dlf_metadata.sql
+        mysql -h db --user=$DB_USER --password=$DB_PASSWORD -v -D ${DB_NAME} < /data/tx_dlf_metadataformat.sql
+        mysql -h db --user=$DB_USER --password=$DB_PASSWORD -v -D ${DB_NAME} < /data/tx_dlf_structures.sql
 
         #### Add `collection` metadata:
-        mysql -h db --user=$DB_USER --password=$DB_PASSWORD -v -D ${DB_NAME} -e "INSERT INTO tx_dlf_metadata VALUES (47,3,0,0,1,0,0,0,'a:16:{s:5:\"label\";N;s:10:\"index_name\";N;s:15:\"index_tokenized\";N;s:12:\"index_stored\";N;s:13:\"index_indexed\";N;s:11:\"index_boost\";N;s:11:\"is_sortable\";N;s:8:\"is_facet\";N;s:9:\"is_listed\";N;s:18:\"index_autocomplete\";N;s:6:\"format\";N;s:13:\"default_value\";N;s:4:\"wrap\";N;s:16:\"sys_language_uid\";N;s:6:\"hidden\";N;s:6:\"status\";N;}',0,4,NULL,'Sammlungen','collection',2,'','key.wrap = <dt>|</dt>\r\nvalue.required = 1\r\nvalue.wrap = <dd>|</dd>',1,1,1,1,1,1,0,1,0);"
-        mysql -h db --user=$DB_USER --password=$DB_PASSWORD -v -D ${DB_NAME} -e "INSERT INTO tx_dlf_metadataformat VALUES (51,3,0,0,1,0,0,0,NULL,47,1,'./teihdr:fileDesc/teihdr:sourceDesc/teihdr:msDesc/teihdr:msIdentifier/teihdr:collection','',0);"
-        mysql -h db --user=$DB_USER --password=$DB_PASSWORD -v -D ${DB_NAME} -e "INSERT INTO tx_dlf_metadataformat VALUES (52,3,0,0,1,0,0,0,NULL,47,2,'./mods:classification','',0);"
+        # mysql -h db --user=$DB_USER --password=$DB_PASSWORD -v -D ${DB_NAME} -e "INSERT INTO tx_dlf_metadata VALUES (47,3,0,0,1,0,0,0,'a:16:{s:5:\"label\";N;s:10:\"index_name\";N;s:15:\"index_tokenized\";N;s:12:\"index_stored\";N;s:13:\"index_indexed\";N;s:11:\"index_boost\";N;s:11:\"is_sortable\";N;s:8:\"is_facet\";N;s:9:\"is_listed\";N;s:18:\"index_autocomplete\";N;s:6:\"format\";N;s:13:\"default_value\";N;s:4:\"wrap\";N;s:16:\"sys_language_uid\";N;s:6:\"hidden\";N;s:6:\"status\";N;}',0,4,NULL,'Sammlungen','collection',2,'','key.wrap = <dt>|</dt>\r\nvalue.required = 1\r\nvalue.wrap = <dd>|</dd>',1,1,1,1,1,1,0,1,0);"
+        # mysql -h db --user=$DB_USER --password=$DB_PASSWORD -v -D ${DB_NAME} -e "INSERT INTO tx_dlf_metadataformat VALUES (51,3,0,0,1,0,0,0,NULL,47,1,'./teihdr:fileDesc/teihdr:sourceDesc/teihdr:msDesc/teihdr:msIdentifier/teihdr:collection','',0);"
+        # mysql -h db --user=$DB_USER --password=$DB_PASSWORD -v -D ${DB_NAME} -e "INSERT INTO tx_dlf_metadataformat VALUES (52,3,0,0,1,0,0,0,NULL,47,2,'./mods:classification','',0);"
         #### Add `date` metadata:
-        mysql -h db --user=$DB_USER --password=$DB_PASSWORD -v -D ${DB_NAME} -e "INSERT INTO tx_dlf_metadata VALUES (48,3,0,0,1,0,0,0,'',0,2,NULL,'Datum','date',1,'','key.wrap = <dt>|</dt>\r\nvalue.required = 1\r\nvalue.wrap = <dd>|</dd>',0,1,1,1,0,0,0,0,0);"
-        mysql -h db --user=$DB_USER --password=$DB_PASSWORD -v -D ${DB_NAME} -e "INSERT INTO tx_dlf_metadataformat VALUES (53,3,0,0,1,0,0,0,NULL,48,2,'./mods:originInfo/*[@encoding=\"iso8601\" or @encoding=\"w3cdtf\"][@keyDate=\"yes\"]','',0);"
+        # mysql -h db --user=$DB_USER --password=$DB_PASSWORD -v -D ${DB_NAME} -e "INSERT INTO tx_dlf_metadata VALUES (48,3,0,0,1,0,0,0,'',0,2,NULL,'Datum','date',1,'','key.wrap = <dt>|</dt>\r\nvalue.required = 1\r\nvalue.wrap = <dd>|</dd>',0,1,1,1,0,0,0,0,0);"
+        # mysql -h db --user=$DB_USER --password=$DB_PASSWORD -v -D ${DB_NAME} -e "INSERT INTO tx_dlf_metadataformat VALUES (53,3,0,0,1,0,0,0,NULL,48,2,'./mods:originInfo/*[@encoding=\"iso8601\" or @encoding=\"w3cdtf\"][@keyDate=\"yes\"]','',0);"
+
 
         #### Pages and contentelements #TODO cleanup!
         ##### SearchView:
