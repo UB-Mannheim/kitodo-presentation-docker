@@ -37,7 +37,6 @@ services:
       - ./volumes/fileadmin:/var/www/typo3/public/fileadmin/
     depends_on:
       - db
-      - solr
     restart: unless-stopped
   solr:
     container_name: kitodo-presentation-solr

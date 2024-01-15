@@ -1,8 +1,7 @@
 # Use TYPO3 v10 base image based on Apache2 on Debian 11 bullseye
 # https://hub.docker.com/r/csidirop/typo3-v10/
 # https://github.com/csidirop/typo3-docker/tree/typo3-v10.x
-FROM csidirop/typo3-v10:10.4-230202
-
+FROM csidirop/typo3-v10:latest
 LABEL authors='Christos Sidiropoulos <Christos.Sidiropoulos@uni-mannheim.de>'
 
 EXPOSE 80
