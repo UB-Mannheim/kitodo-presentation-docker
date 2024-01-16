@@ -1,0 +1,21 @@
+routeEnhancers:
+  PresentationView-1:
+    type: Simple
+    limitToPages:
+      - 2
+    routePath: '/id={id}'
+    _arguments:
+      id: tx_dlf/id
+    requirements:
+      page: \d+
+  PresentationView-2:
+    type: Simple
+    limitToPages:
+      - 2
+    routePath: '/id={id}/page-{page}'
+    _arguments:
+      id: tx_dlf/id
+      page: tx_dlf/page
+    requirements:
+      page: \d+
+      id: '([0-9]{1,6})|(http.*xml)'
