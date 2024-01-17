@@ -7,7 +7,7 @@ routeEnhancers:
     _arguments:
       id: tx_dlf/id
     requirements:
-      page: \d+
+      id: '([0-9]{1,6})|(http.*xml)'
   PresentationView-2:
     type: Simple
     limitToPages:
