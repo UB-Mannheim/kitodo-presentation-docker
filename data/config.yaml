@@ -30,4 +30,4 @@ rootPageId: 1
 websiteTitle: ''
 imports:
   -
-    resource: /var/www/typo3/config/sites/presentation/routes.yaml
+    resource: /var/www/typo3/config/sites/presentation/routes-viewer.yaml
