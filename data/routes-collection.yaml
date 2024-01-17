@@ -1,0 +1,27 @@
+routeEnhancers:
+  Collection-1:
+    type: Simple
+    limitToPages:
+      - 9
+    routePath: '/{collection}'
+    _arguments:
+      collection: tx_dlf_collection/collection
+    aspects:
+      collection:
+        type: PersistedAliasMapper
+        tableName: 'tx_dlf_collections'
+        routeFieldName: 'label'
+  Collection-2:
+    type: Simple
+    limitToPages:
+      - 9
+    routePath: '/{action}-{controller}/{collection}'
+    _arguments:
+      collection: tx_dlf_collection/collection
+      action: tx_dlf_collection/action
+      controller: tx_dlf_collection/controller
+    aspects:
+      collection:
+        type: PersistedAliasMapper
+        tableName: 'tx_dlf_collections'
+        routeFieldName: 'label'
