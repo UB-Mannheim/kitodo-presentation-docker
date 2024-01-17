@@ -28,3 +28,8 @@ languages:
     languageId: 1
 rootPageId: 1
 websiteTitle: ''
+imports:
+  -
+    resource: /var/www/typo3/config/sites/presentation/routes-viewer.yaml
+  -
+    resource: /var/www/typo3/config/sites/presentation/routes-collection.yaml

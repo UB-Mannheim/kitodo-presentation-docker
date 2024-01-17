@@ -99,53 +99,54 @@ if [ ! -f /initFinished ]; then
 
     # Insert TYPO3 site content:
     ## Setup and update pages:
-    printHeadline "Setup DFG-Viewer: Update DB:"
+    printHeadline "Setup Kitodo.Presentation: Update DB:"
     mysql -h db --user=$DB_USER --password=$DB_PASSWORD -v -D ${DB_NAME} -e "INSERT INTO be_dashboards VALUES (1,0,0,0,1,0,0,0,0,'3b40de016dfd4ba9c78a77acae795b67c5ae6dee','My dashboard','{\"58e0b3ef88b5520d21317f6f12c962e4f6336019\":{\"identifier\":\"t3information\"},\"b64400e7b9bc9da61c66dd05b90173ef8a0f4d73\":{\"identifier\":\"t3news\"},\"8827c68f64868f01727a2c3a1cfdc9785ef01846\":{\"identifier\":\"sysLogErrors\"},\"5f62783836befcbb19ce903265794e26152705c3\":{\"identifier\":\"t3securityAdvisories\"},\"202988d35cdc05eb4d810430930c3452e4ae936d\":{\"identifier\":\"failedLogins\"},\"ee4b3965195d8b863885499fa9780576d079748d\":{\"identifier\":\"typeOfUsers\"}}');"
-    printInfoLine "Setup DFG-Viewer: Update DB: Insert sites and properties:"
+    printInfoLine "Setup Kitodo.Presentation: Update DB: Insert sites and properties:"
     dfgviewer_uid=$(mysql -h db --user=$DB_USER --password=$DB_PASSWORD -D ${DB_NAME} -e 'SELECT uid FROM pages WHERE title = "Viewer";' | sed '1d')
     mysql -h db --user=$DB_USER --password=$DB_PASSWORD -v -D ${DB_NAME} -e "UPDATE pages SET TSconfig = 'TCEMAIN.permissions.groupid = $dfgviewer_uid' WHERE title = 'Viewer';"
     mysql -h db --user=$DB_USER --password=$DB_PASSWORD -v -D ${DB_NAME} -e 'UPDATE pages SET tsconfig_includes = "EXT:dfgviewer/Configuration/TsConfig/Page.ts" WHERE title = "DFG Viewer";'
     mysql -h db --user=$DB_USER --password=$DB_PASSWORD -v -D ${DB_NAME} -e 'UPDATE pages SET tsconfig_includes = "EXT:dfgviewer/Configuration/TsConfig/Page.tsconfig" WHERE title = "Viewer";'
     ### Hide viewer tab from root page menu:
-    printInfoLine "Setup DFG-Viewer: Update DB: Hide viewer tab from root page menu:"
+    printInfoLine "Setup Kitodo.Presentation: Update DB: Hide viewer tab from root page menu:"
     mysql -h db --user=$DB_USER --password=$DB_PASSWORD -v -D ${DB_NAME} -e "UPDATE pages SET nav_hide = 1 WHERE title = 'Viewer';"
     ### Take typo3 content element data from /data/typo3ContentElementData.json and insert it to the DB:
-    printInfoLine "Setup DFG-Viewer: Update DB: Take typo3 content element data from /data/typo3ContentElementData.json and insert it to the DB:"
+    printInfoLine "Setup Kitodo.Presentation: Update DB: Take typo3 content element data from /data/typo3ContentElementData.json and insert it to the DB:"
     mysql -h db --user=$DB_USER --password=$DB_PASSWORD -v -D ${DB_NAME} -e "INSERT INTO tt_content (pid, cruser_id, CType, header, bodytext) VALUES ('1', '1', 'text', 'DFG-Viewer Header',       '$(jq -r '."DFG-Viewer-Main".german."DFG-Viewer-Header"' /data/typo3ContentElementData.json)');"
     mysql -h db --user=$DB_USER --password=$DB_PASSWORD -v -D ${DB_NAME} -e "INSERT INTO tt_content (pid, cruser_id, CType, header, bodytext) VALUES ('1', '1', 'html', 'Eingabefeld',             '$(jq -r '."DFG-Viewer-Main".german."Eingabefeld"'       /data/typo3ContentElementData.json)');"
     mysql -h db --user=$DB_USER --password=$DB_PASSWORD -v -D ${DB_NAME} -e "INSERT INTO tt_content (pid, cruser_id, CType, header, bodytext) VALUES ('1', '1', 'text', 'DFG-Viewer Examplebody',  '$(jq -r '."DFG-Viewer-Main".german."DFG-Viewer-Examplebody"' /data/typo3ContentElementData.json)');"
     mysql -h db --user=$DB_USER --password=$DB_PASSWORD -v -D ${DB_NAME} -e "INSERT INTO tt_content (pid, cruser_id, CType, header, bodytext) VALUES ('1', '1', 'text', 'DFG-Viewer Body',         '$(jq -r '."DFG-Viewer-Main".german."DFG-Viewer-Body"'   /data/typo3ContentElementData.json)');"
     ## Create external links:
-    printInfoLine "Setup DFG-Viewer: Update DB: Create external links:"
+    printInfoLine "Setup Kitodo.Presentation: Update DB: Create external links:"
     mysql -h db --user=$DB_USER --password=$DB_PASSWORD -v -D ${DB_NAME} -e "INSERT INTO pages (pid, cruser_id, perms_userid, title, slug, doktype, url) VALUES ('1', '1', '1', 'Datenschutzerklärung', '/datenschutzerklaerung', 3, '$(jq -r '."DFG-Viewer-Main".nolang.datenschutzerklaerung' /data/typo3ContentElementData.json)');"
     mysql -h db --user=$DB_USER --password=$DB_PASSWORD -v -D ${DB_NAME} -e "INSERT INTO pages (pid, cruser_id, perms_userid, title, slug, doktype, url) VALUES ('1', '1', '1', 'Impressum',           '/impressum', '3',            '$(jq -r '."DFG-Viewer-Main".nolang.impressum'             /data/typo3ContentElementData.json)');"
     ### Embed external links: 1 viewer dropdown menu
-    printInfoLine "Setup DFG-Viewer: Update DB: Embed external links: 1 viewer dropdown menu"
+    printInfoLine "Setup Kitodo.Presentation: Update DB: Embed external links: 1 viewer dropdown menu"
     mysql -h db --user=$DB_USER --password=$DB_PASSWORD -v -D ${DB_NAME} -e "UPDATE sys_template SET constants = 'config.storagePid = 3\n config.rootPid = 1\n config.headNavPid = 0\n config.viewerNavPids = 1, 4, 5\n config.kitodoPageView = 2\n' WHERE sitetitle = 'DFG-Viewer';"
     ### Embed external links: 2 main site header or footer
-    printInfoLine "Setup DFG-Viewer: Update DB: Embed external links: 2 main site header or footer"
+    printInfoLine "Setup Kitodo.Presentation: Update DB: Embed external links: 2 main site header or footer"
     mysql -h db --user=$DB_USER --password=$DB_PASSWORD -v -D ${DB_NAME} -e "INSERT INTO tt_content (pid, cruser_id, CType, header) VALUES ('1', '1', 'div', 'Divider');"
     mysql -h db --user=$DB_USER --password=$DB_PASSWORD -v -D ${DB_NAME} -e "INSERT INTO tt_content (pid, cruser_id, CType, pages) VALUES ('1', '1', 'menu_section_pages', '2');" # Unterseiten von viewer: Datenschutzerklärung, Impressum
     ### Add solr related pages and settings:
-    printInfoLine "Setup DFG-Viewer: Update DB: Add solr related pages and settings:"
+    printInfoLine "Setup Kitodo.Presentation: Update DB: Add solr related pages and settings:"
     if [ $solr == 1 ]; then
         #### New Tenant & set core in List -> Solr Cores
-        printInfoLine "Setup DFG-Viewer: Update DB: New Tenant & set core in List -> Solr Cores"
+        printInfoLine "Setup Kitodo.Presentation: Update DB: New Tenant & set core in List -> Solr Cores"
+        printInfoLine "Setup Kitodo.Presentation: Update DB: New Tenant & set core in List -> Solr Cores"
         mysql -h db --user=$DB_USER --password=$DB_PASSWORD -v -D ${DB_NAME} -e "INSERT INTO tx_dlf_solrcores (pid, cruser_id, label, index_name) VALUES (3, 1, 'Solr Core (PID 1)','dlf');"
         #### Create Tenant Structures:
-        printInfoLine "Setup DFG-Viewer: Update DB: Create Tenant Structures"
+        printInfoLine "Setup Kitodo.Presentation: Update DB: Create Tenant Structures"
         mysql -h db --user=$DB_USER --password=$DB_PASSWORD -v -D ${DB_NAME} < /data/tx_dlf_metadata.sql
         mysql -h db --user=$DB_USER --password=$DB_PASSWORD -v -D ${DB_NAME} < /data/tx_dlf_metadataformat.sql
         mysql -h db --user=$DB_USER --password=$DB_PASSWORD -v -D ${DB_NAME} < /data/tx_dlf_structures.sql
 
         #### Pages and contentelements #TODO cleanup!
         ##### SearchView:
-        printInfoLine "Setup DFG-Viewer: Update DB: Add pages and contentelements: SearchView"
+        printInfoLine "Setup Kitodo.Presentation: Update DB: Add pages and contentelements: SearchView"
         mysql -h db --user=$DB_USER --password=$DB_PASSWORD -v -D ${DB_NAME} -e "INSERT INTO pages VALUES (7,1,0,0,1,0,0,0,0,'',256,'',0,0,0,0,NULL,0,'',0,0,0,0,0,0,0,1,0,31,27,0,'Suche','/suche',1,'',0,0,'',0,0,'',0,'',0,0,'',0,'',0,'',0,1676470444,'','',0,'','','',0,0,0,0,0,0,'','','',0,0,'',0,0,'','',0,'','',0,'summary','',0.5,'',0);"
         mysql -h db --user=$DB_USER --password=$DB_PASSWORD -v -D ${DB_NAME} -e "INSERT INTO tt_content VALUES (11,'',7,0,0,1,0,0,0,0,'',256,0,0,0,0,NULL,0,'',0,0,0,0,0,0,0,'list','','',NULL,0,0,0,0,0,0,0,2,0,0,0,'default',0,'','',NULL,NULL,0,'','',0,'0','dlf_search',1,0,NULL,0,'','','',0,0,0,'<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\" ?>\n<T3FlexForms>\n    <data>\n        <sheet index=\"sDEF\">\n            <language index=\"lDEF\">\n                <field index=\"settings.fulltext\">\n                    <value index=\"vDEF\">1</value>\n                </field>\n                <field index=\"settings.datesearch\">\n                    <value index=\"vDEF\">1</value>\n                </field>\n                <field index=\"settings.solrcore\">\n                    <value index=\"vDEF\">1</value>\n                </field>\n                <field index=\"settings.extendedSlotCount\">\n                    <value index=\"vDEF\">1</value>\n                </field>\n                <field index=\"settings.extendedFields\">\n                    <value index=\"vDEF\">author,title,volume,repository,year,place</value>\n                </field>\n                <field index=\"settings.searchIn\">\n                    <value index=\"vDEF\">none</value>\n                </field>\n                <field index=\"settings.collections\">\n                    <value index=\"vDEF\"></value>\n                </field>\n                <field index=\"settings.facets\">\n                    <value index=\"vDEF\"></value>\n                </field>\n                <field index=\"settings.facetCollections\">\n                    <value index=\"vDEF\"></value>\n                </field>\n                <field index=\"settings.limitFacets\">\n                    <value index=\"vDEF\">15</value>\n                </field>\n                <field index=\"settings.resetFacets\">\n                    <value index=\"vDEF\">0</value>\n                </field>\n                <field index=\"settings.sortingFacets\">\n                    <value index=\"vDEF\">count</value>\n                </field>\n                <field index=\"settings.suggest\">\n                    <value index=\"vDEF\">1</value>\n                </field>\n                <field index=\"settings.showLogicalPageField\">\n                    <value index=\"vDEF\">0</value>\n                </field>\n                <field index=\"settings.showSingleResult\">\n                    <value index=\"vDEF\">0</value>\n                </field>\n                <field index=\"settings.targetPid\">\n                    <value index=\"vDEF\"></value>\n                </field>\n                <field index=\"settings.targetPidPageView\">\n                    <value index=\"vDEF\">2</value>\n                </field>\n            </language>\n        </sheet>\n    </data>\n</T3FlexForms>','',0,'',NULL,'','',NULL,124,0,0,0,0,0);"
         mysql -h db --user=$DB_USER --password=$DB_PASSWORD -v -D ${DB_NAME} -e "INSERT INTO tt_content VALUES (12,'',7,0,0,1,0,0,0,0,'',128,0,0,0,0,NULL,0,'',0,0,0,0,0,0,0,'text','Metadaten- und Volltextsuche','',NULL,0,0,0,0,0,0,0,2,0,0,0,'default',0,'','',NULL,NULL,0,'','',0,'3','',1,0,NULL,0,'','','',0,0,0,NULL,'',0,'',NULL,'','',NULL,124,0,0,0,0,0);"
         ##### CollectionView:
-        printInfoLine "Setup DFG-Viewer: Update DB: Add pages and contentelements: CollectionView"
+        printInfoLine "Setup Kitodo.Presentation: Update DB: Add pages and contentelements: CollectionView"
         mysql -h db --user=$DB_USER --password=$DB_PASSWORD -v -D ${DB_NAME} -e "INSERT INTO pages VALUES (9,1,0,0,1,0,0,0,0,'',256,'',0,0,0,0,NULL,0,'',0,0,0,0,0,0,0,1,0,31,27,0,'Sammlungen','/sammlungen',1,'',0,0,'',0,0,'',0,'',0,0,'',0,'',0,'',0,1677164542,'','',0,'','','',0,0,0,0,0,0,'','','',0,0,'',0,0,'','',0,'','',0,'summary','',0.5,'',0);"
         mysql -h db --user=$DB_USER --password=$DB_PASSWORD -v -D ${DB_NAME} -e "INSERT INTO tt_content VALUES (17,'',9,0,0,1,0,0,0,0,'',256,0,0,0,0,NULL,0,'',0,0,0,0,0,0,0,'list','','',NULL,0,0,0,0,0,0,0,2,0,0,0,'default',0,'','',NULL,NULL,0,'','',0,'0','dlf_collection',1,0,NULL,0,'','','',0,0,0,'<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\" ?>\n<T3FlexForms>\n    <data>\n        <sheet index=\"sDEF\">\n            <language index=\"lDEF\">\n                <field index=\"settings.collections\">\n                    <value index=\"vDEF\"></value>\n                </field>\n                <field index=\"settings.solrcore\">\n                    <value index=\"vDEF\">1</value>\n                </field>\n                <field index=\"settings.show_userdefined\">\n                    <value index=\"vDEF\">-1</value>\n                </field>\n                <field index=\"settings.dont_show_single\">\n                    <value index=\"vDEF\">0</value>\n                </field>\n                <field index=\"settings.randomize\">\n                    <value index=\"vDEF\">0</value>\n                </field>\n                <field index=\"settings.targetPid\">\n                    <value index=\"vDEF\"></value>\n                </field>\n                <field index=\"settings.targetPidPageView\">\n                    <value index=\"vDEF\">2</value>\n                </field>\n                <field index=\"settings.targetFeed\">\n                    <value index=\"vDEF\"></value>\n                </field>\n            </language>\n        </sheet>\n    </data>\n</T3FlexForms>','',0,'',NULL,'','',NULL,124,0,0,0,0,0);"
     fi
@@ -160,10 +161,11 @@ if [ ! -f /initFinished ]; then
         ### Replace localhost with / :
         sed -i 's/localhost/\//g' /var/www/typo3/config/sites/presentation/config.yaml
     fi
+    cp -v /data/routes-*.yaml /var/www/typo3/config/sites/presentation/
     chown -R www-data:www-data config
     ## Insert translated pages and content elements as translations:
     ### Take typo3 content element data from /data/typo3ContentElementData.json and insert it to the DB:
-    printHeadline "Setup DFG-Viewer: Update DB: Translations:"
+    printHeadline "Setup Kitodo.Presentation: Update DB: Translations:"
     mysql -h db --user=$DB_USER --password=$DB_PASSWORD -v -D ${DB_NAME} -e "INSERT INTO pages (pid, cruser_id, sys_language_uid, l10n_parent, l10n_source, perms_userid, title, slug, doktype, is_siteroot, tsconfig_includes, tx_impexp_origuid) VALUES ('0', '1', '1', '1', '1', '2', 'DFG Viewer', '/', '1', '1', 'EXT:dfgviewer/Configuration/TsConfig/Page.ts', '0');"
     mysql -h db --user=$DB_USER --password=$DB_PASSWORD -v -D ${DB_NAME} -e "INSERT INTO tt_content (pid, cruser_id, sys_language_uid, l18n_parent, l10n_source, t3_origuid, CType, header, bodytext) VALUES ('1', '1', '1', '1', '1', '1', 'text', 'DFG-Viewer Header',       '$(jq -r '."DFG-Viewer-Main".english."DFG-Viewer-Header"' /data/typo3ContentElementData.json)');"
     mysql -h db --user=$DB_USER --password=$DB_PASSWORD -v -D ${DB_NAME} -e "INSERT INTO tt_content (pid, cruser_id, sys_language_uid, l18n_parent, l10n_source, t3_origuid, CType, header, bodytext) VALUES ('1', '1', '1', '2', '2', '2', 'html', 'Eingabefeld',             '$(jq -r '."DFG-Viewer-Main".english."Eingabefeld"'       /data/typo3ContentElementData.json)');"
