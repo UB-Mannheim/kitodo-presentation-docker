@@ -3,8 +3,6 @@
 # https://github.com/csidirop/typo3-docker/tree/typo3-v12.x
 FROM csidirop/typo3-v12:latest
 LABEL authors='Christos Sidiropoulos <Christos.Sidiropoulos@uni-mannheim.de>'
-
-EXPOSE 80
 ARG PHP_MEMORY_LIMIT
 
 # This Dockerfile aims to install a working TYPO3 v10 instance with the kitodo/presentation extension
