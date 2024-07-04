@@ -2,9 +2,8 @@
 # https://hub.docker.com/r/csidirop/typo3-v10/
 # https://github.com/csidirop/typo3-docker/tree/typo3-v10.x
 FROM csidirop/typo3-v10:latest
-LABEL authors='Christos Sidiropoulos <Christos.Sidiropoulos@uni-mannheim.de>'
 
-EXPOSE 80
+LABEL authors='Christos Sidiropoulos <Christos.Sidiropoulos@uni-mannheim.de>'
 
 # This Dockerfile aims to install a working TYPO3 v10 instance with the kitodo/presentation extension
 # based on this guide: https://github.com/UB-Mannheim/kitodo-presentation/wiki
