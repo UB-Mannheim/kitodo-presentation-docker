@@ -5,7 +5,7 @@ services:
     container_name: kitodo-presentation-db
     image: mariadb:10
     environment:
-      - MARIADB_DATABASE=typo3-presentation-v4
+      - MARIADB_DATABASE=typo3-presentation
       - MARIADB_ROOT_PASSWORD=$MARIADB_ROOT_PASSWORD
       - MARIADB_USER=$MARIADB_USER
       - MARIADB_PASSWORD=$MARIADB_PASSWORD
@@ -25,7 +25,7 @@ services:
     environment:
       - DB_ADDR=db
       - DB_PORT=3306
-      - DB_NAME=typo3-presentation-v4
+      - DB_NAME=typo3-presentation
       - DB_USER=$MARIADB_USER
       - DB_PASSWORD=$MARIADB_PASSWORD
       - TYPO3_ADMIN_USER=$TYPO3_ADMIN_USER
