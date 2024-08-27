@@ -33,9 +33,9 @@ if [ ! -f /initFinished ]; then
         --web-server-config=apache
 
     # Install Kitodo.Presentation:
-    printHeadline "Install Presentation:"
+    printHeadline "Install Presentation 5.x:"
     composer config platform.php 8.2
-    composer require kitodo/presentation
+    composer require kitodo/presentation:^5
     composer update
     vendor/bin/typo3cms extension:setup
 
