@@ -18,7 +18,7 @@ if [ ! -f /initFinished ]; then
 
     # Setup TYPO3 with typo3console (https://docs.typo3.org/p/helhum/typo3-console/main/en-us/CommandReference/InstallSetup.html):
     cd /var/www/typo3/
-    docker-php-ext-install -j$(nproc) mysqli
+    docker-php-ext-install -j$(nproc) mysqli #TODO: remove -> why its not already installed
     printHeadline "Starting TYPO3 auto setup:"
     vendor/bin/typo3cms install:setup \
         --use-existing-database \
@@ -36,7 +36,7 @@ if [ ! -f /initFinished ]; then
 
     # Install Kitodo.Presentation and DFG-Viewer with OCR-On-Demand:
     printHeadline "Install Presentation and DFG-Viewer with OCR-On-Demand:"
-    composer config platform.php 7.4
+    composer config platform.php 8.2
     ## Add the custom repositories to the composer file:
     jq '  .repositories += [
             {"type": "git", "url": "https://github.com/UB-Mannheim/dfg-viewer.git" },
@@ -48,13 +48,13 @@ if [ ! -f /initFinished ]; then
     mv composer.json composer.json.bak
     mv composer-edit.json composer.json
     composer update
-    vendor/bin/typo3 extensionmanager:extension:install dlf
-    vendor/bin/typo3 extensionmanager:extension:install dfgviewer
+    # vendor/bin/typo3 extension:activate dlf
+    # vendor/bin/typo3 extension:activate dfgviewer
     chown -R www-data:www-data .
     chmod +x public/typo3conf/ext/dlf/Classes/Plugin/Tools/FullTextGenerationScripts/*.sh
     ## Activate other useful extensions:
     ### .... INSERT HERE ....
-    vendor/bin/typo3 extensionmanager:extension:install info # (activating info (or any other) is a workaround so the site config is red correctly)
+    # vendor/bin/typo3 extension:activate info # (activating info (or any other) is a workaround so the site config is red correctly)
     vendor/bin/typo3 extension:list
 
     # Setup Kitodo.Presentation and DFG-Viewer: (https://github.com/UB-Mannheim/kitodo-presentation/wiki/Installation-Kitodo.Presentation-mit-DFG-Viewer-und-OCR-On-Demand-Testcode-als-Beispielanwendung#dfg-viewer-config)
