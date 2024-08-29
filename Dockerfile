@@ -19,13 +19,13 @@ RUN apt-get update \
     gettext \
     python3 \
     python3-pip \
-  && pip install virtualenv
+    python3-venv
 
 # Install OCR Engines: Tesseract v5 (https://notesalexp.org/tesseract-ocr/#tesseract_5.x) and Kraken (https://github.com/mittagessen/kraken)
 SHELL ["/bin/bash", "-c"]
 RUN \
   # install kraken:
-  virtualenv -p python3 /opt/kraken_venv \
+  python3 -m venv /opt/kraken_venv \
   && . /opt/kraken_venv/bin/activate \
     && pip install kraken \
     && pip install kraken[pdf] \
@@ -42,7 +42,7 @@ RUN \
 # Install tools for mets.xml manipulation:
 RUN \
   # install OCR-D for cli usage:
-  virtualenv -p python3 /opt/ocrd_venv \
+  python3 -m venv /opt/ocrd_venv \
   && . /opt/ocrd_venv/bin/activate \
   && pip install -U pip wheel ocrd \ 
   # xml utils:
