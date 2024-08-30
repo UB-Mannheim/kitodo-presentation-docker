@@ -18,7 +18,6 @@ if [ ! -f /initFinished ]; then
 
     # Setup TYPO3 with typo3console (https://docs.typo3.org/p/helhum/typo3-console/main/en-us/CommandReference/InstallSetup.html):
     cd /var/www/typo3/
-    docker-php-ext-install -j$(nproc) mysqli #TODO: remove -> why its not already installed
     printHeadline "Starting TYPO3 auto setup:"
     vendor/bin/typo3cms install:setup \
         --use-existing-database \
@@ -48,13 +47,12 @@ if [ ! -f /initFinished ]; then
     mv composer.json composer.json.bak
     mv composer-edit.json composer.json
     composer update
-    # vendor/bin/typo3 extension:activate dlf
-    # vendor/bin/typo3 extension:activate dfgviewer
+    vendor/bin/typo3cms extension:setup
+
     chown -R www-data:www-data .
     chmod +x public/typo3conf/ext/dlf/Classes/Plugin/Tools/FullTextGenerationScripts/*.sh
     ## Activate other useful extensions:
     ### .... INSERT HERE ....
-    # vendor/bin/typo3 extension:activate info # (activating info (or any other) is a workaround so the site config is red correctly)
     vendor/bin/typo3 extension:list
 
     # Setup Kitodo.Presentation and DFG-Viewer: (https://github.com/UB-Mannheim/kitodo-presentation/wiki/Installation-Kitodo.Presentation-mit-DFG-Viewer-und-OCR-On-Demand-Testcode-als-Beispielanwendung#dfg-viewer-config)
@@ -120,8 +118,9 @@ if [ ! -f /initFinished ]; then
     mysql -h db --user=$DB_USER --password=$DB_PASSWORD -v -D ${DB_NAME} -e "INSERT INTO pages (pid, cruser_id, perms_userid, title, slug, doktype, url) VALUES ('1', '1', '1', 'Datenschutzerklärung', '/datenschutzerklaerung', 3, '$(jq -r '."DFG-Viewer-Main".nolang.datenschutzerklaerung' /data/typo3ContentElementData.json)');"
     mysql -h db --user=$DB_USER --password=$DB_PASSWORD -v -D ${DB_NAME} -e "INSERT INTO pages (pid, cruser_id, perms_userid, title, slug, doktype, url) VALUES ('1', '1', '1', 'Impressum',           '/impressum', '3',            '$(jq -r '."DFG-Viewer-Main".nolang.impressum'             /data/typo3ContentElementData.json)');"
     ### Embed external links: 1 viewer dropdown menu
-    printInfoLine "Setup Kitodo.Presentation: Update DB: Embed external links: 1 viewer dropdown menu"
-    mysql -h db --user=$DB_USER --password=$DB_PASSWORD -v -D ${DB_NAME} -e "UPDATE sys_template SET constants = 'config.storagePid = 3\n config.rootPid = 1\n config.headNavPid = 0\n config.viewerNavPids = 1, 4, 5\n config.kitodoPageView = 2\n' WHERE sitetitle = 'DFG-Viewer';"
+      # printInfoLine "Setup Kitodo.Presentation: Update DB: Embed external links: 1 viewer dropdown menu"
+      # mysql -h db --user=$DB_USER --password=$DB_PASSWORD -v -D ${DB_NAME} -e "UPDATE sys_template SET constants = 'config.storagePid = 3\n config.rootPid = 1\n config.headNavPid = 0\n config.viewerNavPids = 1, 4, 5\n config.kitodoPageView = 2\n' WHERE sitetitle = 'DFG-Viewer';"
+      # --> ERROR 1054 (42S22) at line 1: Unknown column 'sitetitle' in 'where clause'
     ### Embed external links: 2 main site header or footer
     printInfoLine "Setup Kitodo.Presentation: Update DB: Embed external links: 2 main site header or footer"
     mysql -h db --user=$DB_USER --password=$DB_PASSWORD -v -D ${DB_NAME} -e "INSERT INTO tt_content (pid, cruser_id, CType, header) VALUES ('1', '1', 'div', 'Divider');"
