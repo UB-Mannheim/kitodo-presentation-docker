@@ -17,7 +17,7 @@ services:
       context: .
       args:
         - PHP_MEMORY_LIMIT=$PHP_MEMORY_LIMIT
-    image: kitodo/dfgviewer:6.x-ocr-dev
+    image: kitodo/dfgviewer:6.x-ocr
     container_name: kitodo-presentation-main
     hostname: $PQDN
     ports:
