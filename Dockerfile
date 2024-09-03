@@ -1,7 +1,7 @@
-# Use TYPO3 v10 base image based on Apache2 on Debian 11 bullseye
-# https://hub.docker.com/r/csidirop/typo3-v10/
-# https://github.com/csidirop/typo3-docker/tree/typo3-v10.x
-FROM csidirop/typo3-v10:latest
+# Use TYPO3 v11 base image based on Apache2 on Debian 11 bullseye
+# https://hub.docker.com/r/csidirop/typo3-v11/
+# https://github.com/csidirop/typo3-docker/tree/typo3-v11.x
+FROM csidirop/typo3-v11:latest
 LABEL authors='Christos Sidiropoulos <Christos.Sidiropoulos@uni-mannheim.de>'
 
 EXPOSE 80
@@ -31,7 +31,7 @@ RUN apt-get purge -y \
   # Fix wrong line endings in the startup script and just to be save in data files:
   && sed -i.bak 's/\r$//' /docker-entrypoint.sh /docker-entrypoint-aux.sh /data/*.* /data/scripts/* \
   # Set PHP memory limit:
-  && sed -i "s/memory_limit = .*/memory_limit = ${PHP_MEMORY_LIMIT}/" /etc/php/7.4/apache2/php.ini
+  && sed -i "s/memory_limit = .*/memory_limit = ${PHP_MEMORY_LIMIT}/" /usr/local/etc/php/php.ini
 
 # Run startup script & start apache2 (https://github.com/docker-library/php/blob/master/7.4/bullseye/apache/apache2-foreground)
 CMD /docker-entrypoint.sh & apache2-foreground
