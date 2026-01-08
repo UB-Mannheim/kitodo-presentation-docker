@@ -1,10 +1,11 @@
-# Use TYPO3 v11 base image based on Apache2 on Debian 11 bullseye
-# https://hub.docker.com/r/csidirop/typo3-v11/
-# https://github.com/csidirop/typo3-docker/tree/typo3-v11.x
-FROM csidirop/typo3-v11:latest
+# Use TYPO3 v12 base image based on Apache2 on Debian 12
+# https://hub.docker.com/r/csidirop/typo3-v12/
+# https://github.com/csidirop/typo3-docker/tree/typo3-v12.x
+FROM csidirop/typo3-v12:latest
 LABEL authors='Christos Sidiropoulos <Christos.Sidiropoulos@uni-mannheim.de>'
 
 EXPOSE 80
+ARG PHP_MEMORY_LIMIT
 
 # This Dockerfile aims to install a working TYPO3 v10 instance with the kitodo/presentation extension
 # based on this guide: https://github.com/UB-Mannheim/kitodo-presentation/wiki
@@ -19,9 +20,6 @@ RUN apt-get update \
 # Copy startup script and data folder into the container:
 COPY docker-entrypoint.sh docker-entrypoint-aux.sh /
 ADD data/ /data
-
-ARG PHP_MEMORY_LIMIT
-ENV PHP_MEMORY_LIMIT $PHP_MEMORY_LIMIT
 
 # Cleanup and last steps:
 RUN apt-get purge -y \
