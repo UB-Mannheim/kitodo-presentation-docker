@@ -33,6 +33,7 @@ services:
       - PORT=$PORT
     volumes:
       - ./volumes/fileadmin:/var/www/typo3/public/fileadmin/
+      - ./volumes/logs:/var/www/typo3/var/log/
     depends_on:
       - db
     restart: unless-stopped

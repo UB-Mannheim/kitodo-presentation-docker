@@ -18,8 +18,8 @@ if [ ! -f /initFinished ]; then
     # Setup TYPO3 with typo3console (https://docs.typo3.org/p/helhum/typo3-console/main/en-us/CommandReference/InstallSetup.html):
     cd /var/www/typo3/
     printHeadline "Starting TYPO3 auto setup:"
-    composer require helhum/typo3-console
-    vendor/bin/typo3 install:setup \
+    # composer require helhum/typo3-console
+    vendor/bin/typo3cms install:setup \
         --no-interaction \
         --use-existing-database \
         --database-driver='mysqli' \
@@ -37,33 +37,33 @@ if [ ! -f /initFinished ]; then
     # Install Kitodo.Presentation:
     printHeadline "Install Presentation:"
     composer config platform.php 8.2
-    composer require kitodo/presentation:dev-master
-    composer require slub/dfgviewer:dev-master
+    # composer require kitodo/presentation
+    composer require slub/dfgviewer:^6
     composer update
-    vendor/bin/typo3 extension:setup
+    vendor/bin/typo3cms extension:setup
 
     chown -R www-data:www-data .
     ## Activate other useful extensions:
     ### .... INSERT HERE ....
-    vendor/bin/typo3 extension:list
+    vendor/bin/typo3cms extension:list
 
     # Setup Kitodo.Presentation: (https://github.com/UB-Mannheim/kitodo-presentation/wiki/Installation-Kitodo.Presentation)
     printHeadline "Setup Kitodo.Presentation:"
     cd /var/www/typo3/
     ## Configure TYPO3 and Kitodo.Presentation:
-    vendor/bin/typo3 configuration:set FE/pageNotFoundOnCHashError 0
-    vendor/bin/typo3 configuration:set FE/cacheHash/requireCacheHashPresenceParameters '["tx_dlf[id]"]' --json
-    vendor/bin/typo3 configuration:set SYS/fileCreateMask 0660
-    vendor/bin/typo3 configuration:set SYS/folderCreateMask 2770
-    vendor/bin/typo3 configuration:set SYS/systemLocale en_US.UTF-8
-    vendor/bin/typo3 configuration:set SYS/trustedHostsPattern "(https?:\/\/)?(www\.)?${HOST}"
+    vendor/bin/typo3cms configuration:set FE/pageNotFoundOnCHashError 0
+    vendor/bin/typo3cms configuration:set FE/cacheHash/requireCacheHashPresenceParameters '["tx_dlf[id]"]' --json
+    vendor/bin/typo3cms configuration:set SYS/fileCreateMask 0660
+    vendor/bin/typo3cms configuration:set SYS/folderCreateMask 2770
+    vendor/bin/typo3cms configuration:set SYS/systemLocale en_US.UTF-8
+    vendor/bin/typo3cms configuration:set SYS/trustedHostsPattern "(https?:\/\/)?(www\.)?${HOST}"
     ## Set right permissions for existing folders:
     # chmod 2770 public/typo3conf/ext/                                    # set permissions for ext folder: owner and group can read, write and execute + inherit permissions
     # find .       -name ext\* -prune -o -name \* -exec chmod 2770 {} \;  # set permissions for all other: owner and group can read, write and execute + inherit permissions
     find .       -name .htaccess  -exec chmod -v 0660 {} \;             # set permissions for .htaccess: owner and group can read and write
     find public/ -name index.html -exec chmod -v 0660 {} \;             # set permissions for index.html: owner and group can read and write
     ## Solr options:
-    [[ $solr == 1 ]] && vendor/bin/typo3 configuration:set EXTENSIONS/dlf/solr/host "solr" # Inside the container solr is reacheble under 'solr'
+    [[ $solr == 1 ]] && vendor/bin/typo3cms configuration:set EXTENSIONS/dlf/solr/host "solr" # Inside the container solr is reacheble under 'solr'
 
     # Insert TYPO3 site content:
 
@@ -116,7 +116,7 @@ if [ ! -f /initFinished ]; then
         envsubst '${HOST}' < /data/AdditionalConfiguration.php >> /var/www/typo3/public/typo3conf/AdditionalConfiguration.php
     fi
 
-    vendor/bin/typo3 cache:warmup
+    vendor/bin/typo3cms cache:warmup
 
     # Cleanup:
     printHeadline "Cleanup:"

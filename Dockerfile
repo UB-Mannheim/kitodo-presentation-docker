@@ -1,7 +1,7 @@
 # Use TYPO3 v12 base image based on Apache2 on Debian 12
 # https://hub.docker.com/r/csidirop/typo3-v12/
 # https://github.com/csidirop/typo3-docker/tree/typo3-v12.x
-FROM csidirop/typo3-v12:latest
+FROM csidirop/typo3-v11:latest
 LABEL authors='Christos Sidiropoulos <Christos.Sidiropoulos@uni-mannheim.de>'
 ARG PHP_MEMORY_LIMIT
 
