@@ -37,7 +37,19 @@ if [ ! -f /initFinished ]; then
     # Install newest Kitodo.Presentation and DFG-Viewer versions on packagist:
     printHeadline "Install Kitodo.Presentation and DFG-Viewer:"
     composer config platform.php 8.2
-    composer require slub/dfgviewer # points to the highest version avail. on packagist
+    ## Add the custom repositories to the composer file:
+        jq '  .repositories += [
+                {"type": "git", "url": "https://github.com/UB-Mannheim/dfg-viewer.git" },
+                {"type": "git", "url": "https://github.com/UB-Mannheim/kitodo-presentation.git"},
+                {"type": "git", "url": "https://github.com/UB-Mannheim/ubma_digitalcollections.git" },
+                {"type": "git", "url": "https://github.com/kitodo/php-iiif-prezi-reader.git"}]
+            | .require += {"ub-mannheim/presentation": "dev-main"}
+            | . += {"minimum-stability": "dev"}' composer.json > composer-edit.json
+        mv composer.json composer.json.bak
+        mv composer-edit.json composer.json
+    ## Install extension (one of both) classic way from packagist:
+        # composer require slub/dfgviewer # points to the highest version avail. on packagist
+        # composer require kitodo/presentation # points to the highest version avail. on packagist
     composer update
     vendor/bin/typo3 extension:setup
 
@@ -99,13 +111,13 @@ if [ ! -f /initFinished ]; then
     printHeadline "Setup Kitodo.Presentation: Write site configuration for ${HOST}"
     mkdir -p config/sites/presentation/
     ### Backup all previous configs and take config.yaml from /data, substitute the variables and pipe it to the TYPO3 dir:
-    find /var/www/typo3/config/sites/ -name "*.yaml" -exec mv {} {}.backup \;
-    envsubst '${HOST}' < /data/config.yaml >> /var/www/typo3/config/sites/presentation/config.yaml
-    if [ ${HOST} = 'localhost' ]; then
-        ### Replace localhost with / :
-        sed -i 's/localhost/\//g' /var/www/typo3/config/sites/presentation/config.yaml
-    fi
-    cp -v /data/routes-*.yaml /var/www/typo3/config/sites/presentation/
+    # find /var/www/typo3/config/sites/ -name "*.yaml" -exec mv {} {}.backup \;
+    # envsubst '${HOST}' < /data/config.yaml >> /var/www/typo3/config/sites/presentation/config.yaml
+    # if [ ${HOST} = 'localhost' ]; then
+    #     ### Replace localhost with / :
+    #     sed -i 's/localhost/\//g' /var/www/typo3/config/sites/presentation/config.yaml
+    # fi
+    # cp -v /data/routes-*.yaml /var/www/typo3/config/sites/presentation/
     chown -R www-data:www-data config
     
     # AdditionalConfiguration (Fixes TYPO3-CORE-SA-2020-006: Same-Origin Request Forgery to Backend User Interface: https://typo3.org/security/advisory/typo3-core-sa-2020-006)
