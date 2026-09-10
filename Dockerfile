@@ -1,13 +1,13 @@
-# Use TYPO3 v12 base image based on Apache2 on Debian 12
-# https://hub.docker.com/r/csidirop/typo3-v12/
-# https://github.com/csidirop/typo3-docker/tree/typo3-v12.x
-FROM csidirop/typo3-v12:latest
+# Use TYPO3 v13 base image based on Apache2
+# https://hub.docker.com/r/csidirop/typo3-v13/
+# https://github.com/csidirop/typo3-docker/tree/typo3-v13.x
+FROM csidirop/typo3-v13:latest
 LABEL authors='Christos Sidiropoulos <Christos.Sidiropoulos@uni-mannheim.de>'
 
 EXPOSE 80
 ARG PHP_MEMORY_LIMIT
 
-# This Dockerfile aims to install a working TYPO3 v10 instance with the kitodo/presentation extension
+# This Dockerfile installs TYPO3 v13 with the kitodo/presentation extension
 # based on this guide: https://github.com/UB-Mannheim/kitodo-presentation/wiki
 
 # Update and install packages:

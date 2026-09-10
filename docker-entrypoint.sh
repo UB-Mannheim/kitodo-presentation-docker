@@ -18,6 +18,12 @@ if [ ! -f /initFinished ]; then
     # Setup TYPO3 with typo3console (https://docs.typo3.org/p/helhum/typo3-console/main/en-us/CommandReference/InstallSetup.html):
     cd /var/www/typo3/
     printHeadline "Starting TYPO3 auto setup:"
+
+    # Refresh the complete dependency set before adding extensions. Base images may
+    # contain an older TYPO3 lock file whose packages are blocked by newer security
+    # advisories. Updating only the requested extension cannot unlock every TYPO3
+    # package, even with --with-all-dependencies.
+    composer update --with-all-dependencies --no-interaction
     composer require helhum/typo3-console
     vendor/bin/typo3 install:setup \
         --no-interaction \
@@ -37,7 +43,11 @@ if [ ! -f /initFinished ]; then
     # Install Kitodo.Presentation:
     printHeadline "Install Presentation:"
     composer config platform.php 8.2
-    composer require kitodo/presentation
+    # Presentation 7 requires 0.3.2, but upstream has not published that tag. 
+    #TODO: remove the commit hash when upstream has published 0.3.2
+    composer require --with-all-dependencies \
+        "ubl/php-iiif-prezi-reader:dev-master#57d3471cd1210cf78388e1d2b3e4c0ba1ef2688f as 0.3.2" \
+        "kitodo/presentation"
     vendor/bin/typo3 extension:setup
 
     chown -R www-data:www-data .
