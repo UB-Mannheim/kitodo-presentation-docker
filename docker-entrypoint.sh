@@ -38,7 +38,6 @@ if [ ! -f /initFinished ]; then
     printHeadline "Install Presentation:"
     composer config platform.php 8.2
     composer require kitodo/presentation
-    composer update
     vendor/bin/typo3 extension:setup
 
     chown -R www-data:www-data .
@@ -55,7 +54,7 @@ if [ ! -f /initFinished ]; then
     vendor/bin/typo3 configuration:set SYS/fileCreateMask 0660
     vendor/bin/typo3 configuration:set SYS/folderCreateMask 2770
     vendor/bin/typo3 configuration:set SYS/systemLocale en_US.UTF-8
-    vendor/bin/typo3 configuration:set SYS/trustedHostsPattern "(https?:\/\/)?(www\.)?${HOST}"
+    vendor/bin/typo3 configuration:set SYS/trustedHostsPattern "^(www\.)?${HOST}(:${PORT})?$"
     ## Set right permissions for existing folders:
     # chmod 2770 public/typo3conf/ext/                                    # set permissions for ext folder: owner and group can read, write and execute + inherit permissions
     # find .       -name ext\* -prune -o -name \* -exec chmod 2770 {} \;  # set permissions for all other: owner and group can read, write and execute + inherit permissions
@@ -72,6 +71,9 @@ if [ ! -f /initFinished ]; then
     ## Add solr related pages and settings:
     printInfoLine "Setup Kitodo.Presentation: Add solr related pages and settings:"
     if [ $solr == 1 ]; then
+        # MariaDB clients 11.4+ enable TLS by default, while the development database in this Compose stack does not provide TLS.
+        mysql() { command mysql --disable-ssl "$@"; }
+
         #### New Tenant & set core in List -> Solr Cores
         printInfoLine "Setup Kitodo.Presentation: Update DB: New Tenant & set core in List -> Solr Cores"
         mysql -h db --user=$DB_USER --password=$DB_PASSWORD -v -D ${DB_NAME} -e "INSERT INTO tx_dlf_solrcores (pid, cruser_id, label, index_name) VALUES (3, 1, 'Solr Core (PID 1)','dlf');"
@@ -82,16 +84,8 @@ if [ ! -f /initFinished ]; then
         # mysql -h db --user=$DB_USER --password=$DB_PASSWORD -v -D ${DB_NAME} < /data/tx_dlf_metadataformat.sql
         # mysql -h db --user=$DB_USER --password=$DB_PASSWORD -v -D ${DB_NAME} < /data/tx_dlf_structures.sql
 
-        #### Pages and contentelements #TODO cleanup!
-        ##### SearchView:
-        printInfoLine "Setup Kitodo.Presentation: Update DB: Add pages and contentelements: SearchView"
-        mysql -h db --user=$DB_USER --password=$DB_PASSWORD -v -D ${DB_NAME} -e "INSERT INTO pages VALUES (7,1,1725291009,1725291009,1,0,0,0,0,'',256,'',0,0,0,0,NULL,0,'',0,0,0,0,1,0,31,27,0,'Suche','/suche',1,'',0,0,'',0,0,'',0,'',0,0,'',0,'',0,'',0,0,'','',0,'','','',0,0,0,0,0,0,'','','',0,0,'',0,0,'','',0,'','',0,'summary','',0.5,'');"
-        mysql -h db --user=$DB_USER --password=$DB_PASSWORD -v -D ${DB_NAME} -e "INSERT INTO tt_content VALUES (11,'',7,1725291028,1725291028,1,0,0,0,0,'',256,0,0,0,0,NULL,0,'',0,0,0,0,'header','Metadaten- und Volltextsuche','',NULL,0,0,0,0,0,0,0,2,0,0,0,'default',0,'','',NULL,NULL,0,'','',0,'0','',1,0,NULL,0,'','','',0,0,0,NULL,'',0,'','','',NULL,124,0,0,0,0,NULL,0);"
-        mysql -h db --user=$DB_USER --password=$DB_PASSWORD -v -D ${DB_NAME} -e "INSERT INTO tt_content VALUES (12,'',7,1725291126,1725291126,1,0,0,0,0,'',512,0,0,0,0,NULL,0,'',0,0,0,0,'list','','',NULL,0,0,0,0,0,0,0,2,0,0,0,'default',0,'','',NULL,NULL,0,'','',0,'0','dlf_search',1,0,NULL,0,'','','',0,0,0,'<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\" ?>\n<T3FlexForms>\n    <data>\n        <sheet index=\"sDEF\">\n            <language index=\"lDEF\">\n                <field index=\"settings.fulltext\">\n                    <value index=\"vDEF\">1</value>\n                </field>\n                <field index=\"settings.fulltextPreselect\">\n                    <value index=\"vDEF\">0</value>\n                </field>\n                <field index=\"settings.datesearch\">\n                    <value index=\"vDEF\">1</value>\n                </field>\n                <field index=\"settings.solrcore\">\n                    <value index=\"vDEF\">1</value>\n                </field>\n                <field index=\"settings.extendedSlotCount\">\n                    <value index=\"vDEF\">1</value>\n                </field>\n                <field index=\"settings.extendedFields\">\n                    <value index=\"vDEF\"></value>\n                </field>\n                <field index=\"settings.searchIn\">\n                    <value index=\"vDEF\">none</value>\n                </field>\n                <field index=\"settings.collections\">\n                    <value index=\"vDEF\"></value>\n                </field>\n                <field index=\"settings.facets\">\n                    <value index=\"vDEF\"></value>\n                </field>\n                <field index=\"settings.facetCollections\">\n                    <value index=\"vDEF\"></value>\n                </field>\n                <field index=\"settings.limitFacets\">\n                    <value index=\"vDEF\">15</value>\n                </field>\n                <field index=\"settings.resetFacets\">\n                    <value index=\"vDEF\">0</value>\n                </field>\n                <field index=\"settings.sortingFacets\">\n                    <value index=\"vDEF\">count</value>\n                </field>\n                <field index=\"settings.suggest\">\n                    <value index=\"vDEF\">1</value>\n                </field>\n                <field index=\"settings.showLogicalPageField\">\n                    <value index=\"vDEF\">0</value>\n                </field>\n                <field index=\"settings.showSingleResult\">\n                    <value index=\"vDEF\">0</value>\n                </field>\n                <field index=\"settings.targetPid\">\n                    <value index=\"vDEF\"></value>\n                </field>\n                <field index=\"settings.targetPidPageView\">\n                    <value index=\"vDEF\">2</value>\n                </field>\n            </language>\n        </sheet>\n    </data>\n</T3FlexForms>','',0,'','','',NULL,124,0,0,0,0,NULL,0);"
-        ##### CollectionView:
-        printInfoLine "Setup Kitodo.Presentation: Update DB: Add pages and contentelements: CollectionView"
-        mysql -h db --user=$DB_USER --password=$DB_PASSWORD -v -D ${DB_NAME} -e "INSERT INTO pages VALUES (8,1,1725291148,1725291148,1,0,0,0,0,'',128,'',0,0,0,0,NULL,0,'',0,0,0,0,1,0,31,27,0,'Sammlungen','/sammlungen',1,'',0,0,'',0,0,'',0,'',0,0,'',0,'',0,'',0,0,'','',0,'','','',0,0,0,0,0,0,'','','',0,0,'',0,0,'','',0,'','',0,'summary','',0.5,'');"
-        mysql -h db --user=$DB_USER --password=$DB_PASSWORD -v -D ${DB_NAME} -e "INSERT INTO tt_content VALUES (13,'',8,1725291205,1725291205,1,0,0,0,0,'',256,0,0,0,0,NULL,0,'',0,0,0,0,'list','','',NULL,0,0,0,0,0,0,0,2,0,0,0,'default',0,'','',NULL,NULL,0,'','',0,'0','dlf_collection',1,0,NULL,0,'','','',0,0,0,'<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\" ?>\n<T3FlexForms>\n    <data>\n        <sheet index=\"sDEF\">\n            <language index=\"lDEF\">\n                <field index=\"settings.collections\">\n                    <value index=\"vDEF\"></value>\n                </field>\n                <field index=\"settings.solrcore\">\n                    <value index=\"vDEF\">1</value>\n                </field>\n                <field index=\"settings.show_userdefined\">\n                    <value index=\"vDEF\">-1</value>\n                </field>\n                <field index=\"settings.dont_show_single\">\n                    <value index=\"vDEF\">0</value>\n                </field>\n                <field index=\"settings.randomize\">\n                    <value index=\"vDEF\">0</value>\n                </field>\n                <field index=\"settings.targetPid\">\n                    <value index=\"vDEF\"></value>\n                </field>\n                <field index=\"settings.targetPidPageView\">\n                    <value index=\"vDEF\">2</value>\n                </field>\n                <field index=\"settings.targetFeed\">\n                    <value index=\"vDEF\"></value>\n                </field>\n            </language>\n        </sheet>\n    </data>\n</T3FlexForms>','',0,'','','',NULL,124,0,0,0,0,NULL,0);"
+        #### Pages and content elements:
+        mysql -h db --user=$DB_USER --password=$DB_PASSWORD -v -D ${DB_NAME} < /data/solr-pages.sql
     fi
 
     # Insert TYPO3 site content translations:

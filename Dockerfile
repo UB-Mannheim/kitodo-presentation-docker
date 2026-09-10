@@ -28,6 +28,8 @@ RUN apt-get purge -y \
     && rm -rf /var/lib/apt/lists \
   # Fix wrong line endings in the startup script and just to be save in data files:
   && sed -i.bak 's/\r$//' /docker-entrypoint.sh /docker-entrypoint-aux.sh /data/*.* /data/scripts/* \
+  # Ensure the startup script stays executable regardless of host file permissions:
+  && chmod +x /docker-entrypoint.sh \
   # Set PHP memory limit:
   && sed -i "s/memory_limit = .*/memory_limit = ${PHP_MEMORY_LIMIT}/" /usr/local/etc/php/php.ini
 
