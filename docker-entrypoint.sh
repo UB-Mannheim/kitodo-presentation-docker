@@ -101,32 +101,31 @@ if [ ! -f /initFinished ]; then
     # Insert TYPO3 site content translations:
     ## Create Site configuration with two languages (en & de):
     printHeadline "Setup Kitodo.Presentation: Write site configuration for ${HOST}"
-    mkdir -p config/sites/presentation/
-    ### Take config.yaml from /data, substitute the variables and pipe it to the TYPO3 dir:
-    envsubst '${HOST}' < /data/config.yaml >> /var/www/typo3/config/sites/presentation/config.yaml
-    if [ ${HOST} = 'localhost' ]; then
+    siteConfig=/var/www/typo3/config/sites/presentation/config.yaml
+    mkdir -p "$(dirname "${siteConfig}")"
+    envsubst '${HOST}' < /data/config.yaml > "${siteConfig}.tmp"
+    if [[ "${HOST}" == localhost ]]; then
         ### Replace localhost with / :
-        sed -i 's/localhost/\//g' /var/www/typo3/config/sites/presentation/config.yaml
+        sed -i 's/localhost/\//g' "${siteConfig}.tmp"
     fi
+    chmod 0640 "${siteConfig}.tmp"
+    mv -f "${siteConfig}.tmp" "${siteConfig}"
     cp -v /data/routes-*.yaml /var/www/typo3/config/sites/presentation/
-    chown -R www-data:www-data config
+    chown -R www-data:www-data /var/www/typo3/config
     
     # AdditionalConfiguration (Fixes TYPO3-CORE-SA-2020-006: Same-Origin Request Forgery to Backend User Interface: https://typo3.org/security/advisory/typo3-core-sa-2020-006)
     # (Only if DMZ is set in .env)
-    if [ ${TYPO3_ADDITIONAL_CONFIGURATION} != 'false' ]; then
+    if [[ "${TYPO3_ADDITIONAL_CONFIGURATION}" != false ]]; then
         printHeadline "Write AdditionalConfiguration.php:"
-        ### Take AdditionalConfiguration from /data, substitute the variables except for $GLOBALS (which isnt one) and pipe it to the TYPO3 dir
-        envsubst '${HOST}' < /data/AdditionalConfiguration.php >> /var/www/typo3/public/typo3conf/AdditionalConfiguration.php
+        # Substitute HOST only, leaving PHP variables such as $GLOBALS intact.
+        additionalConfig=/var/www/typo3/public/typo3conf/AdditionalConfiguration.php
+        envsubst '${HOST}' < /data/AdditionalConfiguration.php > "${additionalConfig}.tmp"
+        chown www-data:www-data "${additionalConfig}.tmp"
+        chmod 0640 "${additionalConfig}.tmp"
+        mv -f "${additionalConfig}.tmp" "${additionalConfig}"
     fi
 
     vendor/bin/typo3 cache:warmup
-
-    # Cleanup:
-    printHeadline "Cleanup:"
-    apt-get purge -y jq gettext
-    apt-get autoremove -y
-    apt-get clean
-    rm -rf /var/lib/apt/lists/*
 
     # Run further scripts:
     printHeadline "Running further scripts:"
@@ -146,3 +145,6 @@ else # Non default PORT
     printSuccessLine "Backend: http://${HOST}:${PORT}/typo3/"
 fi
 [[ $solr == 1 ]] && printSuccessLine "Solr:    http://${HOST}:8983"
+
+# If the script reaches this point, the setup has been completed without errors and apache can now be started:
+exec apache2-foreground
