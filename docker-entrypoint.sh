@@ -19,9 +19,7 @@ if [ ! -f /initFinished ]; then
     cd /var/www/typo3/
     printHeadline "Starting TYPO3 auto setup:"
 
-    # Refresh the complete dependency set before adding extensions. Base images may
-    # contain an older TYPO3 lock file whose packages are blocked by newer security
-    # advisories. Updating only the requested extension cannot unlock every TYPO3
+    # Refresh the complete dependency set before adding extensions. Updating only the requested extension cannot unlock every TYPO3
     # package, even with --with-all-dependencies.
     composer update --with-all-dependencies --no-interaction
     composer require helhum/typo3-console
@@ -145,6 +143,12 @@ else # Non default PORT
     printSuccessLine "Backend: http://${HOST}:${PORT}/typo3/"
 fi
 [[ $solr == 1 ]] && printSuccessLine "Solr:    http://${HOST}:8983"
+
+# If phpmyadmin is running, print the link to it:
+# wait-for-it -t 1 phpmyadmin:80 >> /dev/null 2>&1
+if curl --fail --silent --show-error phpmyadmin >> /dev/null 2>&1; then
+    printSuccessLine "phpMyAdmin: http://${HOST}:8080"
+fi
 
 # If the script reaches this point, the setup has been completed without errors and apache can now be started:
 exec apache2-foreground

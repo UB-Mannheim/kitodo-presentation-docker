@@ -74,12 +74,24 @@ The other 5 variables are set in the docker-compose.yml and should not be change
 Apache Solr is an open-source search platform with full-text search, hit highlighting, faceted search and real-time indexing.
 To create an additional solr container use the docker profile `with-solr` when starting the containers.
 
+### phpmyadmin
+[phpMyAdmin](https://www.phpmyadmin.net/) is a web-based tool for managing MySQL/MariaDB databases.
+To create an additional phpMyAdmin container use the docker profile `with-phpmyadmin` when starting the containers.
+
 ### Run images:
     docker compose up
 
 or with solr
 
     docker compose --profile with-solr up
+
+or with phpMyAdmin
+
+    docker compose --profile with-phpmyadmin up
+
+The optional profiles can also be combined:
+
+    docker compose --profile with-solr --profile with-phpmyadmin up
 
 ### Ready:
 TYPO3 backend can be accessed at: http://localhost/typo3/ (of whatever you set as PQDN)

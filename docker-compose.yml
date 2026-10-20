@@ -15,6 +15,7 @@ services:
       context: .
       args:
         - PHP_MEMORY_LIMIT=$PHP_MEMORY_LIMIT
+      pull: true
     image: kitodo/presentation
     container_name: kitodo-presentation-main
     hostname: $PQDN
@@ -52,3 +53,17 @@ services:
     restart: unless-stopped
     profiles:
       - with-solr
+  phpmyadmin:
+    container_name: kitodo-presentation-phpmyadmin
+    image: phpmyadmin:latest
+    environment:
+      - PMA_HOST=db
+      - PMA_USER=$MARIADB_USER
+      - PMA_PASSWORD=$MARIADB_PASSWORD
+    ports:
+      - "0.0.0.0:8080:80"
+    depends_on:
+      - db
+    restart: unless-stopped
+    profiles:
+      - with-phpmyadmin
