@@ -146,5 +146,9 @@ else # Non default PORT
 fi
 [[ $solr == 1 ]] && printSuccessLine "Solr:    http://${HOST}:8983"
 
+# If phpmyadmin is running, print the link to it:
+wait-for-it -t 1 phpmyadmin:80 >> /dev/null 2>&1
+[[ $? == 0 ]] && printSuccessLine "phpMyAdmin: http://${HOST}:8080"
+
 # If the script reaches this point, the setup has been completed without errors and apache can now be started:
 exec apache2-foreground
