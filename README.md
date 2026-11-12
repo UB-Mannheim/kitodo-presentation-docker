@@ -103,6 +103,10 @@ You can customize your setup by adding additional scripts! Just throw them into 
 
 You can temporally disable your scripts by changing the extension to something else like `.off`. You can even add more directories your scripts can refer to.
 
+### Local extensions
+
+Place project-specific TYPO3 extensions and site packages in `packages/`.
+
 ## Code and User Feedback
 Please file your bug reports to [issues](https://github.com/UB-Mannheim/kitodo-presentation-docker/issues).
 Make sure that you are using the latest version of the software before sending a report.

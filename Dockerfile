@@ -19,6 +19,7 @@ RUN apt-get update \
 # Copy startup script and data folder into the container:
 COPY --chmod=0755 docker-entrypoint.sh docker-entrypoint-aux.sh /
 COPY data/ /data/
+COPY packages/ /var/www/typo3/packages/
 
 # Set PHP memory limit:
 RUN sed -i "s/memory_limit = .*/memory_limit = ${PHP_MEMORY_LIMIT}/" /usr/local/etc/php/php.ini

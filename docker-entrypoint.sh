@@ -19,6 +19,12 @@ if [ ! -f /initFinished ]; then
     cd /var/www/typo3/
     printHeadline "Starting TYPO3 auto setup:"
 
+    # Make locally developed extensions and site packages available to Composer:
+    for packagePath in /var/www/typo3/packages/*; do
+        git config --global --add safe.directory "${packagePath}"
+    done
+    composer config repositories.local-packages path 'packages/*'
+
     # Refresh the complete dependency set before adding extensions. Updating only the requested extension cannot unlock every TYPO3
     # package, even with --with-all-dependencies.
     composer update --with-all-dependencies --no-interaction

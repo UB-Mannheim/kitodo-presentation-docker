@@ -34,6 +34,7 @@ services:
       - PORT=$PORT
     volumes:
       - ./volumes/fileadmin:/var/www/typo3/public/fileadmin/
+      - ./packages:/var/www/typo3/packages
     depends_on:
       - db
     restart: unless-stopped
